@@ -2,7 +2,9 @@ import Layout from "@components/core/Layout";
 import Thread from "@components/core/Thread";
 import Sidebar from "@components/core/Sidebar";
 import { Categories as dd } from "@constants/Categories";
-import Api from "lib/api";
+import IsoFetch from "isomorphic-fetch";
+import { urls } from "lib/api";
+
 export default function Categories({ posts }) {
   return (
     <Layout>
@@ -20,8 +22,18 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps({ params: { id, slug } }) {
-  const allPost = await new Api("/posts/get").post({});
-  const posts = await allPost.results.filter(
+  const allPost = await IsoFetch(
+    urls[process.env.NODE_ENV] + "/posts/get",
+    {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+    },
+  );
+  const jsonPosts = await allPost.json();
+  const posts = await jsonPosts.results.filter(
     (item) =>
       item.categoryItem.key === parseInt(id) &&
       item.categoryItem.slug === slug,

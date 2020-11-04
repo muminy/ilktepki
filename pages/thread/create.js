@@ -4,7 +4,8 @@ import Cookies from "js-cookie";
 import { useState } from "react";
 import { Categories } from "@constants/Categories";
 import { useAuth } from "context/Auth";
-import Api from "lib/api";
+import IsoFetch from "isomorphic-fetch";
+import { urls } from "lib/api";
 
 export default function Create() {
   const router = useRouter();
@@ -21,17 +22,28 @@ export default function Create() {
     setLoading(true);
     if (login && baslik.length > 4 && icerik.length > 10) {
       const userId = JSON.parse(userItem);
-      const createData = await new Api("/posts/create").post({
-        baslik,
-        icerik,
-        userId,
-        categoryItem,
-      });
-      if (createData.code === 200) {
+      const createData = await IsoFetch(
+        urls[process.env.NODE_ENV] + "/posts/create",
+        {
+          method: "POST",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            baslik,
+            icerik,
+            userId,
+            categoryItem,
+          }),
+        },
+      );
+      const responseData = await createData.json();
+      if (responseData.code === 200) {
         setCode(200);
         setBaslik("");
         setIcerik("");
-      } else if (createData.code === 201) {
+      } else if (responseData.code === 201) {
         setCode(201);
       }
     } else {

@@ -1,10 +1,9 @@
 import Avatar from "@components/core/Avatar";
 import Layout from "@components/core/Layout";
 import Sidebar from "@components/core/Sidebar";
-import Api from "lib/api";
-import { useRouter } from "next/router";
-import { useState } from "react";
 import slugify from "slugify";
+import IsoFetch from "isomorphic-fetch";
+import { urls } from "lib/api";
 
 export default function Slug({ post }) {
   return (
@@ -36,7 +35,17 @@ export default function Slug({ post }) {
 }
 
 export async function getStaticPaths() {
-  const posts = await new Api("/posts/get").post({});
+  const postAll = await IsoFetch(
+    urls[process.env.NODE_ENV] + "/posts/get",
+    {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+    },
+  );
+  const posts = await postAll.json();
   return {
     paths: posts.results.map(
       (item) =>
@@ -50,8 +59,18 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps({ params: { id } }) {
-  const allPosts = await new Api("/posts/get").post({});
-  const posts = allPosts.results.filter(
+  const allPosts = await IsoFetch(
+    urls[process.env.NODE_ENV] + "/posts/get",
+    {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+    },
+  );
+  const postJson = await allPosts.json();
+  const posts = postJson.results.filter(
     (item) => item._id === id,
   );
   return {
