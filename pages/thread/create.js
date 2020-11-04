@@ -4,7 +4,6 @@ import Cookies from "js-cookie";
 import { useState } from "react";
 import { Categories } from "@constants/Categories";
 import { useAuth } from "context/Auth";
-import IsoFetch from "isomorphic-fetch";
 import { urls } from "lib/api";
 
 export default function Create() {
@@ -22,7 +21,7 @@ export default function Create() {
     setLoading(true);
     if (login && baslik.length > 4 && icerik.length > 10) {
       const userId = JSON.parse(userItem);
-      const createData = await IsoFetch(
+      const createData = await fetch(
         urls[process.env.NODE_ENV] + "/posts/create",
         {
           method: "POST",

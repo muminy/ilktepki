@@ -2,7 +2,6 @@ import Avatar from "@components/core/Avatar";
 import Layout from "@components/core/Layout";
 import Sidebar from "@components/core/Sidebar";
 import slugify from "slugify";
-import IsoFetch from "isomorphic-fetch";
 import { urls } from "lib/api";
 
 export default function Slug({ post }) {
@@ -35,7 +34,7 @@ export default function Slug({ post }) {
 }
 
 export async function getStaticPaths() {
-  const postAll = await IsoFetch(
+  const postAll = await fetch(
     urls[process.env.NODE_ENV] + "/posts/get",
     {
       method: "POST",
@@ -59,7 +58,7 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps({ params: { id } }) {
-  const allPosts = await IsoFetch(
+  const allPosts = await fetch(
     urls[process.env.NODE_ENV] + "/posts/get",
     {
       method: "POST",

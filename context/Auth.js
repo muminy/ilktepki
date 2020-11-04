@@ -4,24 +4,33 @@ import {
   useEffect,
   useState,
 } from "react";
-import api from "lib/api";
 import Cookies from "js-cookie";
-import Api from "lib/api";
+import { urls } from "lib/api";
 
 const AuthContext = createContext({});
 export const AuthProvider = ({ children }) => {
   const [login, setLogin] = useState(false);
 
   const ActionLogin = async (username, password) => {
-    const hasUser = await new Api("/auth/login").post({
-      username,
-      password,
-    });
-    const isLogin = await hasUser.login;
-    if (isLogin) {
-      Cookies.set("_id", await hasUser.data);
+    const hasUser = await fetch(
+      urls[process.env.NODE_ENV] + "/auth/login",
+      {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          username,
+          password,
+        }),
+      },
+    );
+    const jsonData = await hasUser.json();
+    if (jsonData.login) {
+      Cookies.set("_id", await jsonData.data);
     }
-    return await hasUser;
+    return jsonData;
   };
 
   const ActionSingup = async (
@@ -30,13 +39,24 @@ export const AuthProvider = ({ children }) => {
     username,
     password,
   ) => {
-    const isSingup = await new Api("/auth/singup").post({
-      name,
-      email,
-      username,
-      password,
-    });
-    const singupData = await isSingup;
+    const isSingup = await fetch(
+      urls[process.env.NODE_ENV] + "/auth/singup",
+      {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name,
+          email,
+          username,
+          password,
+        }),
+      },
+    );
+    const jsonData = await isSingup.json();
+    const singupData = await jsonData;
     return singupData;
   };
 

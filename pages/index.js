@@ -2,7 +2,7 @@ import Layout from "@components/core/Layout";
 import LSidebar from "@components/core/LeftSidebar";
 import Sidebar from "@components/core/Sidebar";
 import Thread from "@components/core/Thread";
-import Api from "lib/api";
+import { urls } from "lib/api";
 
 export default function Home({ posts }) {
   return (
@@ -15,11 +15,20 @@ export default function Home({ posts }) {
 }
 
 export async function getStaticProps() {
-  const allPost = await new Api("/posts/get").post({});
-  const posts = await allPost.results;
+  const res = await fetch(
+    urls[process.env.NODE_ENV] + "/posts/get",
+    {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+    },
+  );
+  const allPosts = await res.json();
   return {
     props: {
-      posts: posts,
+      posts: allPosts.results,
     },
   };
 }
