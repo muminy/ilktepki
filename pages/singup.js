@@ -1,5 +1,3 @@
-import Layout from "@components/core/Layout";
-import LogoSVG from "@components/icons/Logo";
 import { useAuth } from "context/Auth";
 import { validateEmail } from "lib/valid";
 import Link from "next/link";

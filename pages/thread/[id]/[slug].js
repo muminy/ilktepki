@@ -34,16 +34,13 @@ export default function Slug({ post }) {
 }
 
 export async function getStaticPaths() {
-  const postAll = await fetch(
-    urls[process.env.NODE_ENV] + "/posts/get",
-    {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
+  const postAll = await fetch(urls + "/posts/get", {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
     },
-  );
+  });
   const posts = await postAll.json();
   return {
     paths: posts.results.map(
@@ -58,16 +55,13 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps({ params: { id } }) {
-  const allPosts = await fetch(
-    urls[process.env.NODE_ENV] + "/posts/get",
-    {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
+  const allPosts = await fetch(urls + "/posts/get", {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
     },
-  );
+  });
   const postJson = await allPosts.json();
   const posts = postJson.results.filter(
     (item) => item._id === id,

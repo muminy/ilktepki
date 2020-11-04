@@ -21,22 +21,19 @@ export default function Create() {
     setLoading(true);
     if (login && baslik.length > 4 && icerik.length > 10) {
       const userId = JSON.parse(userItem);
-      const createData = await fetch(
-        urls[process.env.NODE_ENV] + "/posts/create",
-        {
-          method: "POST",
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            baslik,
-            icerik,
-            userId,
-            categoryItem,
-          }),
+      const createData = await fetch(urls + "/posts/create", {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
         },
-      );
+        body: JSON.stringify({
+          baslik,
+          icerik,
+          userId,
+          categoryItem,
+        }),
+      });
       const responseData = await createData.json();
       if (responseData.code === 200) {
         setCode(200);

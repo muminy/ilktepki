@@ -1,9 +1,8 @@
-import Layout from "@components/core/Layout";
-import LogoSVG from "@components/icons/Logo";
 import { useAuth } from "context/Auth";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
+
 export default function Login() {
   const router = useRouter();
   const { ActionLogin, login, setLogin } = useAuth();

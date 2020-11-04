@@ -1,12 +1,8 @@
-import { useEffect, useState } from "react";
-
 import Subject from "@components/ui/Subject";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { Categories } from "@constants/Categories";
-import api from "lib/api";
 import slugify from "slugify";
-import getThreads from "lib/getThreads";
 
 export default function Thread({ size, posts }) {
   const router = useRouter();

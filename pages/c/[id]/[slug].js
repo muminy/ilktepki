@@ -21,16 +21,13 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps({ params: { id, slug } }) {
-  const allPost = await fetch(
-    urls[process.env.NODE_ENV] + "/posts/get",
-    {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
+  const allPost = await fetch(urls + "/posts/get", {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
     },
-  );
+  });
   const jsonPosts = await allPost.json();
   const posts = await jsonPosts.results.filter(
     (item) =>

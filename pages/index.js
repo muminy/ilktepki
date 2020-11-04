@@ -15,16 +15,13 @@ export default function Home({ posts }) {
 }
 
 export async function getStaticProps() {
-  const res = await fetch(
-    urls[process.env.NODE_ENV] + "/posts/get",
-    {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
+  const res = await fetch(urls + "/posts/get", {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
     },
-  );
+  });
   const allPosts = await res.json();
   return {
     props: {

@@ -12,20 +12,17 @@ export const AuthProvider = ({ children }) => {
   const [login, setLogin] = useState(false);
 
   const ActionLogin = async (username, password) => {
-    const hasUser = await fetch(
-      urls[process.env.NODE_ENV] + "/auth/login",
-      {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          username,
-          password,
-        }),
+    const hasUser = await fetch(urls + "/auth/login", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
       },
-    );
+      body: JSON.stringify({
+        username,
+        password,
+      }),
+    });
     const jsonData = await hasUser.json();
     if (jsonData.login) {
       Cookies.set("_id", await jsonData.data);
@@ -39,22 +36,19 @@ export const AuthProvider = ({ children }) => {
     username,
     password,
   ) => {
-    const isSingup = await fetch(
-      urls[process.env.NODE_ENV] + "/auth/singup",
-      {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          name,
-          email,
-          username,
-          password,
-        }),
+    const isSingup = await fetch(urls + "/auth/singup", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
       },
-    );
+      body: JSON.stringify({
+        name,
+        email,
+        username,
+        password,
+      }),
+    });
     const jsonData = await isSingup.json();
     const singupData = await jsonData;
     return singupData;
