@@ -6,7 +6,7 @@ import slugify from "slugify";
 
 export default function Thread({ size, posts }) {
   const router = useRouter();
-
+  console.log(posts);
   return (
     <div
       className={`${
@@ -49,7 +49,7 @@ export default function Thread({ size, posts }) {
           Not Answer
         </div>
       </div>
-      {posts.map((item) => (
+      {/* {posts.map((item) => (
         <Subject
           key={item._id}
           text={item.baslik}
@@ -60,13 +60,13 @@ export default function Thread({ size, posts }) {
           })}
           username={item.userId.username}
         />
-      ))}
+      ))} */}
 
-      {!posts.length ? (
+      {/* {!posts.length ? (
         <div className="text-center py-10 font-semibold bg-gray-100">
           İlk paylaşımı sen yap
         </div>
-      ) : null}
+      ) : null} */}
     </div>
   );
 }

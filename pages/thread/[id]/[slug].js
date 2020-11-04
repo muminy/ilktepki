@@ -5,9 +5,10 @@ import slugify from "slugify";
 import { urls } from "lib/api";
 
 export default function Slug({ post }) {
+  console.log(post);
   return (
     <Layout>
-      <div className="w-full xl:w-3/4 lg:w-3/4 pr-10">
+      {/* <div className="w-full xl:w-3/4 lg:w-3/4 pr-10">
         <div className="font-semibold text-xl mb-4">
           {post.baslik}
         </div>
@@ -27,7 +28,7 @@ export default function Slug({ post }) {
             </p>
           ))}
         </div>
-      </div>
+      </div> */}
       <Sidebar />
     </Layout>
   );
