@@ -6,11 +6,7 @@ export default async function (require, response) {
     if (require.method === "POST") {
       const results = await db
         .collection("posts")
-        .find({
-          createdAt: {
-            $lte: new Date(),
-          },
-        })
+        .find()
         .sort({ createdAt: -1 })
         .limit(10)
         .toArray();
