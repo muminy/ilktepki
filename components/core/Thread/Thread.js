@@ -48,7 +48,7 @@ export default function Thread({ size, posts }) {
           Not Answer
         </div>
       </div>
-      {post
+      {posts
         ? posts.map((item) => (
             <Subject
               key={item._id}
@@ -63,7 +63,7 @@ export default function Thread({ size, posts }) {
           ))
         : null}
 
-      {post ? (
+      {posts ? (
         !posts.length ? (
           <div className="text-center py-10 font-semibold bg-gray-100">
             İlk paylaşımı sen yap
