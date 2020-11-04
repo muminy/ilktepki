@@ -1,16 +1,15 @@
 import Link from "next/link";
 
-import s from "@components/core/Navbar/navbar.module.css";
 import LogoSVG from "@components/icons/Logo";
 import Searchbar from "@components/ui/Searchbar";
 import Usernav from "@components/ui/Usernav";
-const Navbar = ({ className }) => {
+const Navbar = () => {
   return (
-    <div className={s.header}>
+    <div className="px-7 py-0">
       <div className="flex justify-between align-center flex-row py-4 md:py-6 relative">
         <div className="flex flex-1 items-center">
           <Link href="/">
-            <a className={s.logoLink}>
+            <a>
               <LogoSVG color="#212121" size={34} />
             </a>
           </Link>

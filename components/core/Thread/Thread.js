@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 
 import Subject from "@components/ui/Subject";
 import Link from "next/link";
-import s from "./Thread.module.css";
 import { useRouter } from "next/router";
 import { Categories } from "@constants/Categories";
 import api from "lib/api";
@@ -37,7 +36,7 @@ export default function Thread({ size, posts }) {
           }}
         >
           <a
-            className={`rounded-md text-black hover:text-black no-underline transition linear-out duration-150 inter ${s.button} hover:border-black border-2 border-white font-bold text-sm  h-9 `}
+            className={`rounded-md text-black hover:text-black no-underline transition button linear-out duration-150 inter hover:border-black border-2 border-white font-bold text-sm  h-9 `}
           >
             SORU EKLE
           </a>

@@ -1,6 +1,5 @@
 import Avatar from "@components/core/Avatar";
 import Link from "next/link";
-import s from "./Subject.module.css";
 
 export default function Subject({ username, text, id, slug }) {
   return (
@@ -14,24 +13,24 @@ export default function Subject({ username, text, id, slug }) {
           as={`/thread/${id}/${slug}`}
         >
           <a
-            className={`font-medium text-xl ${s.title} hover:underline cursor-pointer text-gray-700 hover:text-black no-underline`}
+            className={`font-medium hover:underline cursor-pointer text-black text-base hover:text-black no-underline`}
           >
             {text}
           </a>
         </Link>
-        <div className="flex items-center mt-1">
+        <div className="flex items-center">
           <div
-            className={`lowercase text-gray-500 font-medium mr-2 ${s.min} hover:underline cursor-pointer`}
+            className={`lowercase text-gray-500 font-medium mr-2 hover:underline cursor-pointer text-xs`}
           >
             {username}
           </div>
           <div
-            className={`lowercase text-gray-400 font-medium ${s.min} mr-2 hover:underline cursor-pointer`}
+            className={`lowercase text-gray-400 font-medium mr-2 hover:underline cursor-pointer text-xs`}
           >
             10 min
           </div>
           <div
-            className={`lowercase text-gray-400 font-medium ${s.min} hover:underline cursor-pointer`}
+            className={`lowercase text-gray-400 font-medium hover:underline cursor-pointer text-xs`}
           >
             44 Yorum
           </div>

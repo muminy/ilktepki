@@ -2,9 +2,7 @@ import Avatar from "@components/core/Avatar";
 import BellIcon from "@components/icons/Bell";
 import MessageIcon from "@components/icons/Message";
 import { useAuth } from "context/Auth";
-import api from "lib/api";
 import Link from "next/link";
-import { useEffect, useState } from "react";
 
 export default function Usernav() {
   const { login } = useAuth();

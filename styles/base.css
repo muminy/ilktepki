@@ -147,3 +147,28 @@ a {
   min-height: 5rem;
   max-height: 5rem;
 }
+.button {
+  background-color: #5cdb87;
+  padding: 7px 20px;
+  padding-top: 6px;
+}
+.button:hover {
+  background-color: #45c770;
+}
+.searchBar {
+  border-width: 0px;
+  padding: 8px 15px;
+  width: 100%;
+  display: block;
+  font-family: "Inter", sans-serif;
+  font-weight: 400;
+  font-size: 14px;
+  border-radius: 3px;
+}
+
+.searchBar:focus {
+  outline: none;
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+  box-shadow: 0 0 0 2px #e2e8f0;
+}
