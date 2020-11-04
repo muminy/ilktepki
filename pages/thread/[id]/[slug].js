@@ -5,30 +5,33 @@ import slugify from "slugify";
 import { urls } from "lib/api";
 
 export default function Slug({ post }) {
-  console.log(post);
   return (
     <Layout>
-      {/* <div className="w-full xl:w-3/4 lg:w-3/4 pr-10">
-        <div className="font-semibold text-xl mb-4">
-          {post.baslik}
-        </div>
-        <div className="flex items-center mb-4">
-          <Avatar />
-          <div className="ml-4">
-            <div className="font-semibold text-sm">
-              {post.userId.username}
+      {post ? (
+        <div className="w-full xl:w-3/4 lg:w-3/4 pr-10">
+          <div className="font-semibold text-xl mb-4">
+            {post.baslik}
+          </div>
+          <div className="flex items-center mb-4">
+            <Avatar />
+            <div className="ml-4">
+              <div className="font-semibold text-sm">
+                {post.userId.username}
+              </div>
+              <div className="text-xs">3 dakika önce</div>
             </div>
-            <div className="text-xs">3 dakika önce</div>
+          </div>
+          <div className="">
+            {post.icerik.split("\n").map((item, index) => (
+              <p className="mb-1" key={index}>
+                {item}
+              </p>
+            ))}
           </div>
         </div>
-        <div className="">
-          {post.icerik.split("\n").map((item, index) => (
-            <p className="mb-1" key={index}>
-              {item}
-            </p>
-          ))}
-        </div>
-      </div> */}
+      ) : (
+        <div className="">Loading</div>
+      )}
       <Sidebar />
     </Layout>
   );
@@ -60,7 +63,6 @@ export async function getStaticProps({ params: { id } }) {
     method: "POST",
     headers: {
       Accept: "application/json",
-      "Content-Type": "application/json",
     },
   });
   const postJson = await allPosts.json();

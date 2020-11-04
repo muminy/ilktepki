@@ -25,7 +25,6 @@ export async function getStaticProps({ params: { id, slug } }) {
     method: "POST",
     headers: {
       Accept: "application/json",
-      "Content-Type": "application/json",
     },
   });
   const jsonPosts = await allPost.json();
