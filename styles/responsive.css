@@ -1,0 +1,55 @@
+@media only screen and (max-width: 1300px) {
+}
+@media only screen and (max-width: 1100px) {
+}
+@media only screen and (max-width: 1000px) {
+  .container {
+    width: 90%;
+  }
+  .cate_list {
+    width: 100%;
+  }
+}
+@media only screen and (max-width: 800px) {
+  .dbi > button {
+    width: 100% !important;
+  }
+}
+
+@media only screen and (max-width: 560px) {
+  .logotext > svg {
+    width: calc(18px * 5.32);
+    height: 18px;
+  }
+  .shop_card > svg {
+    width: 18px;
+    height: 18px;
+  }
+  .line_ver {
+    margin: 0;
+    height: 20px;
+  }
+  .user_action_header > .singup,
+  .user_action_header > .login {
+    font-size: 10px;
+  }
+  .user_action_header > .singup {
+    padding: 2px 10px;
+  }
+  .shop_card {
+    margin-right: 15px;
+  }
+  .user_action_header {
+    margin-left: 15px;
+  }
+}
+
+@media only screen and (max-width: 500px) {
+  .dbi {
+    display: block;
+  }
+  .dbi > button {
+    width: 100%;
+    margin-bottom: 20px;
+  }
+}

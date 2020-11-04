@@ -7,10 +7,19 @@
     "start": "next start"
   },
   "dependencies": {
+    "@tailwindcss/ui": "^0.6.2",
+    "autoprefixer": "^10.0.1",
+    "axios": "^0.21.0",
+    "classnames": "^2.2.6",
+    "js-cookie": "^2.2.1",
+    "lodash.random": "^3.2.0",
     "mongodb": "^3.5.9",
-    "next": "latest",
+    "next": "^10.0.0",
+    "postcss-import": "^13.0.0",
     "react": "^16.13.1",
-    "react-dom": "^16.13.1"
+    "react-dom": "^16.13.1",
+    "slugify": "^1.4.6",
+    "tailwindcss": "^1.9.6"
   },
   "license": "MIT"
 }
