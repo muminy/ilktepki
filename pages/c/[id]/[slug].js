@@ -3,11 +3,32 @@ import Thread from "@components/core/Thread";
 import Sidebar from "@components/core/Sidebar";
 import { Categories as dd } from "@constants/Categories";
 import { urls } from "lib/api";
+import { useEffect, useState } from "react";
 
-export default function Categories({ posts }) {
+export default function Categories({ posts, id, slug }) {
+  const [allPost, setAllPost] = useState(posts);
+  const getAllPosts = async () => {
+    const res = await fetch(urls + "/posts/get", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/javascript;charset=utf-8",
+      },
+    });
+    const allPosts = await res.json();
+    const posts = await allPosts.results.filter(
+      (item) =>
+        item.categoryItem.key === parseInt(id)
+    );
+    setAllPost(posts);
+  };
+
+  useEffect(() => {
+    getAllPosts();
+  }, []);
+
   return (
     <Layout>
-      <Thread size="3/4" posts={posts} />
+      <Thread size="3/4" posts={allPost} />
       <Sidebar />
     </Layout>
   );
@@ -36,6 +57,8 @@ export async function getStaticProps({ params: { id, slug } }) {
   return {
     props: {
       posts: posts ?? [],
+      id,
+      slug,
     },
   };
 }
