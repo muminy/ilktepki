@@ -15,7 +15,7 @@ export const AuthProvider = ({ children }) => {
     const hasUser = await fetch(urls + "/auth/login", {
       method: "POST",
       headers: {
-        "Content-Type": "application/javascript;charset=utf-8",
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({
         username,
@@ -38,7 +38,7 @@ export const AuthProvider = ({ children }) => {
     const isSingup = await fetch(urls + "/auth/singup", {
       method: "POST",
       headers: {
-        "Content-Type": "application/javascript;charset=utf-8",
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({
         name,
