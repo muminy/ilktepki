@@ -24,7 +24,7 @@ export async function getStaticProps({ params: { id, slug } }) {
   const allPost = await fetch(urls + "/posts/get", {
     method: "POST",
     headers: {
-      Accept: "application/json",
+      "Content-Type": "application/javascript;charset=utf-8",
     },
   });
   const jsonPosts = await allPost.json();

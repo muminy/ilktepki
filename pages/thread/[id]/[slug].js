@@ -41,8 +41,7 @@ export async function getStaticPaths() {
   const postAll = await fetch(urls + "/posts/get", {
     method: "POST",
     headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
+      "Content-Type": "application/javascript;charset=utf-8",
     },
   });
   const posts = await postAll.json();
@@ -62,7 +61,7 @@ export async function getStaticProps({ params: { id } }) {
   const allPosts = await fetch(urls + "/posts/get", {
     method: "POST",
     headers: {
-      Accept: "application/json",
+      "Content-Type": "application/javascript;charset=utf-8",
     },
   });
   const postJson = await allPosts.json();

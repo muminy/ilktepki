@@ -24,7 +24,7 @@ export default function Create() {
       const createData = await fetch(urls + "/posts/create", {
         method: "POST",
         headers: {
-          Accept: "application/json",
+          "Content-Type": "application/javascript;charset=utf-8",
         },
         body: JSON.stringify({
           baslik,
