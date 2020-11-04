@@ -32,17 +32,13 @@ export default function Home({ posts }) {
   );
 }
 
-export async function getStaticProps() {
-  const res = await fetch(urls + "/posts/get", {
+Home.getInitialProps = async (ctx) => {
+ const res = await fetch(urls + "/posts/get", {
     method: "POST",
     headers: {
       "Content-Type": "application/javascript;charset=utf-8",
     },
   });
   const allPosts = await res.json();
-  return {
-    props: {
-      posts: allPosts.results,
-    },
-  };
+  return { posts: allPosts.results, }
 }
