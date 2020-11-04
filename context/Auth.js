@@ -6,21 +6,22 @@ import {
 } from "react";
 import api from "lib/api";
 import Cookies from "js-cookie";
+import Api from "lib/api";
 
 const AuthContext = createContext({});
 export const AuthProvider = ({ children }) => {
   const [login, setLogin] = useState(false);
 
   const ActionLogin = async (username, password) => {
-    const hasUser = await api.post("/auth/login", {
+    const hasUser = await new Api("/auth/login").post({
       username,
       password,
     });
-    const isLogin = await hasUser.data.login;
+    const isLogin = await hasUser.login;
     if (isLogin) {
-      Cookies.set("_id", await hasUser.data.data);
+      Cookies.set("_id", await hasUser.data);
     }
-    return await hasUser.data;
+    return await hasUser;
   };
 
   const ActionSingup = async (
@@ -29,13 +30,13 @@ export const AuthProvider = ({ children }) => {
     username,
     password,
   ) => {
-    const isSingup = await api.post("/auth/singup", {
+    const isSingup = await new Api("/auth/singup").post({
       name,
       email,
       username,
       password,
     });
-    const singupData = await isSingup.data;
+    const singupData = await isSingup;
     return singupData;
   };
 

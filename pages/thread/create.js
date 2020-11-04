@@ -2,9 +2,9 @@ import Layout from "@components/core/Layout";
 import { useRouter } from "next/router";
 import Cookies from "js-cookie";
 import { useState } from "react";
-import api from "lib/api";
 import { Categories } from "@constants/Categories";
 import { useAuth } from "context/Auth";
+import Api from "lib/api";
 
 export default function Create() {
   const router = useRouter();
@@ -21,17 +21,17 @@ export default function Create() {
     setLoading(true);
     if (login && baslik.length > 4 && icerik.length > 10) {
       const userId = JSON.parse(userItem);
-      const createData = await api.post("/posts/create", {
+      const createData = await new Api("/posts/create").post({
         baslik,
         icerik,
         userId,
         categoryItem,
       });
-      if (createData.data.code === 200) {
+      if (createData.code === 200) {
         setCode(200);
         setBaslik("");
         setIcerik("");
-      } else if (createData.data.code === 201) {
+      } else if (createData.code === 201) {
         setCode(201);
       }
     } else {

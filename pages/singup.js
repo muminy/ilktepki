@@ -51,7 +51,7 @@ export default function Singup() {
   }, [login]);
 
   if (login) {
-    return <div className></div>;
+    return <div></div>;
   }
 
   return (

@@ -19,7 +19,6 @@ export default function Login() {
     if (isLogin.login) {
       setCode(true);
       setLogin(true);
-      // window.location.href = "/";
     } else {
       setCode(false);
       setLoading(false);
@@ -32,7 +31,7 @@ export default function Login() {
   }, [login]);
 
   if (login) {
-    return <div className></div>;
+    return <div></div>;
   }
 
   return (

@@ -3,6 +3,7 @@ import Link from "next/link";
 import LogoSVG from "@components/icons/Logo";
 import Searchbar from "@components/ui/Searchbar";
 import Usernav from "@components/ui/Usernav";
+
 const Navbar = () => {
   return (
     <div className="px-7 py-0">

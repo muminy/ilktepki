@@ -2,7 +2,7 @@ import Layout from "@components/core/Layout";
 import LSidebar from "@components/core/LeftSidebar";
 import Sidebar from "@components/core/Sidebar";
 import Thread from "@components/core/Thread";
-import getThreads from "lib/getThreads";
+import Api from "lib/api";
 
 export default function Home({ posts }) {
   return (
@@ -15,8 +15,8 @@ export default function Home({ posts }) {
 }
 
 export async function getStaticProps() {
-  const allPost = await getThreads();
-  const posts = await allPost.data.results;
+  const allPost = await new Api("/posts/get").post({});
+  const posts = await allPost.results;
   return {
     props: {
       posts: posts,
