@@ -29,14 +29,14 @@ export async function getStaticProps({ params: { id, slug } }) {
     },
   });
   const jsonPosts = await allPost.json();
-  const posts = await jsonPosts.results.filter(
+  const posts = jsonPosts.results.filter(
     (item) =>
       item.categoryItem.key === parseInt(id) &&
       item.categoryItem.slug === slug,
   );
   return {
     props: {
-      posts: posts,
+      posts: posts ?? [],
     },
   };
 }

@@ -7,6 +7,27 @@ import { urls } from "lib/api";
 export default function Slug({ post }) {
   return (
     <Layout>
+      <div className="w-full xl:w-3/4 lg:w-3/4 pr-10">
+        <div className="font-semibold text-xl mb-4">
+          {post.baslik}
+        </div>
+        <div className="flex items-center mb-4">
+          <Avatar />
+          <div className="ml-4">
+            <div className="font-semibold text-sm">
+              {post.userId.username}
+            </div>
+            <div className="text-xs">3 dakika önce</div>
+          </div>
+        </div>
+        <div className="">
+          {post.icerik.split("\n").map((item, index) => (
+            <p className="mb-1" key={index}>
+              {item}
+            </p>
+          ))}
+        </div>
+      </div>
       <Sidebar />
     </Layout>
   );
