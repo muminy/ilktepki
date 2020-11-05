@@ -22,11 +22,7 @@ export default function Thread({ size, posts }) {
           href={{
             pathname: "/thread/create",
             query: {
-              d: Object.keys(router.query).length
-                ? Categories.find(
-                    (item) => item.slug === router.query.slug,
-                  ).key
-                : -1,
+              d: router.query.id ?? -1,
             },
           }}
         >
