@@ -9,7 +9,7 @@ import { urls } from "lib/api";
 
 const AuthContext = createContext({});
 export const AuthProvider = ({ children }) => {
-  const [login, setLogin] = useState(false);
+  const [login, setLogin] = useState("user_loading");
 
   const ActionLogin = async (username, password) => {
     const hasUser = await fetch(urls + "/auth/login", {
@@ -54,7 +54,7 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     const CLogin = Cookies.get("_id");
-    CLogin ? setLogin(true) : null;
+    CLogin ? setLogin(true) : setLogin(false);
   }, []);
 
   return (

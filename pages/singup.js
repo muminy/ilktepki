@@ -45,10 +45,12 @@ export default function Singup() {
   };
 
   useEffect(() => {
-    login ? router.push("/") : null;
+    if (login !== "user_loading" && login) {
+      router.push("/");
+    }
   }, [login]);
 
-  if (login) {
+  if (login === "user_loading" || login) {
     return <div></div>;
   } else {
     return (

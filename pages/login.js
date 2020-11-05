@@ -26,10 +26,12 @@ export default function Login() {
   };
 
   useEffect(() => {
-    login ? router.push("/") : null;
+    if (login !== "user_loading" && login) {
+      router.push("/");
+    }
   }, [login]);
 
-  if (login) {
+  if (login === "user_loading" || login) {
     return <div></div>;
   } else {
     return (
