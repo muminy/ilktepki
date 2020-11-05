@@ -1,8 +1,6 @@
 import Head from "next/head";
 
 import "styles/global.css";
-import "styles/bootstrap.css";
-import "styles/responsive.css";
 import { AuthProvider } from "context/Auth";
 
 function MyApp({ Component, pageProps }) {
