@@ -44,27 +44,23 @@ export default function Thread({ size, posts }) {
           Not Answer
         </div>
       </div>
-      {posts
-        ? posts.map((item) => (
-            <Subject
-              key={item._id}
-              text={item.baslik}
-              id={item._id}
-              slug={slugify(item.baslik, {
-                replacement: "-",
-                lower: true,
-              })}
-              username={item.userId.username}
-            />
-          ))
-        : null}
+      {posts.map((item) => (
+        <Subject
+          key={item._id}
+          text={item.baslik}
+          id={item._id}
+          slug={slugify(item.baslik, {
+            replacement: "-",
+            lower: true,
+          })}
+          username={item.userId.username}
+        />
+      ))}
 
-      {posts ? (
-        !posts.length ? (
-          <div className="text-center py-10 font-semibold bg-gray-100">
-            İlk paylaşımı sen yap
-          </div>
-        ) : null
+      {!posts.length ? (
+        <div className="text-center py-10 font-semibold bg-gray-100">
+          İlk paylaşımı sen yap
+        </div>
       ) : null}
     </div>
   );

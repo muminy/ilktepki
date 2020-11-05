@@ -19,18 +19,23 @@ export default function Subject({ username, text, id, slug }) {
           </a>
         </Link>
         <div className="flex items-center">
-          <div
-            className={`lowercase text-gray-500 font-medium mr-2 hover:underline cursor-pointer text-xs`}
+          <Link
+            href="/member/[username]"
+            as={`/member/${username}`}
           >
-            {username}
-          </div>
+            <a
+              className={`lowercase font-medium mr-2 no-underline hover:underline cursor-pointer text-xs`}
+            >
+              {username}
+            </a>
+          </Link>
           <div
-            className={`lowercase text-gray-400 font-medium mr-2 hover:underline cursor-pointer text-xs`}
+            className={`lowercase text-gray-400 font-medium mr-2 text-xs`}
           >
             10 min
           </div>
           <div
-            className={`lowercase text-gray-400 font-medium hover:underline cursor-pointer text-xs`}
+            className={`lowercase text-gray-400 font-medium text-xs`}
           >
             44 Yorum
           </div>

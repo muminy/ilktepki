@@ -8,7 +8,9 @@ export default function Usernav() {
   const { login } = useAuth();
   return (
     <ul className="list-none p-0 m-0 flex">
-      {login ? (
+      {login === "user_loading" ? (
+        <div className="animate-pulse h-6 w-20 bg-gray-400 rounded"></div>
+      ) : login ? (
         <>
           <li className="flex items-center ml-5">
             <div className="flex rounded-md h-9 w-9 items-center justify-center bg-gray-100 hover:bg-gray-300 transition linear-out duration-150">
