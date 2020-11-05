@@ -2,7 +2,7 @@ import Avatar from "@components/core/Avatar";
 import Layout from "@components/core/Layout";
 import Sidebar from "@components/core/Sidebar";
 import slugify from "slugify";
-import { urls } from "lib/api";
+import { Api, urls } from "lib/api";
 
 export default function Slug({ post }) {
   return (
@@ -38,15 +38,9 @@ export default function Slug({ post }) {
 }
 
 export async function getStaticPaths() {
-  const postAll = await fetch(urls + "/posts/get", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/javascript;charset=utf-8",
-    },
-  });
-  const posts = await postAll.json();
+  const postAll = await Api.post("/posts/get");
   return {
-    paths: posts.results.map(
+    paths: postAll.data.results.map(
       (item) =>
         `/thread/${item._id}/${slugify(item.baslik, {
           lower: true,
@@ -58,14 +52,8 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps({ params: { id } }) {
-  const allPosts = await fetch(urls + "/posts/get", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/javascript;charset=utf-8",
-    },
-  });
-  const postJson = await allPosts.json();
-  const posts = postJson.results.filter(
+  const allPosts = await Api.post("/posts/get");
+  const posts = allPosts.data.results.filter(
     (item) => item._id === id,
   );
   return {
