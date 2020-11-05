@@ -3,12 +3,18 @@ import { connect } from "@util/mongodb";
 export default async function (request, response) {
   try {
     const { db } = await connect();
-    const { _id } = request.body;
+    const { comment, userItem, threadId } = request.body;
     if (request.method === "POST") {
-      const resuts = await db
-        .collection("posts")
-        .findOne({ _id });
-      response.json({ code: 200, resuts });
+      await db
+        .collection("comments")
+        .insertOne({
+          comment,
+          userItem,
+          threadId,
+          createdAt: new Date(),
+          success: false,
+        });
+      response.json({ code: 200, message: "Kayıt Başarılı" });
     } else {
       response.json({
         code: 2,

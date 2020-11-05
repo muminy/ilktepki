@@ -1,9 +1,9 @@
 import { connect } from "@util/mongodb";
 
-export default async function (require, response) {
+export default async function (request, response) {
   try {
     const { db } = await connect();
-    if (require.method === "POST") {
+    if (request.method === "POST") {
       const results = await db
         .collection("posts")
         .find()

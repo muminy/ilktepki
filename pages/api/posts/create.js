@@ -1,6 +1,6 @@
 import { connect } from "@util/mongodb";
 
-export default async function (require, response) {
+export default async function (request, response) {
   try {
     const { db } = await connect();
     const {
@@ -8,8 +8,8 @@ export default async function (require, response) {
       icerik,
       userId,
       categoryItem,
-    } = require.body;
-    if (require.method === "POST") {
+    } = request.body;
+    if (request.method === "POST") {
       await db.collection("posts").insertOne({
         baslik,
         icerik,

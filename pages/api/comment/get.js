@@ -5,10 +5,13 @@ export default async function (request, response) {
     const { db } = await connect();
     const { _id } = request.body;
     if (request.method === "POST") {
-      const resuts = await db
-        .collection("posts")
-        .findOne({ _id });
-      response.json({ code: 200, resuts });
+      const results = await db
+        .collection("comments")
+        .find({ threadId: _id })
+        .sort({ createdAt: -1 })
+        .limit(10)
+        .toArray();
+      response.json({ code: 200, results });
     } else {
       response.json({
         code: 2,

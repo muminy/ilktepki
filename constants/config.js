@@ -1,5 +1,8 @@
 export const siteConfig = {
-  URL: "feewer.com",
+  URL:
+    process.env.NODE_ENV === "development"
+      ? "http://localhost:3000"
+      : "https://fspor.com/",
   name: "feewer",
   github: {
     username: "muminy",

@@ -172,3 +172,10 @@ a {
   outline-offset: 2px;
   box-shadow: 0 0 0 2px #e2e8f0;
 }
+
+.bgComment {
+  background-color: #f8f7f7;
+}
+.bgSuccessComment {
+  background-color: #59cf8634;
+}

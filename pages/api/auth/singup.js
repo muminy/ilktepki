@@ -1,9 +1,9 @@
 import { connect } from "@util/mongodb";
 
-export default async function (require, response) {
+export default async function (request, response) {
   try {
     const { db } = await connect();
-    const { username, password, email, name } = require.body;
+    const { username, password, email, name } = request.body;
     const findUser = await db
       .collection("users")
       .findOne({ username });
@@ -12,7 +12,7 @@ export default async function (require, response) {
         code: 1,
         message: "Bu kullanıcı mevcut",
       });
-    } else if (require.method === "POST") {
+    } else if (request.method === "POST") {
       await db.collection("users").insertOne({
         username,
         password,

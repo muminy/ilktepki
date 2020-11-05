@@ -1,10 +1,10 @@
 import { connect } from "@util/mongodb";
 
-export default async function (require, response) {
+export default async function (request, response) {
   try {
     const { db } = await connect();
-    const { username, password } = require.body;
-    if (require.method === "POST") {
+    const { username, password } = request.body;
+    if (request.method === "POST") {
       const result = await db
         .collection("users")
         .findOne({ username, password });

@@ -3,12 +3,12 @@ import { connect } from "@util/mongodb";
 export default async function (request, response) {
   try {
     const { db } = await connect();
-    const { _id } = request.body;
+    const { username } = request.body;
     if (request.method === "POST") {
-      const resuts = await db
-        .collection("posts")
-        .findOne({ _id });
-      response.json({ code: 200, resuts });
+      const results = await db
+        .collection("users")
+        .findOne({ username });
+      response.json({ code: 200, results });
     } else {
       response.json({
         code: 2,

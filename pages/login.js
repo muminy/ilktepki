@@ -25,9 +25,11 @@ export default function Login() {
     }
   };
 
+  console.log();
+
   useEffect(() => {
     if (login !== "user_loading" && login) {
-      router.push("/");
+      router.push(router.query.location ?? "/");
     }
   }, [login]);
 
