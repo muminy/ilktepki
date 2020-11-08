@@ -9,6 +9,7 @@ import { useRouter } from "next/router";
 import { siteConfig } from "@constants/config";
 import { useState } from "react";
 import Cookies from "js-cookie";
+import Comment from "@components/ui/Comment";
 
 export default function Slug({ post, comments }) {
   const { login } = useAuth();
@@ -21,7 +22,6 @@ export default function Slug({ post, comments }) {
   const threadId = router.query.id;
   const userCookie = Cookies.get("_id");
 
-  console.log(comments);
   const sendComment = async () => {
     setLoading(true);
     const userItem = await JSON.parse(userCookie);
@@ -47,7 +47,7 @@ export default function Slug({ post, comments }) {
   return (
     <Layout>
       {post ? (
-        <div className="w-full xl:w-3/4 lg:w-3/4 pr-10">
+        <div className="w-full xl:w-3/4 lg:w-3/4 pr-0 xl:pr-10 lg:pr-10">
           <div className="font-semibold text-xl mb-4">
             {post.baslik}
           </div>
@@ -168,34 +168,7 @@ export default function Slug({ post, comments }) {
             {comments.length} Yorum
           </div>
           {comments.map((item) => (
-            <div key={item._id} className="mb-8">
-              <div className="flex items-center mb-4 justify-between">
-                <div className="flex items-center ">
-                  <Avatar />
-                  <div className="ml-4">
-                    <Link
-                      href="/member/[username]"
-                      as={`/member/${item.userItem.username}`}
-                    >
-                      <a className="text-sm font-bold text-black no-underline">
-                        {item.userItem.username}
-                      </a>
-                    </Link>
-                    <div className="text-xs text-gray-500">
-                      4 dakika önce
-                    </div>
-                  </div>
-                </div>
-                {item.success ? (
-                  <div className="font-bold text-green-500 text-sm">
-                    EN IYI CEVAP
-                  </div>
-                ) : null}
-              </div>
-              <div className="text-sm font-medium">
-                {item.comment}
-              </div>
-            </div>
+            <Comment key={item._id} item={item} />
           ))}
         </div>
       ) : (
@@ -206,18 +179,41 @@ export default function Slug({ post, comments }) {
   );
 }
 
-Slug.getInitialProps = async ({ req, res, query }) => {
-  // Post detaylarını çekiliyor
-  // id'ye göre detal alınıyor
+export async function getStaticPaths() {
+  const postAll = await fetch(urls + "/posts/get", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/javascript;charset=utf-8",
+    },
+  });
+  const posts = await postAll.json();
+  return {
+    paths: posts.results.map(
+      (item) =>
+        `/thread/${item._id}/${slugify(item.baslik, {
+          lower: true,
+          replacement: "-",
+        })}`,
+    ),
+    fallback: true,
+  };
+}
+
+export async function getStaticProps({ params: { id } }) {
   const allPosts = await Api.post("/posts/get");
   const posts = allPosts.data.results.filter(
-    (item) => item._id === query.id,
+    (item) => item._id === id,
   );
 
   // paylaşımın yorumları alınıyor
   const comments = await Api.post("/comment/get", {
-    _id: query.id,
+    _id: id,
   });
 
-  return { post: posts[0], comments: comments.data.results };
-};
+  return {
+    props: {
+      post: posts[0],
+      comments: comments.data.results,
+    },
+  };
+}

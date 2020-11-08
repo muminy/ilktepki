@@ -5,15 +5,14 @@ export default async function (request, response) {
     const { db } = await connect();
     const { comment, userItem, threadId } = request.body;
     if (request.method === "POST") {
-      await db
-        .collection("comments")
-        .insertOne({
-          comment,
-          userItem,
-          threadId,
-          createdAt: new Date(),
-          success: false,
-        });
+      await db.collection("comments").insertOne({
+        comment,
+        userItem,
+        threadId,
+        createdAt: new Date(),
+        success: false,
+        votes: [],
+      });
       response.json({ code: 200, message: "Kayıt Başarılı" });
     } else {
       response.json({
