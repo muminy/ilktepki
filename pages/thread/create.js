@@ -131,7 +131,7 @@ export default function Create() {
         </div>
       </div>
       ) : <div className="w-full p-10 bg-gray-100 flex items-center justify-center">Lütfen <Link href="/login">
-      <a className="text-black font-semibold">giriş</a></Link> yapınız</div>}
+      <a className="text-black font-semibold mx-2">giriş</a></Link> yapınız</div>}
     </Layout>
   );
 }

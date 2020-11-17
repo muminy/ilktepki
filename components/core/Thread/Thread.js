@@ -3,9 +3,11 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { Categories } from "@constants/Categories";
 import slugify from "slugify";
+import { useAuth } from "context/Auth";
 
 export default function Thread({ size, posts }) {
   const router = useRouter();
+  const { login } = useAuth();
   return (
     <div
       className={`${
@@ -18,7 +20,8 @@ export default function Thread({ size, posts }) {
         <div className="font-semibold text-xl">
           Konu Başlıkları
         </div>
-        <Link
+        {login ? (
+          <Link
           href={{
             pathname: "/thread/create",
             query: {
@@ -32,6 +35,7 @@ export default function Thread({ size, posts }) {
             SORU EKLE
           </a>
         </Link>
+        ) : null}
       </div>
       <div className="flex flex-wrap w-full items-center transition linear-out duration-150 mb-8">
         <div className="rounded-full font-semibold text-sm mr-8 transition linear-out duration-150">
