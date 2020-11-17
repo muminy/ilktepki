@@ -5,6 +5,7 @@ import { useState } from "react";
 import { Categories } from "@constants/Categories";
 import { useAuth } from "context/Auth";
 import { urls } from "lib/api";
+import Link from "next/link";
 
 export default function Create() {
   const router = useRouter();
@@ -49,7 +50,8 @@ export default function Create() {
   };
   return (
     <Layout size="2/4">
-      <div className="w-full">
+      {login ? (
+        <div className="w-full">
         {code === 200 ? (
           <div className="mb-4 xl:w-full lg:w-full md:w-full w-full bg-green-100 text-center text-green-500 font-semibold text-sm mx-auto py-2 rounded-md">
             Konu başarılı bir şekilde açıldı
@@ -128,6 +130,8 @@ export default function Create() {
           </button>
         </div>
       </div>
+      ) : <div className="w-full p-10 bg-gray-100 flex items-center justify-center">Lütfen <Link href="/login">
+      <a className="text-black font-semibold">giriş</a></Link> yapınız</div>}
     </Layout>
   );
 }
