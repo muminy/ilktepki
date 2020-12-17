@@ -19,7 +19,7 @@ export default function Comment({ item, votes }) {
       allVotes.filter((item) => item._id === getUserJSON._id)
         .length > 0,
     );
-  }, [allVotes]);
+  }, []);
 
   const VoteComment = async () => {
     const getVotes = await Api.post("/comment/vote", {
@@ -27,6 +27,7 @@ export default function Comment({ item, votes }) {
       id: item._id,
     });
     setAllVotes(getVotes.data.votes);
+    setIsVoted(!isVoted);
   };
 
   return (
