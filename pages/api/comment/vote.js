@@ -1,4 +1,4 @@
-import { connect } from "@util/mongodb";
+import { connect } from "util/mongodb";
 import { ObjectID } from "mongodb";
 
 export default async function (request, response) {
