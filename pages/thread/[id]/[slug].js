@@ -14,7 +14,6 @@ import Comment from "@components/ui/Comment";
 export default function Slug({ post, id }) {
   const { login } = useAuth();
   const router = useRouter();
-  const currentUrl = siteConfig.URL + router.asPath;
   const [comment, setComment] = useState("");
   const [code, setCode] = useState(null);
   const [loading, setLoading] = useState(false);
