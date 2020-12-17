@@ -1,6 +1,6 @@
 export default function Sidebar() {
   return (
-    <div className="w-full xl:w-1/4 lg:w-1/4 md:w-full hidden xl:block lg:block pl-0 xl:pl-14 lg:pl-14 ">
+    <div className="w-full xl:w-1/4 lg:w-1/4 md:w-full hidden xl:block lg:block pl-0 xl:pl-6 lg:pl-2 md:pl-0 ">
       <div className="xl:w-45 lg:w-45 xl:ml-auto lg:ml-auto md:ml-0 md:w-full">
         <div className="uppercase text-gray-700 font-semibold text-xs mb-2 w-full">
           Cevapsız yorumlar
@@ -8,7 +8,7 @@ export default function Sidebar() {
         <div className="text-xs leading-4 text-gray-500 font-medium mb-4">
           Sorun giderilecek bir cevabı olmayan postlar
         </div>
-        <div className="mb-4">
+        <div className="hover:bg-gray-100 delay-50 duration-300 ease-in-out rounded-md -mx-4 px-4 py-2 mb-0">
           <div className="font-semibold text-sm text-black">
             eren
           </div>
@@ -17,7 +17,7 @@ export default function Sidebar() {
             typesetting industry.
           </div>
         </div>
-        <div className="mb-4">
+        <div className="hover:bg-gray-100 delay-50 duration-300 ease-in-out rounded-md -mx-4 px-4 py-2 mb-0">
           <div className="font-semibold text-sm text-black">
             yuşa
           </div>
@@ -26,7 +26,7 @@ export default function Sidebar() {
             akşamdan bile umdum yok kalmadı neden acaba?
           </div>
         </div>
-        <div className="mb-4">
+        <div className="hover:bg-gray-100 delay-50 duration-300 ease-in-out rounded-md -mx-4 px-4 py-2 mb-0">
           <div className="font-semibold text-sm text-black">
             veee
           </div>

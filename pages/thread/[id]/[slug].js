@@ -7,20 +7,34 @@ import { useAuth } from "context/Auth";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { siteConfig } from "@constants/config";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import Comment from "@components/ui/Comment";
 
-export default function Slug({ post, comments }) {
+export default function Slug({ post, id }) {
   const { login } = useAuth();
   const router = useRouter();
   const currentUrl = siteConfig.URL + router.asPath;
   const [comment, setComment] = useState("");
   const [code, setCode] = useState(null);
   const [loading, setLoading] = useState(false);
-
+  const [comments, setComments] = useState([]);
+  const [commentsLoading, setCommentLoading] = useState(true);
   const threadId = router.query.id;
   const userCookie = Cookies.get("_id");
+
+  const getComments = async () => {
+    setCommentLoading(true);
+    const coms = await Api.post("/comment/get", {
+      _id: id,
+    });
+    setComments(() => [...coms.data.results]);
+    setCommentLoading(false);
+  };
+
+  useEffect(() => {
+    getComments();
+  }, []);
 
   const sendComment = async () => {
     setLoading(true);
@@ -33,6 +47,7 @@ export default function Slug({ post, comments }) {
       });
       if (response.data.code === 200) {
         setCode(200);
+        getComments();
         setComment("");
       } else {
         setCode("error_comment");
@@ -149,27 +164,49 @@ export default function Slug({ post, comments }) {
               </button>
             </div>
           ) : (
-            <div className="text-sm mb-10 bg-gray-100 text-center py-4">
-              Yorum yapabilmek için lütfen{" "}
-              <Link
-                href={{
-                  pathname: "/login",
-                  query: { location: currentUrl },
-                }}
-              >
-                <a className="no-underline font-semibold text-black">
-                  Giriş
-                </a>
-              </Link>{" "}
-              yapınız
+            <Login4Comment />
+          )}
+          {commentsLoading ? null : (
+            <div className="text-base font-semibold mb-4">
+              {comments.length} Yorum
             </div>
           )}
-          <div className="text-base font-semibold mb-4">
-            {comments.length} Yorum
-          </div>
           {comments.map((item) => (
-            <Comment key={item._id} item={item} />
+            <Comment
+              key={item._id}
+              votes={item.votes}
+              item={item}
+            />
           ))}
+          {commentsLoading ? (
+            <div className="items-center text-center bg-gray-100 py-10 rounded-md">
+              <div className="mx-auto w-5 mb-4">
+                <svg
+                  className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                >
+                  <circle
+                    className="opacity-25"
+                    cx="12"
+                    cy="12"
+                    r="10"
+                    stroke="black"
+                    strokeWidth="4"
+                  ></circle>
+                  <path
+                    className="opacity-75"
+                    fill="black"
+                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                  ></path>
+                </svg>
+              </div>
+              <div className="font-semibold text-sm">
+                Yorumlar yükleniyor... Lütfen bekleyiniz.
+              </div>
+            </div>
+          ) : null}
         </div>
       ) : (
         <div className="">Loading</div>
@@ -178,6 +215,23 @@ export default function Slug({ post, comments }) {
     </Layout>
   );
 }
+
+const Login4Comment = () => (
+  <div className="text-sm mb-10 bg-gray-100 text-center py-4">
+    Yorum yapabilmek için lütfen
+    <Link
+      href={{
+        pathname: "/login",
+        query: { location: currentUrl },
+      }}
+    >
+      <a className="no-underline font-semibold text-black">
+        Giriş
+      </a>
+    </Link>
+    yapınız
+  </div>
+);
 
 export async function getStaticPaths() {
   const postAll = await fetch(urls + "/posts/get", {
@@ -214,6 +268,7 @@ export async function getStaticProps({ params: { id } }) {
     props: {
       post: posts[0],
       comments: comments.data.results,
+      id,
     },
   };
 }

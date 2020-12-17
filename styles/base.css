@@ -151,10 +151,12 @@ a {
   background-color: #5cdb87;
   padding: 7px 20px;
   padding-top: 6px;
+  outline: none;
 }
 .button:hover {
   background-color: #45c770;
 }
+
 .searchBar {
   border-width: 0px;
   padding: 8px 15px;

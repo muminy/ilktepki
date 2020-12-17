@@ -4,11 +4,11 @@ import { ObjectID } from "mongodb";
 export default async function (request, response) {
   try {
     const { db } = await connect();
-    const { vote } = request.body;
+    const { vote, id } = request.body;
     if (request.method === "POST") {
       const getVotes = await db
         .collection("comments")
-        .find({ _id: ObjectID("5fa549b13c784a0a8c409879") })
+        .find({ _id: ObjectID(id) })
         .sort({ createdAt: -1 })
         .limit(10)
         .toArray();
@@ -21,16 +21,19 @@ export default async function (request, response) {
       // eğer daha önce upvote ettiysem değeri sileceğim
       if (isVoted !== -1) {
         votes.splice(isVoted, 1);
+      } else {
+        votes = votes.concat(vote);
       }
-      votes = votes.concat(vote);
 
       const results = await db
         .collection("comments")
-        .updateOne(
-          { _id: ObjectID("5fa549b13c784a0a8c409879") },
-          { $set: { votes } },
-        );
-      response.json({ results: results });
+        .updateOne({ _id: ObjectID(id) }, { $set: { votes } });
+
+      response.json({
+        results: results,
+        upvote: isVoted === -1 ? true : false,
+        votes,
+      });
     }
   } catch (e) {
     response.status(500);
