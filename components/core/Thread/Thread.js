@@ -22,19 +22,19 @@ export default function Thread({ size, posts }) {
         </div>
         {login ? (
           <Link
-          href={{
-            pathname: "/thread/create",
-            query: {
-              d: router.query.id ?? -1,
-            },
-          }}
-        >
-          <a
-            className={`rounded-md text-black hover:text-black no-underline transition button linear-out duration-150 inter hover:border-black border-2 border-white font-bold text-sm  h-9 `}
+            href={{
+              pathname: "/thread/create",
+              query: {
+                d: router.query.id ?? -1,
+              },
+            }}
           >
-            SORU EKLE
-          </a>
-        </Link>
+            <a
+              className={`rounded-md text-black hover:text-black no-underline transition button linear-out duration-150 inter hover:border-black border-2 border-white font-bold text-sm  h-9 `}
+            >
+              SORU EKLE
+            </a>
+          </Link>
         ) : null}
       </div>
       <div className="flex flex-wrap w-full items-center transition linear-out duration-150 mb-8">
@@ -53,6 +53,7 @@ export default function Thread({ size, posts }) {
           key={item._id}
           text={item.baslik}
           id={item._id}
+          time={item.createdAt}
           slug={slugify(item.baslik, {
             replacement: "-",
             lower: true,

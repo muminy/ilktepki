@@ -15,7 +15,7 @@ export default async function (request, response) {
         icerik,
         userId,
         active: true,
-        createdAt: new Date(),
+        createdAt: new Date().toISOString(),
         categoryItem,
       });
       response.json({ code: 200, message: "Kayıt Başarılı" });

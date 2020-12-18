@@ -1,7 +1,15 @@
 import Avatar from "@components/core/Avatar";
 import Link from "next/link";
+import GetTiming from "helpers/getTime";
 
-export default function Subject({ username, text, id, slug }) {
+export default function Subject({
+  username,
+  text,
+  id,
+  slug,
+  time,
+}) {
+  console.log(id);
   return (
     <div className="inline-flex w-full mb-4">
       <div className={`w-10 h-10 rounded-full mr-5`}>
@@ -30,13 +38,11 @@ export default function Subject({ username, text, id, slug }) {
             </a>
           </Link>
           <div
-            className={`lowercase text-gray-400 font-medium mr-2 text-xs`}
+            className={`text-gray-400 font-medium mr-2 size-xxs`}
           >
-            10 min
+            {GetTiming(time)}
           </div>
-          <div
-            className={`lowercase text-gray-400 font-medium text-xs`}
-          >
+          <div className={`text-gray-400 font-medium size-xxs`}>
             44 Yorum
           </div>
         </div>

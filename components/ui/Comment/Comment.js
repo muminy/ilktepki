@@ -5,7 +5,7 @@ import Link from "next/link";
 import Cookies from "js-cookie";
 import { useEffect, useState } from "react";
 
-export default function Comment({ item, votes }) {
+export default function Comment({ item, votes, index }) {
   const getUserJSON = Cookies.getJSON("_id");
 
   const [allVotes, setAllVotes] = useState(votes);
@@ -31,7 +31,12 @@ export default function Comment({ item, votes }) {
   };
 
   return (
-    <div key={item._id} className="mb-8">
+    <div
+      key={item._id}
+      className={`-mx-5 px-5 border border-gray-100 py-5 ${
+        index === 0 ? "" : "border-t-0"
+      }`}
+    >
       <div className="flex items-center mb-4 justify-between">
         <div className="flex items-center ">
           <Avatar />
