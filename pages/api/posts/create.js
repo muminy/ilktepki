@@ -17,6 +17,7 @@ export default async function (request, response) {
         active: true,
         createdAt: new Date().toISOString(),
         categoryItem,
+        votes: [],
       });
       response.json({ code: 200, message: "Kayıt Başarılı" });
     } else {

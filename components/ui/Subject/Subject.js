@@ -13,7 +13,7 @@ export default function Subject({
   return (
     <div className="inline-flex w-full mb-4">
       <div className={`w-10 h-10 rounded-full mr-5`}>
-        <Avatar size={10} />
+        <Avatar size={40} />
       </div>
       <div className="w-full">
         <Link

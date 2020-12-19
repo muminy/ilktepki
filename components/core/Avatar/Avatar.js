@@ -13,10 +13,8 @@ const Avatar = ({ rf, size }) => {
     return (
       <>
         <div
-          className={`inline-block ${
-            size ? "w-" + size + " h-" + size : "h-9 w-9"
-          }  ${
-            rf ? "rounded-full" : "rounded-md"
+          className={`inline-block ${size ? "" : "h-9 w-9"}  ${
+            rf ? "rounded-full" : "rounded-full"
           } border-2 userAvatar hover:border-black border-white focus:border-secondary transition linear-out duration-150`}
         ></div>
         <style jsx>{`
@@ -26,6 +24,17 @@ const Avatar = ({ rf, size }) => {
               ${first},
               ${second} 100%
             );
+            ${size
+              ? "width: " +
+                size +
+                "px;height: " +
+                size +
+                "px;min-height: " +
+                size +
+                "px;min-width: " +
+                size +
+                "px"
+              : ""}
           }
         `}</style>
       </>

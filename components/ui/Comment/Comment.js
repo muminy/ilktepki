@@ -4,6 +4,7 @@ import { Api } from "lib/api";
 import Link from "next/link";
 import Cookies from "js-cookie";
 import { useEffect, useState } from "react";
+import GetTiming from "helpers/getTime";
 
 export default function Comment({ item, votes, index }) {
   const getUserJSON = Cookies.getJSON("_id");
@@ -33,14 +34,12 @@ export default function Comment({ item, votes, index }) {
   return (
     <div
       key={item._id}
-      className={`-mx-5 px-5 border border-gray-100 py-5 ${
-        index === 0 ? "" : "border-t-0"
-      }`}
+      className={` ${index === 0 ? "" : "border-t-0"}`}
     >
-      <div className="flex items-center mb-4 justify-between">
-        <div className="flex items-center ">
-          <Avatar />
-          <div className="ml-4">
+      <div className="mb-4 justify-between">
+        <div className="flex">
+          <Avatar size={31} />
+          <div className="ml-4 leading-tight pt-1">
             <Link
               href="/member/[username]"
               as={`/member/${item.userItem.username}`}
@@ -49,47 +48,50 @@ export default function Comment({ item, votes, index }) {
                 {item.userItem.username}
               </a>
             </Link>
-            <div className="text-xs text-gray-500">
-              4 dakika önce
+            {item.comment.map((items, index) =>
+              index === 0 ? (
+                <p className=" mb-3">
+                  <span
+                    className={`text-sm font-base text-black `}
+                  >
+                    {items}
+                  </span>
+                </p>
+              ) : (
+                <p
+                  className={`text-sm font-base text-black mb-3`}
+                >
+                  {items}
+                </p>
+              ),
+            )}
+
+            <div className="flex  items-center mt-2">
+              <div className="text-xs font-medium text-gray-500 afterView flex items-center">
+                {GetTiming(item.createdAt)}
+              </div>
+              <button
+                onClick={VoteComment}
+                className="obutton flex items-center flex outline-none text-xs ml-2 text-xs font-medium outline-none text-gray-500 hover:underline"
+              >
+                {allVotes.length} {isVoted ? "Liked" : "Like"}
+              </button>
             </div>
           </div>
         </div>
-        {item.success ? (
-          <div className="font-bold text-green-500 text-sm">
-            EN IYI CEVAP
-          </div>
-        ) : null}
-      </div>
-      <div className="text-sm font-medium mb-4">
-        {item.comment}
-      </div>
-      <div className="flex  items-center">
-        <button
-          onClick={VoteComment}
-          className={`px-3 py-1 obutton rounded-md flex items-center bg-gray-100  mr-4 flex outline-none ${
-            isVoted
-              ? "bg-green-100 hover:bg-green-200"
-              : "hover:bg-gray-200"
-          }`}
-        >
-          <KingIcon
-            size={16}
-            color={isVoted ? "#047857" : "#858585"}
-          />
-          <div
-            className={`text-xs ml-2 ${
-              isVoted
-                ? "text-green-600 font-bold"
-                : "text-gray-500 font-medium"
-            }`}
-          >
-            {allVotes.length}
-          </div>
-        </button>
       </div>
       <style jsx>{`
         .obutton {
           outline: none !important;
+        }
+        .afterView::after {
+          content: "";
+          display: block;
+          width: 4px;
+          height: 4px;
+          border-radius: 100%;
+          background-color: #b8b8b8;
+          margin-left: 0.5rem;
         }
       `}</style>
     </div>

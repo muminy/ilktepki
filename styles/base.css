@@ -199,3 +199,26 @@ h6 {
   font-size: 18px;
   font-weight: 600;
 }
+
+.textaread {
+  display: block;
+  width: 100%;
+  overflow: hidden;
+  resize: none;
+  min-height: 60px !important;
+  line-height: 20px;
+  outline: none;
+  cursor: text;
+  border: 1px solid #e7e7e7;
+}
+.textaread:focus {
+  border: 1px solid #bdbdbd;
+}
+.textaread[contenteditable="true"]:empty::before {
+  content: attr(placeholder);
+  display: block;
+  color: #aaa;
+}
+.textaread[contenteditable="true"]:empty:focus:before {
+  content: "";
+}

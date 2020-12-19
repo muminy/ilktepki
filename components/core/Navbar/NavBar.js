@@ -6,8 +6,8 @@ import Usernav from "@components/ui/Usernav";
 
 const Navbar = () => {
   return (
-    <div className="px-7 py-0">
-      <div className="flex justify-between align-center flex-row py-2 md:py-6 relative">
+    <div className="px-4 py-4">
+      <div className="flex justify-between align-center flex-row pb-4 relative">
         <div className="flex flex-1 items-center">
           <Link href="/">
             <a>

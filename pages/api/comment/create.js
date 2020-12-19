@@ -9,7 +9,7 @@ export default async function (request, response) {
         comment,
         userItem,
         threadId,
-        createdAt: new Date(),
+        createdAt: new Date().toISOString(),
         success: false,
         votes: [],
       });
