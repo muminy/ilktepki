@@ -1,16 +1,22 @@
 import Avatar from "@components/core/Avatar";
 import BellIcon from "@components/icons/Bell";
 import MessageIcon from "@components/icons/Message";
-import { useAuth } from "context/Auth";
+import Cookies from "js-cookie";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 
 export default function Usernav() {
-  const { login } = useAuth();
+  const [JwtLoaded, setJwtLoaded] = useState(false);
+
+  useEffect(() => {
+    if (Cookies.get("JWT_TOKEN")) {
+      setJwtLoaded(true);
+    }
+  }, [Cookies]);
+
   return (
     <ul className="list-none p-0 m-0 flex">
-      {login === "user_loading" ? (
-        <div className="animate-pulse h-6 w-20 bg-gray-400 rounded"></div>
-      ) : login ? (
+      {JwtLoaded ? (
         <>
           <li className="flex items-center ml-5">
             <div className="flex rounded-md h-9 w-9 items-center justify-center bg-gray-100 hover:bg-gray-300 transition linear-out duration-150">

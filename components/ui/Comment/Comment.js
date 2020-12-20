@@ -1,5 +1,4 @@
 import Avatar from "@components/core/Avatar";
-import UpIcon, { KingIcon } from "@components/icons/Up";
 import { Api } from "lib/api";
 import Link from "next/link";
 import Cookies from "js-cookie";
@@ -7,28 +6,22 @@ import { useEffect, useState } from "react";
 import GetTiming from "helpers/getTime";
 
 export default function Comment({ item, votes, index }) {
-  const getUserJSON = Cookies.getJSON("_id");
-
   const [allVotes, setAllVotes] = useState(votes);
-  const [isVoted, setIsVoted] = useState(
-    allVotes.filter((item) => item._id === getUserJSON._id)
-      .length >= 0,
-  );
 
-  useEffect(() => {
-    setIsVoted(
-      allVotes.filter((item) => item._id === getUserJSON._id)
-        .length > 0,
-    );
-  }, []);
+  const USER_ID = Cookies.get("USER_ID");
+  const JWT_TOKEN = Cookies.get("JWT_TOKEN");
+
+  const [isVoted, setIsVoted] = useState(
+    votes.filter((item) => item.userId === USER_ID).length > 0,
+  );
 
   const VoteComment = async () => {
     const getVotes = await Api.post("/comment/vote", {
-      vote: getUserJSON,
       id: item._id,
+      JWT_TOKEN,
     });
-    setAllVotes(getVotes.data.votes);
     setIsVoted(!isVoted);
+    setAllVotes(getVotes.data.votes);
   };
 
   return (
@@ -50,7 +43,7 @@ export default function Comment({ item, votes, index }) {
             </Link>
             {item.comment.map((items, index) =>
               index === 0 ? (
-                <p className=" mb-3">
+                <p key={index} className=" mb-3">
                   <span
                     className={`text-sm font-base text-black `}
                   >
@@ -59,6 +52,7 @@ export default function Comment({ item, votes, index }) {
                 </p>
               ) : (
                 <p
+                  key={index}
                   className={`text-sm font-base text-black mb-3`}
                 >
                   {items}

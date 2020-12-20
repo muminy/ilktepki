@@ -1,13 +1,21 @@
 import Subject from "@components/ui/Subject";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { Categories } from "@constants/Categories";
 import slugify from "slugify";
-import { useAuth } from "context/Auth";
+import Cookies from "js-cookie";
+import { useEffect, useState } from "react";
 
 export default function Thread({ size, posts }) {
   const router = useRouter();
-  const { login } = useAuth();
+
+  const [JwtLoaded, setJwtLoaded] = useState(false);
+
+  useEffect(() => {
+    if (Cookies.get("JWT_TOKEN")) {
+      setJwtLoaded(true);
+    }
+  }, [Cookies]);
+
   return (
     <div
       className={`${
@@ -20,22 +28,7 @@ export default function Thread({ size, posts }) {
         <div className="font-semibold text-xl">
           Konu Başlıkları
         </div>
-        {login ? (
-          <Link
-            href={{
-              pathname: "/thread/create",
-              query: {
-                d: router.query.id ?? -1,
-              },
-            }}
-          >
-            <a
-              className={`rounded-md text-black hover:text-black no-underline transition button linear-out duration-150 inter hover:border-black border-2 border-white font-bold text-sm  h-9 `}
-            >
-              SORU EKLE
-            </a>
-          </Link>
-        ) : null}
+        {JwtLoaded && <CreateButton id={router.query.id} />}
       </div>
       <div className="flex flex-wrap w-full items-center transition linear-out duration-150 mb-8">
         <div className="rounded-full font-semibold text-sm mr-8 transition linear-out duration-150">
@@ -70,3 +63,18 @@ export default function Thread({ size, posts }) {
     </div>
   );
 }
+
+const CreateButton = ({ id }) => (
+  <Link
+    href={{
+      pathname: "/thread/create",
+      query: {
+        d: id ?? -1,
+      },
+    }}
+  >
+    <a className="rounded-md text-black hover:text-black no-underline transition button linear-out duration-150 inter hover:border-black border-2 border-white font-bold text-sm  h-9">
+      SORU EKLE
+    </a>
+  </Link>
+);

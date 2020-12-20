@@ -3,26 +3,28 @@ import Layout from "@components/core/Layout";
 import Sidebar from "@components/core/Sidebar";
 import slugify from "slugify";
 import { Api, urls } from "lib/api";
-import { useAuth } from "context/Auth";
+import Cookies from "js-cookie";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import Cookies from "js-cookie";
 import GetTiming from "helpers/getTime";
 import { CommentIcon, LikeIcon } from "@constants/icons";
 import ContentEditable from "react-contenteditable";
 import Comment from "@components/ui/Comment";
 
 export default function Slug({ post, id }) {
-  const { login } = useAuth();
   const router = useRouter();
+
+  const threadId = router.query.id;
+  const JWT_TOKEN = Cookies.get("JWT_TOKEN");
+
+  const [sendCommentLoading, setSendCommentLoading] = useState(
+    false,
+  );
   const [comment, setComment] = useState("");
   const [commentArray, setCommentArray] = useState([]);
-  const [code, setCode] = useState(null);
-  const [loading, setLoading] = useState(false);
   const [comments, setComments] = useState([]);
   const [commentsLoading, setCommentLoading] = useState(true);
-  const threadId = router.query.id;
-  const userCookie = Cookies.get("_id");
+  const [JWT_LOAD, setJWT_LOADED] = useState(false);
 
   const getComments = async () => {
     setCommentLoading(true);
@@ -37,33 +39,30 @@ export default function Slug({ post, id }) {
     getComments();
   }, []);
 
-  const sendComment = async () => {
-    setLoading(true);
-    const userItem = await JSON.parse(userCookie);
+  useEffect(() => {
+    setJWT_LOADED(true);
+  }, [JWT_TOKEN]);
 
+  const sendComment = async () => {
+    setSendCommentLoading(true);
     const response = await Api.post("/comment/create", {
-      userItem,
       comment: commentArray,
       threadId,
+      JWT_TOKEN,
     });
 
     if (response.data.code === 200) {
-      setCode(200);
       getComments();
       setComment("");
-    } else {
-      setCode("error_comment");
     }
 
-    setLoading(false);
-    setTimeout(() => setCode(null), 2000);
+    setSendCommentLoading(false);
   };
 
   const onChangeHandle = (event) => {
     let allComments = event.currentTarget.innerText.split("\n");
     setComment(event.target.value);
     setCommentArray(allComments);
-    console.log(allComments);
   };
   const refContentEditable = React.createRef();
   return (
@@ -87,7 +86,7 @@ export default function Slug({ post, id }) {
               {GetTiming(post.createdAt)}
             </div>
           </div>
-          <div className="flex items-center mb-4">
+          <div className="flex items-center mb-8">
             <div className="flex items-center border-r-0 px-5 py-1 border border-gray-200 ">
               <LikeIcon size={18} color="#000000" />
               <span className="ml-2 text-xs font-semibold text-black-500">
@@ -108,42 +107,70 @@ export default function Slug({ post, id }) {
               </p>
             ))}
           </div>
-          <div className="flex h-auto mb-8">
-            <Avatar size={36} />
-            <div className="ml-4 w-full ">
-              <ContentEditable
-                className="textaread px-4 py-2 bg-gray-50  w-full focus:bg-white rounded-md resize-none appearance-none text-sm mb-4"
-                onChange={onChangeHandle}
-                tagName="div"
-                itemRef={refContentEditable}
-                html={comment}
-                disabled={false}
-                placeholder="Ne düşünüyorsun?"
-              />
-              <button
-                onClick={sendComment}
-                className="buttonxxb px-6 py-2 font-medium focus:outline-none text-white rounded-md text-sm"
-              >
-                Yorum Gönder
-              </button>
+
+          {JWT_TOKEN && JWT_LOAD && (
+            <div className="flex h-auto mb-8">
+              <Avatar size={36} />
+              <div className="ml-4 w-full ">
+                <ContentEditable
+                  className="textaread px-4 py-2 bg-gray-50  w-full focus:bg-white rounded-md resize-none appearance-none text-sm mb-4"
+                  onChange={onChangeHandle}
+                  tagName="div"
+                  itemRef={refContentEditable}
+                  html={comment}
+                  disabled={false}
+                  placeholder="Ne düşünüyorsun?"
+                />
+                <button
+                  onClick={sendComment}
+                  className="buttonxxb px-6 py-2 font-medium focus:outline-none text-white rounded-md text-sm flex items-center"
+                >
+                  {sendCommentLoading ? (
+                    <>
+                      <svg
+                        className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                      >
+                        <circle
+                          className="opacity-25"
+                          cx="12"
+                          cy="12"
+                          r="10"
+                          stroke="currentColor"
+                          strokeWidth="4"
+                        ></circle>
+                        <path
+                          className="opacity-75"
+                          fill="currentColor"
+                          d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                        ></path>
+                      </svg>
+                      Yorum Gönderiliyor
+                    </>
+                  ) : (
+                    "Yorum Gönder"
+                  )}
+                </button>
+              </div>
             </div>
-          </div>
+          )}
 
           {commentsLoading ? null : (
             <div className="text-sm font-bold mb-4">
               {comments.length} Yorum
             </div>
           )}
-
+          {commentsLoading && <CommentsLoadingCard />}
           {comments.map((item, index) => (
             <Comment
-              key={item._id}
+              key={index}
               votes={item.votes}
               item={item}
               index={index}
             />
           ))}
-          {commentsLoading ? <CommentsLoadingCard /> : null}
         </div>
       ) : (
         <div className="">Loading</div>

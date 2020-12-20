@@ -1,56 +1,61 @@
-import { useAuth } from "context/Auth";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
+import { Api } from "lib/api";
+import Cookies from "js-cookie";
 
 export default function Login() {
   const router = useRouter();
-  const { ActionLogin, login, setLogin } = useAuth();
-
-  const [code, setCode] = useState(null);
   const [loading, setLoading] = useState(false);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [errorMessage, setErrorMessage] = useState("none_error");
 
   const _login = async () => {
     setLoading(true);
-    const isLogin = await ActionLogin(username, password);
-    if (isLogin.login) {
-      setCode(true);
-      setLogin(true);
+
+    const isLogin = await Api.post("/auth/login", {
+      username: username,
+      password: password,
+    });
+    if (isLogin.data.code === 200) {
+      Cookies.set("JWT_TOKEN", isLogin.data.token);
+      Cookies.set("USER_ID", isLogin.data.userId);
+      router.push("/");
     } else {
-      setCode(false);
-      setLoading(false);
-      setTimeout(() => setCode(null), 2000);
+      setErrorMessage(isLogin.data.error);
     }
+
+    setLoading(false);
   };
 
-  console.log();
+  useEffect(() => {
+    if (errorMessage !== "none_error") {
+      setTimeout(() => setErrorMessage("none_error"), 3000);
+    }
+  }, [errorMessage]);
 
   useEffect(() => {
-    if (login !== "user_loading" && login) {
-      router.push(router.query.location ?? "/");
+    const getJWT = Cookies.get("JWT_TOKEN");
+    if (getJWT) {
+      router.push("/");
     }
-  }, [login]);
+  }, [Cookies]);
 
-  if (login === "user_loading" || login) {
+  if (Cookies.get("JWT_TOKEN")) {
     return <div></div>;
   } else {
     return (
       <div className="xl:w-2/5 flex mx-auto items-center xl:h-screen lg:h-screen md:h-screen px-10 xl:px-0 lg:px-0">
         <div className="w-full text-center">
+          {errorMessage !== "none_error" ? (
+            <div className="mb-4 xl:w-2/4 lg:w-2/4 md:w-2/4 w-full bg-green-100 text-green-500 font-semibold text-sm mx-auto py-2 rounded-md">
+              {errorMessage}
+            </div>
+          ) : null}
           <div className="font-black text-5xl mb-4">
             Hoş geldin
           </div>
-          {code ? (
-            <div className="mb-4 xl:w-2/4 lg:w-2/4 md:w-2/4 w-full bg-green-100 text-green-500 font-semibold text-sm mx-auto py-2 rounded-md">
-              Giriş başarılı
-            </div>
-          ) : code !== null ? (
-            <div className="mb-4 xl:w-2/4 lg:w-2/4 md:w-2/4 w-full bg-red-100 text-red-500 font-semibold text-sm mx-auto py-2 rounded-md">
-              Kullanıcı adı yada şifre hatalı
-            </div>
-          ) : null}
           <div>
             <input
               className="outline-none border border-gray-200 xl:w-2/4 lg:w-2/4 md:w-2/4 w-full px-3 py-2 rounded-sm inter text-sm focus:border-gray-300 hover:bg-gray-100 mb-4"
