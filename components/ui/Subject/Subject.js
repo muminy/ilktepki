@@ -9,7 +9,6 @@ export default function Subject({
   slug,
   time,
 }) {
-  console.log(id);
   return (
     <div className="inline-flex w-full mb-4">
       <div className={`w-10 h-10 rounded-full mr-5`}>

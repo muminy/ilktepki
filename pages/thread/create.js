@@ -14,7 +14,7 @@ export default function Create() {
   const [loading, setLoading] = useState(false);
   const [baslik, setBaslik] = useState("");
   const [icerik, setIcerik] = useState("");
-  const userId = Cookies.getJSON("_id");
+  const JWT_TOKEN = Cookies.getJSON("JWT_TOKEN");
 
   const categoryItem = Categories[parseInt(router.query.d)];
   const createPost = async () => {
@@ -28,7 +28,7 @@ export default function Create() {
         body: JSON.stringify({
           baslik,
           icerik,
-          userId,
+          JWT_TOKEN,
           categoryItem,
         }),
       });

@@ -8,7 +8,12 @@ export default async function (request, response) {
   try {
     switch (method) {
       case "POST":
-        const { comment, threadId, JWT_TOKEN } = request.body;
+        const {
+          comment,
+          threadId,
+          JWT_TOKEN,
+          baslik,
+        } = request.body;
         const { JWT_KEY } = process.env;
 
         const handleComment = async (err, decodeUser) => {
@@ -32,6 +37,7 @@ export default async function (request, response) {
             createdAt: new Date().toISOString(),
             success: false,
             votes: [],
+            baslik,
           });
 
           return response.json({

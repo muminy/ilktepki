@@ -11,9 +11,16 @@ export default function Comment({ item, votes, index }) {
   const USER_ID = Cookies.get("USER_ID");
   const JWT_TOKEN = Cookies.get("JWT_TOKEN");
 
+  const [disableButton, setDisableButton] = useState(true);
   const [isVoted, setIsVoted] = useState(
     votes.filter((item) => item.userId === USER_ID).length > 0,
   );
+
+  useEffect(() => {
+    if (JWT_TOKEN) {
+      setDisableButton(false);
+    }
+  }, [JWT_TOKEN]);
 
   const VoteComment = async () => {
     const getVotes = await Api.post("/comment/vote", {
@@ -64,12 +71,19 @@ export default function Comment({ item, votes, index }) {
               <div className="text-xs font-medium text-gray-500 afterView flex items-center">
                 {GetTiming(item.createdAt)}
               </div>
-              <button
-                onClick={VoteComment}
-                className="obutton flex items-center flex outline-none text-xs ml-2 text-xs font-medium outline-none text-gray-500 hover:underline"
-              >
-                {allVotes.length} {isVoted ? "Liked" : "Like"}
-              </button>
+              {disableButton ? (
+                <div className="obutton flex items-center flex outline-none text-xs ml-2 text-xs font-medium outline-none text-gray-500">
+                  {allVotes.length} Like
+                </div>
+              ) : (
+                <button
+                  disabled={disableButton}
+                  onClick={VoteComment}
+                  className={`obutton flex items-center flex outline-none text-xs ml-2 text-xs font-medium outline-none text-gray-500 hover:underline`}
+                >
+                  {allVotes.length} {isVoted ? "Liked" : "Like"}
+                </button>
+              )}
             </div>
           </div>
         </div>

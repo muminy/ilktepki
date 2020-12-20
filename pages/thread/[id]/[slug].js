@@ -49,6 +49,7 @@ export default function Slug({ post, id }) {
       comment: commentArray,
       threadId,
       JWT_TOKEN,
+      baslik: post.baslik,
     });
 
     if (response.data.code === 200) {
@@ -72,7 +73,7 @@ export default function Slug({ post, id }) {
           <div className="flex items-center mb-2">
             <Avatar />
             <div className="font-semibold text-base ml-4">
-              {post.userId.name}
+              {post.author.name}
             </div>
           </div>
           <div className="font-black text-4xl mb-1">
@@ -87,15 +88,15 @@ export default function Slug({ post, id }) {
             </div>
           </div>
           <div className="flex items-center mb-8">
-            <div className="flex items-center border-r-0 px-5 py-1 border border-gray-200 ">
-              <LikeIcon size={18} color="#000000" />
-              <span className="ml-2 text-xs font-semibold text-black-500">
+            <div className="flex items-center px-3 bg-gray-100 rounded-md py-1 mr-1">
+              <LikeIcon size={18} color="#9ca3af" />
+              <span className="ml-2 text-xs font-semibold text-gray-700">
                 17
               </span>
             </div>
-            <div className="flex items-center px-5 py-1 border border-gray-200">
-              <CommentIcon size={18} color="#000000" />
-              <span className="ml-2 text-xs font-semibold text-black-500">
+            <div className="flex items-center px-3 bg-gray-100 rounded-md py-1">
+              <CommentIcon size={18} color="#9ca3af" />
+              <span className="ml-2 text-xs font-semibold text-gray-700">
                 {comments.length}
               </span>
             </div>

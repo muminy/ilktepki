@@ -51,7 +51,7 @@ export default function Thread({ size, posts }) {
             replacement: "-",
             lower: true,
           })}
-          username={item.userId.username}
+          username={item.author.username}
         />
       ))}
 
