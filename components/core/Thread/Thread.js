@@ -22,7 +22,7 @@ export default function Thread({ size, posts }) {
         size ? "xl:w-" + size + " lg:w-" + size : ""
       } xl:w-2/4 lg:w-2/4 pl-0 pr-0 xl:pl-6 lg:pl-6 xl:pr-6 lg:pr-6`}
     >
-      <div className="flex justify-between items-center mb-2">
+      <div className="flex justify-between items-center mb-2 px-4 lg:px-0 xl:px-0 md:px-0">
         {/* <div className="font-semibold text-xl">
           Konu Başlıkları
         </div> */}

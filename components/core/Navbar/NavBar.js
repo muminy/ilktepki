@@ -7,7 +7,7 @@ import Container from "@components/ui/Container";
 
 const Navbar = () => {
   return (
-    <div className="bg-white shadow-sm mb-10 px-0 py-4 customNavBar ">
+    <div className="bg-white shadow-sm mb-8 px-4 xl:px-0 lg:px-0 md:px-2 sm:px-2 py-4 customNavBar ">
       <Container>
         <div className="flex justify-between align-center pb-4 w-full lg:pb-0 xl:pb-0 flex-row relative">
           <div className="flex flex-1 items-center">

@@ -14,7 +14,7 @@ export default function Subject({
   content,
 }) {
   return (
-    <div className="flex w-full mb-4 p-2 subject shadow-sm bg-white rounded-md items-center">
+    <div className="flex w-full mb-2 p-2 subject shadow-sm bg-white rounded-none xl:rounded-md lg:rounded-md md:rounded-sm items-center">
       <div className="text-center mr-4 pl-2">
         <div className="hover:bg-gray-100 rounded-md">
           <UpIcon color="#111" size={24} />

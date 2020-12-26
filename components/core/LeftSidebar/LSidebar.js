@@ -3,7 +3,7 @@ import Link from "next/link";
 
 export default function LSidebar() {
   return (
-    <div className="hidden xl:block lg:block md:block w-1/4 lg:w-1/4 xl:w-1/4 md:w-1/4 pl-0 pr-0 xl:pr-6 lg:pr-6 md:pr-12 ">
+    <div className="hidden xl:block lg:block md:block w-1/4 lg:w-1/4 xl:w-1/4 md:w-1/4 pl-0 xl:pl-0 lg:pl-0 md:pl-4 pr-0 xl:pr-6 lg:pr-6 md:pr-12 ">
       <div className="uppercase text-gray-400 font-semibold text-xs mb-4 w-full">
         Kategoriler
       </div>
