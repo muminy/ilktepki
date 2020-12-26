@@ -1,4 +1,5 @@
 import Container from "@components/ui/Container";
+import Flex from "@components/ui/flex";
 import Navbar from "../Navbar";
 import Title from "../Title";
 
@@ -12,7 +13,9 @@ export default function Layout({
     <>
       <Title>{title}</Title>
       <Navbar />
-      <Container>{children}</Container>
+      <Container>
+        <Flex>{children}</Flex>
+      </Container>
     </>
   );
 }

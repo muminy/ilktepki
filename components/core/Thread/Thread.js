@@ -18,11 +18,9 @@ export default function Thread({ size, posts }) {
 
   return (
     <div
-      className={`${
-        size
-          ? "lg:w-" + size + " md:w-full"
-          : "lg:w-2/4 md:w-3/4"
-      } mb-10 mx-auto`}
+      className={`mb-10 w-full ${
+        size ? "xl:w-" + size + " lg:w-" + size : ""
+      } xl:w-2/4 lg:w-2/4 pl-0 pr-0 xl:pl-6 lg:pl-6 xl:pr-6 lg:pr-6`}
     >
       <div className="flex justify-between items-center mb-2">
         {/* <div className="font-semibold text-xl">

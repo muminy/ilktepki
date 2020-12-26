@@ -1,6 +1,6 @@
 export default function Sidebar() {
   return (
-    <div className="w-full xl:w-1/4 lg:w-1/4 md:w-full hidden xl:block lg:block pl-0 xl:pl-10 lg:pl-4 md:pl-0 ">
+    <div className="w-full xl:w-1/4 lg:w-1/4 md:w-full hidden xl:block lg:block pl-0 pr-0 md:pr-4 sm:pr-4 xl:pl-6 lg:pl-6">
       <div className="xl:w-45 lg:w-45 xl:ml-auto lg:ml-auto md:ml-0 md:w-full">
         <div className="uppercase text-gray-700 font-semibold text-xs mb-2 w-full">
           Cevapsız yorumlar

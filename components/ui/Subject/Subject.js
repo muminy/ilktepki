@@ -49,11 +49,11 @@ export default function Subject({
           <a
             className={`font-semibold hover:underline cursor-pointer text-black text-base hover:text-black no-underline`}
           >
-            {text}
+            {text.substr(0, 24)}
           </a>
         </Link>
         <div className="p text-gray-500 mb-4">
-          {content.substr(0, 160)}...
+          {content.substr(0, 24)}...
         </div>
         <div className="flex items-center rounded-md ">
           <div className="font-semibold text-xs text-gray-600 mr-4">

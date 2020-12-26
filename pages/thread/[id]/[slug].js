@@ -69,7 +69,7 @@ export default function Slug({ post, id }) {
   return (
     <Layout>
       {post ? (
-        <div className="w-full xl:w-3/4 lg:w-3/4 pr-0 xl:pr-10 lg:pr-10 py-8 bg-white px-8 shadow-sm">
+        <div className="w-full xl:w-3/4 lg:w-3/4 pr-0 xl:pr-10 lg:pr-10 py-8 bg-white px-8 shadow-sm mr-0 md:mr-16">
           <div className="flex items-center mb-2">
             <Avatar />
             <div className="font-semibold text-base ml-4">
@@ -111,10 +111,10 @@ export default function Slug({ post, id }) {
 
           {JWT_TOKEN && JWT_LOAD && (
             <div className="flex h-auto mb-8">
-              <Avatar size={36} />
-              <div className="ml-4 w-full ">
+              <Avatar rf="100%" size={36} />
+              <div className="ml-4 w-full mr-0 md:mr-8 sm:mr-8">
                 <ContentEditable
-                  className="textaread px-4 py-2 bg-gray-50  w-full focus:bg-white rounded-md resize-none appearance-none text-sm mb-4"
+                  className="textaread px-4 py-2 bg-gray-50  w-full focus:bg-white rounded-md resize-none appearance-none text-sm mb-4 mr-16"
                   onChange={onChangeHandle}
                   tagName="div"
                   itemRef={refContentEditable}

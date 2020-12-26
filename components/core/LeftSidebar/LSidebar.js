@@ -3,11 +3,11 @@ import Link from "next/link";
 
 export default function LSidebar() {
   return (
-    <div className="hidden xl:block lg:block md:block lg:w-1/5 md:w-1/5 ">
+    <div className="hidden xl:block lg:block md:block w-1/4 lg:w-1/4 xl:w-1/4 md:w-1/4 pl-0 pr-0 xl:pr-6 lg:pr-6 md:pr-12 ">
       <div className="uppercase text-gray-400 font-semibold text-xs mb-4 w-full">
         Kategoriler
       </div>
-      <ul className="list-none p-0 m-0 w-40 mb-10 shadow-sm">
+      <ul className="list-none p-0 m-0 w-full mb-10 shadow-sm">
         {Categories.map((item) => (
           <li
             className="-mx-4 rounded-md mb-0 leading-none"
