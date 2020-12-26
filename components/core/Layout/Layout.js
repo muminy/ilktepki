@@ -12,11 +12,7 @@ export default function Layout({
     <>
       <Title>{title}</Title>
       <Navbar />
-      {disable ? (
-        <div className="px-7">{children}</div>
-      ) : (
-        <Container size={size}>{children}</Container>
-      )}
+      <Container>{children}</Container>
     </>
   );
 }

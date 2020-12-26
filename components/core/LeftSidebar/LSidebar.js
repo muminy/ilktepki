@@ -7,10 +7,10 @@ export default function LSidebar() {
       <div className="uppercase text-gray-400 font-semibold text-xs mb-4 w-full">
         Kategoriler
       </div>
-      <ul className="list-none p-0 m-0 w-40 mb-10">
+      <ul className="list-none p-0 m-0 w-40 mb-10 shadow-sm">
         {Categories.map((item) => (
           <li
-            className="-mx-4 py-2 rounded-md px-4 hover:bg-gray-100 transition delay-50 duration-300 ease-in-out mb-0 leading-none"
+            className="-mx-4 rounded-md mb-0 leading-none"
             key={item.key}
           >
             <Link
@@ -18,11 +18,8 @@ export default function LSidebar() {
               as={`/c/${item.key}/${item.slug}`}
             >
               <a className="font-semibold text-sm text-black hover:text-black no-underline">
-                <div>
-                  <div className="mb-1">{item.text}</div>
-                  <div className="font-normal text-xs">
-                    18 Konu 186 Mesaj
-                  </div>
+                <div className="bg-white py-3 pl-4 hover:bg-gray-50 delay-50 duration-300 ease-in-out">
+                  {item.text}
                 </div>
               </a>
             </Link>

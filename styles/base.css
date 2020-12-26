@@ -85,7 +85,7 @@ body {
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: var(--primary);
+  background-color: #f3f5f8;
   color: var(--text-primary);
 }
 

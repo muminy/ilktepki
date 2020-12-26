@@ -8,7 +8,7 @@ export default function Sidebar() {
         <div className="text-xs leading-4 text-gray-500 font-medium mb-4">
           Sorun giderilecek bir cevabı olmayan postlar
         </div>
-        <div className="hover:bg-gray-100 delay-50 duration-300 ease-in-out rounded-md -mx-4 px-4 py-2 mb-0">
+        <div className="hover:bg-gray-50 delay-50 duration-300 ease-in-out -mx-4 px-4 py-2 mb-0 bg-white">
           <div className="font-semibold text-sm text-black">
             eren
           </div>
@@ -17,7 +17,7 @@ export default function Sidebar() {
             typesetting industry.
           </div>
         </div>
-        <div className="hover:bg-gray-100 delay-50 duration-300 ease-in-out rounded-md -mx-4 px-4 py-2 mb-0">
+        <div className="hover:bg-gray-50 delay-50 duration-300 ease-in-out -mx-4 px-4 py-2 mb-0 bg-white">
           <div className="font-semibold text-sm text-black">
             yuşa
           </div>
@@ -26,7 +26,7 @@ export default function Sidebar() {
             akşamdan bile umdum yok kalmadı neden acaba?
           </div>
         </div>
-        <div className="hover:bg-gray-100 delay-50 duration-300 ease-in-out rounded-md -mx-4 px-4 py-2 mb-0">
+        <div className="hover:bg-gray-50 delay-50 duration-300 ease-in-out -mx-4 px-4 py-2 mb-0 bg-white">
           <div className="font-semibold text-sm text-black">
             veee
           </div>

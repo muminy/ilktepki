@@ -47,85 +47,124 @@ export default function Create() {
     setLoading(false);
   };
   return (
-    <Layout size="2/4">
+    <div className="createArea">
+      <div className="mb-auto mx-auto w-full lg:w-2/5 xl:w-2/5 md:w-4/5 py-8 flex p-6 lg:px-0 xl:px-0 mb-4">
+        <Link href="/">
+          <a className="text-blue-500 font-bold text-sm uppercase ">
+            Geri Dön
+          </a>
+        </Link>
+      </div>
+      <style jsx global>{`
+        html,
+        body {
+          background-color: #ffffff !important;
+        }
+        .customNavBar {
+          box-shadow: unset !important;
+        }
+        .createArea {
+          min-height: 100vh;
+        }
+      `}</style>
       {true ? (
-        <div className="w-full">
-          {code === 200 ? (
-            <div className="mb-4 xl:w-full lg:w-full md:w-full w-full bg-green-100 text-center text-green-500 font-semibold text-sm mx-auto py-2 rounded-md">
-              Konu başarılı bir şekilde açıldı
+        <div className="flex w-full mb-auto">
+          <div className="w-full lg:w-2/5 xl:w-2/5 md:w-4/5 mx-auto p-6 lg:p-0 xl:p-0">
+            {code === 200 ? (
+              <div className="mb-4 xl:w-full lg:w-full md:w-full w-full bg-green-100 text-center text-green-500 font-semibold text-sm mx-auto py-2 rounded-md">
+                Konu başarılı bir şekilde açıldı
+              </div>
+            ) : code === "err_code" ? (
+              <div className="mb-4 xl:w-full lg:w-full md:w-full w-full bg-red-100 text-center text-red-500 font-semibold text-sm mx-auto py-2 rounded-md">
+                Lütfen tüm alanları eksiksiz bir şekilde
+                doldurunuz
+              </div>
+            ) : code !== null ? (
+              <div className="mb-4 xl:w-full lg:w-full md:w-full w-full bg-red-100 text-red-500 font-semibold text-sm mx-auto py-2 rounded-md">
+                Beklenmedik bir hata
+              </div>
+            ) : null}
+            <div className="w-full mb-6">
+              <div className="mb-10">
+                <div className="text-base text-gray-700 uppercase font-bold">
+                  Konu başlık
+                </div>
+                <div className="mb-4 text-xs">
+                  Lütfen argo ve adul kelimeler kullanmaktan
+                  kaçınınız
+                </div>
+                <input
+                  className="bg-gray-100 hover:bg-gray-200 delay-50 duration-300 ease-in-out w-full inter text-sm py-2 px-4 rounded-sm outline-none"
+                  placeholder="Başlık"
+                  value={baslik}
+                  onChange={(text) =>
+                    setBaslik(text.target.value)
+                  }
+                />
+              </div>
+              <div className="mb-10">
+                <div className="text-base text-gray-700 uppercase font-bold">
+                  Konu içeriğiniz
+                </div>
+                <div className="mb-4 text-xs">
+                  Lütfen argo ve adul kelimeler kullanmaktan
+                  kaçınınız
+                </div>
+                <textarea
+                  className="bg-gray-100 hover:bg-gray-200 delay-50 duration-300 ease-in-out w-full inter text-sm py-2 px-4 rounded-sm outline-none"
+                  value={icerik}
+                  placeholder="İçerik"
+                  onChange={(text) =>
+                    setIcerik(text.target.value)
+                  }
+                />
+              </div>
             </div>
-          ) : code === "err_code" ? (
-            <div className="mb-4 xl:w-full lg:w-full md:w-full w-full bg-red-100 text-center text-red-500 font-semibold text-sm mx-auto py-2 rounded-md">
-              Lütfen tüm alanları eksiksiz bir şekilde doldurunuz
+            {categoryItem && (
+              <div className="mb-10">
+                <div className="text-xl text-gray-700 uppercase font-black tracking-wider mb-2">
+                  Kategori
+                </div>
+                <div className="border-green-300 border text-black text-sm font-semibold rounded-md inline-flex px-4 py-2">
+                  JavaScript Developer
+                </div>
+              </div>
+            )}
+
+            <div className="w-full text-center">
+              <button
+                onClick={createPost}
+                className="text-gray-900 font-semibold hover:bg-gray-300 delay-50 duration-300 ease-in-out rounded-md bg-gray-100 text-sm uppercase px-20 py-2 mx-auto leading-6"
+              >
+                {loading ? (
+                  <>
+                    <svg
+                      className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                    >
+                      <circle
+                        className="opacity-25"
+                        cx="12"
+                        cy="12"
+                        r="10"
+                        stroke="currentColor"
+                        strokeWidth="4"
+                      ></circle>
+                      <path
+                        className="opacity-75"
+                        fill="currentColor"
+                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                      ></path>
+                    </svg>
+                    Konu açılıyor
+                  </>
+                ) : (
+                  "Konu aç"
+                )}
+              </button>
             </div>
-          ) : code !== null ? (
-            <div className="mb-4 xl:w-full lg:w-full md:w-full w-full bg-red-100 text-red-500 font-semibold text-sm mx-auto py-2 rounded-md">
-              Beklenmedik bir hata
-            </div>
-          ) : null}
-          <div className="w-full mb-5">
-            <div className="text-xl font-semibold">
-              Konu başlık
-            </div>
-            <div className="text-xs mb-2">
-              Konu başlığını belirlerken Argo, adult yada ırkçı
-              söylemlerden kaçının
-            </div>
-            <input
-              className="border border-gray-200 w-full inter text-sm py-2 px-4 rounded-md outline-none"
-              placeholder="Başlık"
-              value={baslik}
-              onChange={(text) => setBaslik(text.target.value)}
-            />
-          </div>
-          <div className="w-full mb-6">
-            <div className="text-xl font-semibold">
-              Konu içeriğiniz
-            </div>
-            <div className="text-xs mb-2">
-              Konu içeriğini sade ve kısa cümlelerle açıklamanız
-              okurların dikkatini çekecektir
-            </div>
-            <textarea
-              className="border border-gray-200 w-full inter text-sm py-2 px-4 rounded-md outline-none"
-              value={icerik}
-              placeholder="İçerik"
-              onChange={(text) => setIcerik(text.target.value)}
-            />
-          </div>
-          <div className="w-full">
-            <button
-              onClick={createPost}
-              className="inter py-3 bg-green-400 px-20 rounded-md font-medium text-sm hover:bg-green-300 flex "
-            >
-              {loading ? (
-                <>
-                  <svg
-                    className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                  >
-                    <circle
-                      className="opacity-25"
-                      cx="12"
-                      cy="12"
-                      r="10"
-                      stroke="currentColor"
-                      strokeWidth="4"
-                    ></circle>
-                    <path
-                      className="opacity-75"
-                      fill="currentColor"
-                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                    ></path>
-                  </svg>
-                  Konu açılıyor
-                </>
-              ) : (
-                "Konu aç"
-              )}
-            </button>
           </div>
         </div>
       ) : (
@@ -139,6 +178,6 @@ export default function Create() {
           yapınız
         </div>
       )}
-    </Layout>
+    </div>
   );
 }

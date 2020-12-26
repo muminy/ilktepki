@@ -25,21 +25,10 @@ export default function Thread({ size, posts }) {
       } mb-10 mx-auto`}
     >
       <div className="flex justify-between items-center mb-2">
-        <div className="font-semibold text-xl">
+        {/* <div className="font-semibold text-xl">
           Konu Başlıkları
-        </div>
+        </div> */}
         {JwtLoaded && <CreateButton id={router.query.id} />}
-      </div>
-      <div className="flex flex-wrap w-full items-center transition linear-out duration-150 mb-8">
-        <div className="rounded-full font-semibold text-sm mr-8 transition linear-out duration-150">
-          Latests
-        </div>
-        <div className="rounded-full font-semibold text-sm mr-8 transition linear-out duration-150 hover:underline cursor-pointer text-gray-400 hover:text-gray-900">
-          Populer
-        </div>
-        <div className="rounded-full font-semibold text-sm mr-8 transition linear-out duration-150 hover:underline cursor-pointer text-gray-400 hover:text-gray-900">
-          Not Answer
-        </div>
       </div>
       {posts.map((item) => (
         <Subject
@@ -51,6 +40,7 @@ export default function Thread({ size, posts }) {
             replacement: "-",
             lower: true,
           })}
+          content={item.icerik}
           username={item.author.username}
         />
       ))}

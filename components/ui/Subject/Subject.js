@@ -1,6 +1,9 @@
 import Avatar from "@components/core/Avatar";
 import Link from "next/link";
 import GetTiming from "helpers/getTime";
+import UpIcon from "@components/icons/Up";
+import DownIcon from "@components/icons/Down";
+import BookmarkIcon from "@components/icons/Bookmark";
 
 export default function Subject({
   username,
@@ -8,30 +11,27 @@ export default function Subject({
   id,
   slug,
   time,
+  content,
 }) {
   return (
-    <div className="inline-flex w-full mb-4">
-      <div className={`w-10 h-10 rounded-full mr-5`}>
-        <Avatar size={40} />
+    <div className="flex w-full mb-4 p-2 subject shadow-sm bg-white rounded-md items-center">
+      <div className="text-center mr-4 pl-2">
+        <div className="hover:bg-gray-100 rounded-md">
+          <UpIcon color="#111" size={24} />
+        </div>
+        <div className="font-semibold text-xs">18</div>
+        <div className="hover:bg-gray-100 rounded-md">
+          <DownIcon color="#111" size={24} />
+        </div>
       </div>
       <div className="w-full">
-        <Link
-          href="/thread/[id]/[slug]"
-          as={`/thread/${id}/${slug}`}
-        >
-          <a
-            className={`font-medium hover:underline cursor-pointer text-black text-base hover:text-black no-underline`}
-          >
-            {text}
-          </a>
-        </Link>
         <div className="flex items-center">
           <Link
             href="/member/[username]"
             as={`/member/${username}`}
           >
             <a
-              className={`lowercase font-medium mr-2 no-underline hover:underline cursor-pointer text-xs`}
+              className={`lowercase font-medium mr-2 no-underline hover:underline text-gray-600 cursor-pointer size-xxs`}
             >
               {username}
             </a>
@@ -41,11 +41,41 @@ export default function Subject({
           >
             {GetTiming(time)}
           </div>
-          <div className={`text-gray-400 font-medium size-xxs`}>
-            44 Yorum
+        </div>
+        <Link
+          href="/thread/[id]/[slug]"
+          as={`/thread/${id}/${slug}`}
+        >
+          <a
+            className={`font-semibold hover:underline cursor-pointer text-black text-base hover:text-black no-underline`}
+          >
+            {text}
+          </a>
+        </Link>
+        <div className="p text-gray-500 mb-4">
+          {content.substr(0, 160)}...
+        </div>
+        <div className="flex items-center rounded-md ">
+          <div className="font-semibold text-xs text-gray-600 mr-4">
+            18 Bookmark
+          </div>
+          <div className="font-semibold text-xs text-gray-600">
+            21 Comment
+          </div>
+          <div className="font-semibold text-xs text-red-600 ml-auto">
+            Report
           </div>
         </div>
       </div>
+      <style jsx>
+        {`
+          .p {
+            line-height: 18px;
+            font-size: 13px;
+            font-weight: 500;
+          }
+        `}
+      </style>
     </div>
   );
 }

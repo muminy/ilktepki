@@ -36,20 +36,31 @@ export default function Usernav() {
         <>
           <li className="flex items-center ml-5">
             <Link href="/login ">
-              <a className="mr-2 no-underline text-sm text-black font-medium hover:text-black">
+              <a className="mr-2 no-underline text-sm singinBtn font-semibold hover:text-black">
                 Giriş yap
               </a>
             </Link>
           </li>
           <li className="flex items-center ml-2">
             <Link href="/singup">
-              <a className="no-underline py-2 px-6 bg-green-400 text-sm text-black font-medium hover:text-black hover:bg-green-300 rounded-md">
+              <a className="no-underline py-2 px-6 customSingButton text-sm font-semibold rounded-full">
                 Kayıt ol
               </a>
             </Link>
           </li>
         </>
       )}
+      <style jsx>
+        {`
+          .customSingButton {
+            background-color: #ffeda7;
+            color: #644a53;
+          }
+          .singinBtn {
+            color: #644a53;
+          }
+        `}
+      </style>
     </ul>
   );
 }

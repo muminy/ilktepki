@@ -69,7 +69,7 @@ export default function Slug({ post, id }) {
   return (
     <Layout>
       {post ? (
-        <div className="w-full xl:w-3/4 lg:w-3/4 pr-0 xl:pr-10 lg:pr-10">
+        <div className="w-full xl:w-3/4 lg:w-3/4 pr-0 xl:pr-10 lg:pr-10 py-8 bg-white px-8 shadow-sm">
           <div className="flex items-center mb-2">
             <Avatar />
             <div className="font-semibold text-base ml-4">

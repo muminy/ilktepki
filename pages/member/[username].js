@@ -13,7 +13,7 @@ export default function Profile({ userDetail }) {
   const USER_ID = Cookies.get("USER_ID");
 
   const [userActions, setUserActions] = useState([]);
-  const [Loading, setLoading] = useState(false);
+  const [Loading, setLoading] = useState(true);
 
   const getUserActions = async () => {
     const getAllActions = await Api.post("/member/actions", {
@@ -83,7 +83,7 @@ export default function Profile({ userDetail }) {
               }
             })}
           </div>
-          {!userActions.length && (
+          {Loading && (
             <div className="py-6 text-center font-medium text-sm bg-gray-100 rounded-md">
               Kullanıcının son işlemleri yükleniyor
             </div>
