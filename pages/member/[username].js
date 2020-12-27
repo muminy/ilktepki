@@ -3,14 +3,15 @@ import Layout from "@components/core/Layout";
 import { Api } from "lib/api";
 import Cookies from "js-cookie";
 import { useEffect, useState } from "react";
-import Link from "next/link";
 import { CommentLink, CreatedPostLink } from "components/ui/CustomLink";
 
-export default function Profile({ userDetail, USER_ID }) {
+export default function Profile({ userDetail }) {
   const [userActions, setUserActions] = useState([]);
   const [Loading, setLoading] = useState(true);
-
-  useEffect(() => {}, []);
+  const [userId, setUserId] = useState("none");
+  useEffect(() => {
+    setUserId(Cookies.get("USER_ID"));
+  }, []);
 
   const getUserActions = async () => {
     const getAllActions = await Api.post("/member/actions", {
@@ -29,7 +30,6 @@ export default function Profile({ userDetail, USER_ID }) {
     getUserActions();
     setLoading(false);
   }, []);
-
   return (
     <Layout>
       <div className="flex justify-center w-full xl:w-3/5 lg:w-3/5 mx-auto ">
@@ -42,11 +42,11 @@ export default function Profile({ userDetail, USER_ID }) {
             </div>
           </div>
           <div className="flex mb-4">
-            {USER_ID ? (
+            {userId === userDetail._id ? (
               <div className="w-full shadow-sm py-2 text-center rounded-none xl:rounded-md lg:rounded-md md:rounded-md font-semibold bg-white ">
                 Profili düzenle
               </div>
-            ) : (
+            ) : userId ? (
               <>
                 <div className="w-3/4 bg-white shadow-sm py-2 text-center rounded-none xl:rounded-md lg:rounded-md md:rounded-md mr-4 font-semibold">
                   Mesaj
@@ -55,6 +55,8 @@ export default function Profile({ userDetail, USER_ID }) {
                   Bildir
                 </div>
               </>
+            ) : (
+              ""
             )}
           </div>
           {userActions.map((item, index) => {
@@ -79,9 +81,7 @@ Profile.getInitialProps = async (appContext) => {
   const response = await Api.post("/member/user", {
     username: appContext.query.username,
   });
-  const { USER_ID } = appContext.req.cookies;
   return {
     userDetail: response.data.results,
-    USER_ID,
   };
 };
