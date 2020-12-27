@@ -10,10 +10,9 @@ export default async function (request, response) {
 
   try {
     const { db } = await connect();
-
     switch (method) {
       case "POST":
-        const { id } = request.body;
+        const { user_id, voteType, _id } = request.body;
 
         const handleVoteCommment = async (err, decodeUser) => {
           if (err) {
@@ -27,31 +26,30 @@ export default async function (request, response) {
             userId: decodeUser.userId,
             username: decodeUser.userName,
             name: decodeUser.name,
+            vote: voteType,
           };
 
           const getVotes = await db
-            .collection("comments")
-            .find({ _id: ObjectID(id) })
+            .collection("posts")
+            .find({ _id: ObjectID(_id) })
             .sort({ createdAt: -1 })
-            .limit(10)
             .toArray();
 
           let votes = getVotes[0].votes;
-          let isVoted = votes.findIndex((item) => item.userId === decodeUser.userId);
+          let isVoted = votes.findIndex((item) => item.userId === user_id);
 
           if (isVoted !== -1) {
             votes.splice(isVoted, 1);
+            votes = votes.concat(userPayload);
           } else {
             votes = votes.concat(userPayload);
           }
-
           const results = await db
-            .collection("comments")
-            .updateOne({ _id: ObjectID(id) }, { $set: { votes } });
+            .collection("posts")
+            .updateOne({ _id: ObjectID(_id) }, { $set: { votes } });
 
           response.json({
             results: results,
-            upvote: isVoted === -1 ? false : true,
             votes,
           });
         };
@@ -62,9 +60,6 @@ export default async function (request, response) {
       default:
         break;
     }
-
-    // upvote ettim
-    // eğer daha önce upvote ettiysem değeri sileceğim
   } catch (e) {
     response.status(500);
     response.json({

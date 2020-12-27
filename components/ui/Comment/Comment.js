@@ -9,59 +9,37 @@ export default function Comment({ item, votes, index }) {
   const [allVotes, setAllVotes] = useState(votes);
 
   const USER_ID = Cookies.get("USER_ID");
-  const JWT_TOKEN = Cookies.get("JWT_TOKEN");
 
-  const [disableButton, setDisableButton] = useState(true);
+  const [disableButton, setDisableButton] = useState(USER_ID ? false : true);
+
   const [isVoted, setIsVoted] = useState(
-    votes.filter((item) => item.userId === USER_ID).length > 0,
+    votes.filter((itemd) => itemd.userId === USER_ID).length > 0,
   );
-
-  useEffect(() => {
-    if (JWT_TOKEN) {
-      setDisableButton(false);
-    }
-  }, [JWT_TOKEN]);
 
   const VoteComment = async () => {
     const getVotes = await Api.post("/comment/vote", {
       id: item._id,
-      JWT_TOKEN,
     });
     setIsVoted(!isVoted);
     setAllVotes(getVotes.data.votes);
   };
 
   return (
-    <div
-      key={item._id}
-      className={` ${index === 0 ? "" : "border-t-0"}`}
-    >
+    <div key={item._id} className={` ${index === 0 ? "" : "border-t-0"}`}>
       <div className="mb-4 justify-between">
         <div className="flex">
           <Avatar size={31} />
           <div className="ml-4 leading-tight pt-1">
-            <Link
-              href="/member/[username]"
-              as={`/member/${item.userItem.username}`}
-            >
-              <a className="text-sm font-bold text-black no-underline">
-                {item.userItem.username}
-              </a>
+            <Link href="/member/[username]" as={`/member/${item.userItem.username}`}>
+              <a className="text-sm font-bold text-black no-underline">{item.userItem.username}</a>
             </Link>
             {item.comment.map((items, index) =>
               index === 0 ? (
                 <p key={index} className=" mb-3">
-                  <span
-                    className={`text-sm font-base text-black `}
-                  >
-                    {items}
-                  </span>
+                  <span className={`text-sm font-base text-black `}>{items}</span>
                 </p>
               ) : (
-                <p
-                  key={index}
-                  className={`text-sm font-base text-black mb-3`}
-                >
+                <p key={index} className={`text-sm font-base text-black mb-3`}>
                   {items}
                 </p>
               ),

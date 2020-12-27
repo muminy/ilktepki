@@ -29,18 +29,7 @@ export default function Thread({ size, posts }) {
         {JwtLoaded && <CreateButton id={router.query.id} />}
       </div>
       {posts.map((item) => (
-        <Subject
-          key={item._id}
-          text={item.baslik}
-          id={item._id}
-          time={item.createdAt}
-          slug={slugify(item.baslik, {
-            replacement: "-",
-            lower: true,
-          })}
-          content={item.icerik}
-          username={item.author.username}
-        />
+        <Subject key={item._id} item={item} />
       ))}
 
       {!posts.length ? (

@@ -10,7 +10,7 @@ export default function LSidebar() {
       <ul className="list-none p-0 m-0 w-full mb-10 shadow-sm">
         {Categories.map((item) => (
           <li
-            className="-mx-4 rounded-md mb-0 leading-none"
+            className="rounded-md shadow-sm leading-none"
             key={item.key}
           >
             <Link

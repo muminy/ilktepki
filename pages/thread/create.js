@@ -14,9 +14,9 @@ export default function Create() {
   const [loading, setLoading] = useState(false);
   const [baslik, setBaslik] = useState("");
   const [icerik, setIcerik] = useState("");
-  const JWT_TOKEN = Cookies.getJSON("JWT_TOKEN");
 
   const categoryItem = Categories[parseInt(router.query.d)];
+
   const createPost = async () => {
     setLoading(true);
     if (baslik.length > 4 && icerik.length > 10) {
@@ -28,7 +28,6 @@ export default function Create() {
         body: JSON.stringify({
           baslik,
           icerik,
-          JWT_TOKEN,
           categoryItem,
         }),
       });
@@ -48,7 +47,7 @@ export default function Create() {
   };
   return (
     <div className="createArea">
-      <div className="mb-auto mx-auto w-full lg:w-2/5 xl:w-2/5 md:w-4/5 py-8 flex p-6 lg:px-0 xl:px-0 mb-4">
+      <div className="mx-auto w-full lg:w-2/5 xl:w-2/5 md:w-4/5 py-4 flex lg:px-0 xl:px-0 mb-10">
         <Link href="/">
           <a className="text-blue-500 font-bold text-sm uppercase ">
             Geri Dön
@@ -126,7 +125,7 @@ export default function Create() {
                   Kategori
                 </div>
                 <div className="border-green-300 border text-black text-sm font-semibold rounded-md inline-flex px-4 py-2">
-                  JavaScript Developer
+                  {categoryItem.text}
                 </div>
               </div>
             )}

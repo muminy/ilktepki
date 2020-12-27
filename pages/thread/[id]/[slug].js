@@ -17,9 +17,7 @@ export default function Slug({ post, id }) {
   const threadId = router.query.id;
   const JWT_TOKEN = Cookies.get("JWT_TOKEN");
 
-  const [sendCommentLoading, setSendCommentLoading] = useState(
-    false,
-  );
+  const [sendCommentLoading, setSendCommentLoading] = useState(false);
   const [comment, setComment] = useState("");
   const [commentArray, setCommentArray] = useState([]);
   const [comments, setComments] = useState([]);
@@ -48,7 +46,6 @@ export default function Slug({ post, id }) {
     const response = await Api.post("/comment/create", {
       comment: commentArray,
       threadId,
-      JWT_TOKEN,
       baslik: post.baslik,
     });
 
@@ -72,13 +69,9 @@ export default function Slug({ post, id }) {
         <div className="w-full xl:w-3/4 lg:w-3/4 pr-0 xl:pr-10 lg:pr-10 py-8 bg-white px-8 shadow-sm mr-0 md:mr-16">
           <div className="flex items-center mb-2">
             <Avatar />
-            <div className="font-semibold text-base ml-4">
-              {post.author.name}
-            </div>
+            <div className="font-semibold text-base ml-4">{post.author.name}</div>
           </div>
-          <div className="font-black text-4xl mb-1">
-            {post.baslik}
-          </div>
+          <div className="font-black text-4xl mb-1">{post.baslik}</div>
           <div className="flex mb-4 items-center">
             <div className="text-gray-400 font-medium text-xs mr-2 afterView flex items-center">
               217.271 Views
@@ -90,15 +83,11 @@ export default function Slug({ post, id }) {
           <div className="flex items-center mb-8">
             <div className="flex items-center px-3 bg-gray-100 rounded-md py-1 mr-1">
               <LikeIcon size={18} color="#9ca3af" />
-              <span className="ml-2 text-xs font-semibold text-gray-700">
-                17
-              </span>
+              <span className="ml-2 text-xs font-semibold text-gray-700">17</span>
             </div>
             <div className="flex items-center px-3 bg-gray-100 rounded-md py-1">
               <CommentIcon size={18} color="#9ca3af" />
-              <span className="ml-2 text-xs font-semibold text-gray-700">
-                {comments.length}
-              </span>
+              <span className="ml-2 text-xs font-semibold text-gray-700">{comments.length}</span>
             </div>
           </div>
           <div className="mb-10 leading-1">
@@ -159,18 +148,11 @@ export default function Slug({ post, id }) {
           )}
 
           {commentsLoading ? null : (
-            <div className="text-sm font-bold mb-4">
-              {comments.length} Yorum
-            </div>
+            <div className="text-sm font-bold mb-4">{comments.length} Yorum</div>
           )}
           {commentsLoading && <CommentsLoadingCard />}
           {comments.map((item, index) => (
-            <Comment
-              key={index}
-              votes={item.votes}
-              item={item}
-              index={index}
-            />
+            <Comment key={index} votes={item.votes} item={item} index={index} />
           ))}
         </div>
       ) : (
@@ -226,9 +208,7 @@ const CommentsLoadingCard = () => (
         ></path>
       </svg>
     </div>
-    <div className="font-semibold text-sm">
-      Yorumlar yükleniyor... Lütfen bekleyiniz.
-    </div>
+    <div className="font-semibold text-sm">Yorumlar yükleniyor... Lütfen bekleyiniz.</div>
   </div>
 );
 
@@ -254,9 +234,7 @@ export async function getStaticPaths() {
 
 export async function getStaticProps({ params: { id } }) {
   const allPosts = await Api.post("/posts/get");
-  const posts = allPosts.data.results.filter(
-    (item) => item._id === id,
-  );
+  const posts = allPosts.data.results.filter((item) => item._id === id);
 
   // paylaşımın yorumları alınıyor
   const comments = await Api.post("/comment/get", {

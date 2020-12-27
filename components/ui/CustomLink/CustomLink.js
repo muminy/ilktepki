@@ -11,20 +11,20 @@ export const CommentLink = ({ item, index }) => {
   });
 
   return (
-    <div key={index} className="text-sm mb-2  font-medium">
-      Konuya
-      <Link
-        href="/thread/[id]/[slug]"
-        as={`/thread/${item._id}/${slug}`}
-      >
-        <a className="text-blue-500 font-semibold mx-1">
-          "{item.comment.join(" ").substring(0, 120)}"
-        </a>
-      </Link>
-      yazdı
-      <span className="text-xs text-gray-400 ml-2">
-        {GetTiming(item.createdAt)}
-      </span>
+    <div
+      key={index}
+      className="text-sm flex items-center px-4 bg-white shadow-sm py-2 mb-1 font-medium"
+    >
+      <div className="w-3/4 mr-auto">
+        Konuya
+        <Link href="/thread/[id]/[slug]" as={`/thread/${item.threadId}/${slug}`}>
+          <a className="text-blue-500 font-semibold mx-1">
+            "{item.comment.join(" ").substring(0, 120)}"
+          </a>
+        </Link>
+        yazdı
+      </div>
+      <div className="text-xs text-right w-1/4 text-gray-400 ">{GetTiming(item.createdAt)}</div>
     </div>
   );
 };
@@ -37,20 +37,18 @@ export const CreatedPostLink = ({ item, index }) => {
   });
 
   return (
-    <div key={index} className="text-sm mb-2 font-medium">
-      Konu
-      <Link
-        href="/thread/[id]/[slug]"
-        as={`/thread/${item._id}/${slug}`}
-      >
-        <a className="text-blue-500 font-semibold mx-1">
-          "{item.baslik.substring(0, 120)}"
-        </a>
-      </Link>
-      Paylaştı
-      <span className="text-xs text-gray-400 ml-2">
-        {GetTiming(item.createdAt)}
-      </span>
+    <div
+      key={index}
+      className="text-sm px-4 flex items-center bg-white shadow-sm py-2 mb-1 font-medium"
+    >
+      <div className="w-3/4 mr-auto">
+        Konu
+        <Link href="/thread/[id]/[slug]" as={`/thread/${item._id}/${slug}`}>
+          <a className="text-blue-500 font-semibold mx-1">"{item.baslik.substring(0, 120)}"</a>
+        </Link>
+        Paylaştı
+      </div>
+      <div className="text-xs text-gray-400 w-1/4 text-right">{GetTiming(item.createdAt)}</div>
     </div>
   );
 };

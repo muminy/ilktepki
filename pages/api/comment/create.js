@@ -4,17 +4,13 @@ import JWT from "jsonwebtoken";
 export default async function (request, response) {
   const { db } = await connect();
   const { method } = request;
+  const { JWT_KEY } = process.env;
+  const { JWT_TOKEN } = request.cookies;
 
   try {
     switch (method) {
       case "POST":
-        const {
-          comment,
-          threadId,
-          JWT_TOKEN,
-          baslik,
-        } = request.body;
-        const { JWT_KEY } = process.env;
+        const { comment, threadId, baslik } = request.body;
 
         const handleComment = async (err, decodeUser) => {
           if (err) {

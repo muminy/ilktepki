@@ -1,3 +1,4 @@
+import { ObjectId } from "mongodb";
 import { connect } from "util/mongodb";
 
 export default async function (request, response) {
@@ -9,15 +10,9 @@ export default async function (request, response) {
       case "POST":
         const { _id } = request.body;
 
-        const resuts = await db
-          .collection("posts")
-          .findOne({ _id });
+        const results = await db.collection("posts").findOne({ _id: ObjectId(_id) });
 
-        if (resuts) {
-          response.json({ code: 200, resuts });
-        } else {
-          response.json({ code: 10, resuts: {} });
-        }
+        response.json({ code: 200, results });
 
         break;
       default:

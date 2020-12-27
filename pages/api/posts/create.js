@@ -3,25 +3,20 @@ import JWT from "jsonwebtoken";
 
 export default async function (request, response) {
   const { method } = request;
+  const { JWT_TOKEN } = request.cookies;
+  const { JWT_KEY } = process.env;
 
   try {
     const { db } = await connect();
 
     switch (method) {
       case "POST":
-        const { JWT_KEY } = process.env;
-        const {
-          baslik,
-          icerik,
-          categoryItem,
-          JWT_TOKEN,
-        } = request.body;
-
+        const { baslik, icerik, categoryItem } = request.body;
         const handleCreatePost = async (err, decodeUser) => {
           if (err) {
             return response.json({
               status: "Erorr",
-              message: "Bad Request",
+              message: "İzinsiz İstek",
             });
           }
           const userPayload = {
@@ -38,6 +33,7 @@ export default async function (request, response) {
             createdAt: new Date().toISOString(),
             categoryItem,
             votes: [],
+            comments: [],
           });
 
           response.json({
@@ -52,14 +48,14 @@ export default async function (request, response) {
       default:
         response.json({
           status: "Error",
-          message: "Bad Request",
+          message: "Kötü İstek",
         });
         break;
     }
   } catch (e) {
     response.status(500);
     response.json({
-      message: "to_server",
+      message: "Server Hatası",
       code: 201,
     });
   }

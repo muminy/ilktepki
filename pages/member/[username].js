@@ -4,16 +4,13 @@ import { Api } from "lib/api";
 import Cookies from "js-cookie";
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import {
-  CommentLink,
-  CreatedPostLink,
-} from "components/ui/CustomLink";
+import { CommentLink, CreatedPostLink } from "components/ui/CustomLink";
 
-export default function Profile({ userDetail }) {
-  const USER_ID = Cookies.get("USER_ID");
-
+export default function Profile({ userDetail, USER_ID }) {
   const [userActions, setUserActions] = useState([]);
   const [Loading, setLoading] = useState(true);
+
+  useEffect(() => {}, []);
 
   const getUserActions = async () => {
     const getAllActions = await Api.post("/member/actions", {
@@ -35,54 +32,38 @@ export default function Profile({ userDetail }) {
 
   return (
     <Layout>
-      <div className="flex justify-center xl:w-2/5 lg:w-3/5 md:w-4/5 sm:w-full mx-auto">
+      <div className="flex justify-center w-full xl:w-3/5 lg:w-3/5 mx-auto ">
         <div className="w-full">
-          <div className="text-center mb-4">
-            <Avatar size={180} />
+          <div className="flex bg-white shadow-sm mb-4 items-center p-4">
+            <Avatar rf="10px" size={60} />
+            <div className="ml-4">
+              <div className="font-bold text-2xl">{userDetail.name}</div>
+              <div className="text-sm">@{userDetail.username}</div>
+            </div>
           </div>
-          <div className="font-bold text-2xl text-center">
-            {userDetail.name}
-          </div>
-          <div className="text-center mb-4 text-sm">
-            @{userDetail.username}
-          </div>
-          <div className="flex mb-10">
-            {USER_ID === userDetail._id ? (
-              <div className="w-full bg-gray-100 py-2 text-center rounded-md mr-4 font-semibold">
+          <div className="flex mb-4">
+            {USER_ID ? (
+              <div className="w-full shadow-sm py-2 text-center rounded-none xl:rounded-md lg:rounded-md md:rounded-md font-semibold bg-white ">
                 Profili düzenle
               </div>
             ) : (
               <>
-                <div className="w-3/4 bg-gray-100 py-2 text-center rounded-md mr-4 font-semibold">
+                <div className="w-3/4 bg-white shadow-sm py-2 text-center rounded-none xl:rounded-md lg:rounded-md md:rounded-md mr-4 font-semibold">
                   Mesaj
                 </div>
-                <div className="w-1/4 bg-blue-500 py-2 text-center rounded-md text-white font-semibold">
+                <div className="w-1/4 bg-white shadow-sm text-red-500 py-2 text-center rounded-none xl:rounded-md lg:rounded-md md:rounded-md text-white font-semibold">
                   Bildir
                 </div>
               </>
             )}
           </div>
-          <div className="border-t border-gray-200 py-9">
-            {userActions.map((item, index) => {
-              if (item.type === "comment") {
-                return (
-                  <CommentLink
-                    key={index}
-                    item={item}
-                    index={index}
-                  />
-                );
-              } else {
-                return (
-                  <CreatedPostLink
-                    key={index}
-                    item={item}
-                    index={index}
-                  />
-                );
-              }
-            })}
-          </div>
+          {userActions.map((item, index) => {
+            if (item.type === "comment") {
+              return <CommentLink key={index} item={item} index={index} />;
+            } else {
+              return <CreatedPostLink key={index} item={item} index={index} />;
+            }
+          })}
           {Loading && (
             <div className="py-6 text-center font-medium text-sm bg-gray-100 rounded-md">
               Kullanıcının son işlemleri yükleniyor
@@ -94,12 +75,13 @@ export default function Profile({ userDetail }) {
   );
 }
 
-Profile.getInitialProps = async ({ query }) => {
+Profile.getInitialProps = async (appContext) => {
   const response = await Api.post("/member/user", {
-    username: query.username,
+    username: appContext.query.username,
   });
-
+  const { USER_ID } = appContext.req.cookies;
   return {
     userDetail: response.data.results,
+    USER_ID,
   };
 };
