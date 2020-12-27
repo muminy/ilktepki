@@ -5,4 +5,4 @@
 - [ ] Sisteme yazı ditörü eklenecek
 - [x] Post içeriğinin stile geliştirilecek
 - [ ] Sidebarda son yorumlar listelenecek
-- [ ] Post ekleme ekranı stili geliştirilecek
+- [x] Post ekleme ekranı stili geliştirilecek
