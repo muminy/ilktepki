@@ -1,15 +1,13 @@
-import Layout from "@components/core/Layout";
 import { useRouter } from "next/router";
-import Cookies from "js-cookie";
 import { useState } from "react";
 import { Categories } from "@constants/Categories";
-import { useAuth } from "context/Auth";
 import { urls } from "lib/api";
 import Link from "next/link";
+import { useAuthToken } from "context/AuthToken";
 
 export default function Create() {
   const router = useRouter();
-  const { login } = useAuth();
+  const { JWT_TOKEN } = useAuthToken();
   const [code, setCode] = useState(null);
   const [loading, setLoading] = useState(false);
   const [baslik, setBaslik] = useState("");
@@ -49,9 +47,7 @@ export default function Create() {
     <div className="createArea">
       <div className="mx-auto w-full lg:w-2/5 xl:w-2/5 md:w-4/5 py-4 flex lg:px-0 xl:px-0 mb-10">
         <Link href="/">
-          <a className="text-blue-500 font-bold text-sm uppercase ">
-            Geri Dön
-          </a>
+          <a className="text-blue-500 font-bold text-sm uppercase ">Geri Dön</a>
         </Link>
       </div>
       <style jsx global>{`
@@ -66,7 +62,7 @@ export default function Create() {
           min-height: 100vh;
         }
       `}</style>
-      {true ? (
+      {JWT_TOKEN ? (
         <div className="flex w-full mb-auto">
           <div className="w-full lg:w-2/5 xl:w-2/5 md:w-4/5 mx-auto p-6 lg:p-0 xl:p-0">
             {code === 200 ? (
@@ -75,8 +71,7 @@ export default function Create() {
               </div>
             ) : code === "err_code" ? (
               <div className="mb-4 xl:w-full lg:w-full md:w-full w-full bg-red-100 text-center text-red-500 font-semibold text-sm mx-auto py-2 rounded-md">
-                Lütfen tüm alanları eksiksiz bir şekilde
-                doldurunuz
+                Lütfen tüm alanları eksiksiz bir şekilde doldurunuz
               </div>
             ) : code !== null ? (
               <div className="mb-4 xl:w-full lg:w-full md:w-full w-full bg-red-100 text-red-500 font-semibold text-sm mx-auto py-2 rounded-md">
@@ -85,37 +80,27 @@ export default function Create() {
             ) : null}
             <div className="w-full mb-6">
               <div className="mb-10">
-                <div className="text-base text-gray-700 uppercase font-bold">
-                  Konu başlık
-                </div>
+                <div className="text-base text-gray-700 uppercase font-bold">Konu başlık</div>
                 <div className="mb-4 text-xs">
-                  Lütfen argo ve adul kelimeler kullanmaktan
-                  kaçınınız
+                  Lütfen argo ve adul kelimeler kullanmaktan kaçınınız
                 </div>
                 <input
                   className="bg-gray-100 hover:bg-gray-200 delay-50 duration-300 ease-in-out w-full inter text-sm py-2 px-4 rounded-sm outline-none"
                   placeholder="Başlık"
                   value={baslik}
-                  onChange={(text) =>
-                    setBaslik(text.target.value)
-                  }
+                  onChange={(text) => setBaslik(text.target.value)}
                 />
               </div>
               <div className="mb-10">
-                <div className="text-base text-gray-700 uppercase font-bold">
-                  Konu içeriğiniz
-                </div>
+                <div className="text-base text-gray-700 uppercase font-bold">Konu içeriğiniz</div>
                 <div className="mb-4 text-xs">
-                  Lütfen argo ve adul kelimeler kullanmaktan
-                  kaçınınız
+                  Lütfen argo ve adul kelimeler kullanmaktan kaçınınız
                 </div>
                 <textarea
                   className="bg-gray-100 hover:bg-gray-200 delay-50 duration-300 ease-in-out w-full inter text-sm py-2 px-4 rounded-sm outline-none"
                   value={icerik}
                   placeholder="İçerik"
-                  onChange={(text) =>
-                    setIcerik(text.target.value)
-                  }
+                  onChange={(text) => setIcerik(text.target.value)}
                 />
               </div>
             </div>
@@ -170,9 +155,7 @@ export default function Create() {
         <div className="w-full p-10 bg-gray-100 flex items-center justify-center">
           Lütfen{" "}
           <Link href="/login">
-            <a className="text-black font-semibold mx-2">
-              giriş
-            </a>
+            <a className="text-black font-semibold mx-2">giriş</a>
           </Link>{" "}
           yapınız
         </div>
