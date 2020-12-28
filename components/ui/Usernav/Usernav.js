@@ -1,22 +1,14 @@
 import Avatar from "@components/core/Avatar";
 import BellIcon from "@components/icons/Bell";
 import MessageIcon from "@components/icons/Message";
-import Cookies from "js-cookie";
+import { useAuthToken } from "context/AuthToken";
 import Link from "next/link";
-import { useEffect, useState } from "react";
 
 export default function Usernav() {
-  const [JwtLoaded, setJwtLoaded] = useState(false);
-
-  useEffect(() => {
-    if (Cookies.get("JWT_TOKEN")) {
-      setJwtLoaded(true);
-    }
-  }, [Cookies]);
-
+  const { JWT_TOKEN } = useAuthToken();
   return (
     <ul className="list-none p-0 m-0 flex">
-      {JwtLoaded ? (
+      {JWT_TOKEN ? (
         <>
           <li className="flex items-center ml-5">
             <div className="flex rounded-md h-9 w-9 items-center justify-center bg-gray-100 hover:bg-gray-300 transition linear-out duration-150">

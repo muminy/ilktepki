@@ -65,21 +65,19 @@ export default function Subject({ item }) {
   };
 
   return (
-    <div className="flex w-full mb-2 p-2 subject shadow-sm bg-white hover:bg-gray-50 delay-50 duration-300 ease-in-out rounded-none xl:rounded-md lg:rounded-md md:rounded-sm items-center">
-      <div className="text-center mr-4 pl-2">
-        <button
-          onClick={UpVoteSubject}
-          className={`hover:bg-gray-200 p-1 rounded-md ${upVote ? "bg-gray-100" : ""}`}
-        >
-          <UpIcon color={upVote ? "#5cdb87" : "#111"} size={24} />
-        </button>
-        <div className="font-semibold text-xs my-1">{DiffVotes}</div>
-        <button
-          onClick={DownVoteSubject}
-          className={`hover:bg-gray-200 p-1 rounded-md ${DownVote ? "bg-gray-100" : ""}`}
-        >
-          <DownIcon color={DownVote ? "red" : "#111"} size={24} />
-        </button>
+    <div className="flex w-full relative overflow-hidden  mb-2 p-2 pl-0 pt-0 pb-0 subject shadow-sm bg-white rounded-none xl:rounded-md lg:rounded-md md:rounded-sm items-center">
+      <div className="text-center flex flex-col mr-4 justify-between">
+        <div className={`w-full hover:bg-gray-100 ${upVote ? "bg-gray-50" : ""}`}>
+          <button onClick={UpVoteSubject} className={`rounded-md w-full  py-2 px-2 `}>
+            <UpIcon color={upVote ? "#5cdb87" : "#111"} size={24} />
+          </button>
+        </div>
+        <div className="font-semibold text-xs my-2">{DiffVotes}</div>
+        <div className={`w-full hover:bg-gray-100 ${DownVote ? "bg-gray-50" : ""}`}>
+          <button onClick={DownVoteSubject} className={`rounded-md w-full py-2 px-2 `}>
+            <DownIcon color={DownVote ? "red" : "#111"} size={24} />
+          </button>
+        </div>
       </div>
       <div className="w-full">
         <div className="flex items-center">
@@ -101,11 +99,7 @@ export default function Subject({ item }) {
             {item.baslik.substr(0, 100)}
           </a>
         </Link>
-        <div className="p text-gray-500 mb-4">{item.icerik.substr(0, 140)}...</div>
-        <div className="flex items-center rounded-md ">
-          <div className="font-semibold text-xs text-gray-600">{item.comments.length} Comment</div>
-          <div className="font-semibold text-xs text-red-600 ml-auto pr-4">Report</div>
-        </div>
+        <div className="p text-gray-500 mt-1">{item.icerik.substr(0, 140)}...</div>
       </div>
       <style jsx>
         {`

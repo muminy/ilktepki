@@ -1,11 +1,12 @@
 import Head from "next/head";
-
+import App from "next/app";
 import "styles/global.css";
-import { AuthProvider } from "context/Auth";
+import { AuthTokenProvider } from "context/AuthToken";
+import { parseCookies } from "helpers/parseCookie";
 
-function MyApp({ Component, pageProps }) {
+function MyApp({ Component, pageProps, JWT_TOKEN, USER_ID }) {
   return (
-    <AuthProvider>
+    <AuthTokenProvider InitialState={{ JWT_TOKEN, USER_ID }}>
       <Head>
         <meta
           id="viewport"
@@ -14,8 +15,15 @@ function MyApp({ Component, pageProps }) {
         />
       </Head>
       <Component {...pageProps} />
-    </AuthProvider>
+    </AuthTokenProvider>
   );
 }
+
+MyApp.getInitialProps = async (appContext) => {
+  // calls page's `getInitialProps` and fills `appProps.pageProps`
+  const appProps = await App.getInitialProps(appContext);
+  const cookies = parseCookies(appContext.ctx.req);
+  return { ...appProps, JWT_TOKEN: cookies?.JWT_TOKEN, USER_ID: cookies?.USER_ID };
+};
 
 export default MyApp;

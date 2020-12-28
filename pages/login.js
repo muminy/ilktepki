@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { Api } from "lib/api";
 import Cookies from "js-cookie";
+import { useAuthToken } from "context/AuthToken";
 
 export default function Login() {
   const router = useRouter();
@@ -10,6 +11,8 @@ export default function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("none_error");
+
+  const { JWT_TOKEN } = useAuthToken();
 
   const _login = async () => {
     setLoading(true);
@@ -36,13 +39,12 @@ export default function Login() {
   }, [errorMessage]);
 
   useEffect(() => {
-    const getJWT = Cookies.get("JWT_TOKEN");
-    if (getJWT) {
+    if (JWT_TOKEN) {
       router.push("/");
     }
-  }, [Cookies]);
+  }, []);
 
-  if (Cookies.get("JWT_TOKEN")) {
+  if (JWT_TOKEN) {
     return <div></div>;
   } else {
     return (
@@ -53,9 +55,7 @@ export default function Login() {
               {errorMessage}
             </div>
           ) : null}
-          <div className="font-black text-5xl mb-4">
-            Hoş geldin
-          </div>
+          <div className="font-black text-5xl mb-4">Hoş geldin</div>
           <div>
             <input
               className="outline-none border border-gray-200 xl:w-2/4 lg:w-2/4 md:w-2/4 w-full px-3 py-2 rounded-sm inter text-sm focus:border-gray-300 hover:bg-gray-100 mb-4"
@@ -109,16 +109,12 @@ export default function Login() {
           <div className="text-sm mb-1">
             Hesabın yok mu?{" "}
             <Link href="/singup">
-              <a className="no-underline font-semibold">
-                Kayıt Ol
-              </a>
+              <a className="no-underline font-semibold">Kayıt Ol</a>
             </Link>
           </div>
           <div className="text-sm -mt-1">
             <Link href="/">
-              <a className="no-underline font-medium text-gray-400 hover:text-gray-600">
-                Geri dön
-              </a>
+              <a className="no-underline font-medium text-gray-400 hover:text-gray-600">Geri dön</a>
             </Link>
           </div>
         </div>

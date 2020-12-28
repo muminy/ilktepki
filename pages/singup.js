@@ -1,4 +1,4 @@
-import { useAuth } from "context/Auth";
+import { useAuthToken } from "context/AuthToken";
 import { validateEmail } from "lib/valid";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 export default function Singup() {
   const router = useRouter();
 
-  const { login, ActionSingup } = useAuth();
+  const { JWT_TOKEN } = useAuthToken();
 
   const [code, setCode] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -19,17 +19,8 @@ export default function Singup() {
   const _Singup = async () => {
     setLoading(true);
     const isValidEmail = validateEmail(email);
-    if (
-      isValidEmail &&
-      username.length >= 3 &&
-      password.length > 5
-    ) {
-      const isSingup = await ActionSingup(
-        name,
-        email,
-        username,
-        password,
-      );
+    if (isValidEmail && username.length >= 3 && password.length > 5) {
+      const isSingup = await ActionSingup(name, email, username, password);
       if (isSingup.code === 200) {
         setCode(true);
         window.location.href = "/login";
@@ -45,12 +36,12 @@ export default function Singup() {
   };
 
   useEffect(() => {
-    if (login !== "user_loading" && login) {
+    if (JWT_TOKEN) {
       router.push("/");
     }
-  }, [login]);
+  }, []);
 
-  if (login === "user_loading" || login) {
+  if (JWT_TOKEN) {
     return <div></div>;
   } else {
     return (
@@ -67,8 +58,7 @@ export default function Singup() {
             </div>
           ) : code !== null ? (
             <div className="mb-4 xl:w-2/4 lg:w-2/4 md:w-2/4 w-full bg-red-100 text-red-500 font-semibold text-xs mx-auto py-2 rounded-md">
-              Kullanıcı adı Email adresi ile başka bir Kullanıcı
-              mevcut
+              Kullanıcı adı Email adresi ile başka bir Kullanıcı mevcut
             </div>
           ) : null}
           <div className="xl:w-2/4 lg:w-2/4 md:w-2/4 w-full mx-auto mb-4">
@@ -80,10 +70,9 @@ export default function Singup() {
               onChange={(text) => setName(text.target.value)}
             />
             <div className="w-full text-xs text-left">
-              Adınızın <span className="text-red-600">Argo</span>
-              , <span className="text-red-600">Irkçı</span> ve{" "}
-              <span className="text-red-600">Adult</span>{" "}
-              kelimeler içermedğinden emin olun
+              Adınızın <span className="text-red-600">Argo</span>,{" "}
+              <span className="text-red-600">Irkçı</span> ve{" "}
+              <span className="text-red-600">Adult</span> kelimeler içermedğinden emin olun
             </div>
           </div>
           <div className="xl:w-2/4 lg:w-2/4 md:w-2/4 w-full mx-auto mb-4">
@@ -95,9 +84,8 @@ export default function Singup() {
               onChange={(text) => setEmail(text.target.value)}
             />
             <div className="w-full text-xs text-left">
-              E-mail adresinizi benzersiz bir mail olduğuna emin
-              olunuz, bir E-mail adresi ile sadece bir key kayıt
-              olabilirsiniz.
+              E-mail adresinizi benzersiz bir mail olduğuna emin olunuz, bir E-mail adresi ile
+              sadece bir key kayıt olabilirsiniz.
             </div>
           </div>
           <div className="xl:w-2/4 lg:w-2/4 md:w-2/4 w-full mx-auto mb-4">
@@ -121,11 +109,8 @@ export default function Singup() {
               onChange={(text) => setPassword(text.target.value)}
             />
             <div className="w-full text-xs text-left">
-              Şifreniz{" "}
-              <span className="text-red-600">
-                6 Karakterden büyük
-              </span>{" "}
-              olduğuna emin olunuz
+              Şifreniz <span className="text-red-600">6 Karakterden büyük</span> olduğuna emin
+              olunuz
             </div>
           </div>
           <button
@@ -163,16 +148,12 @@ export default function Singup() {
           <div className="text-sm mb-1">
             Hesabın var mı?{" "}
             <Link href="/login">
-              <a className="no-underline font-semibold">
-                Giriş yap
-              </a>
+              <a className="no-underline font-semibold">Giriş yap</a>
             </Link>
           </div>
           <div className="text-sm -mt-1">
             <Link href="/">
-              <a className="no-underline font-medium text-gray-400 hover:text-gray-600">
-                Geri dön
-              </a>
+              <a className="no-underline font-medium text-gray-400 hover:text-gray-600">Geri dön</a>
             </Link>
           </div>
         </div>

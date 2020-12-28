@@ -1,35 +1,16 @@
 import Avatar from "@components/core/Avatar";
 import Layout from "@components/core/Layout";
 import { Api } from "lib/api";
-import Cookies from "js-cookie";
 import { useEffect, useState } from "react";
 import { CommentLink, CreatedPostLink } from "components/ui/CustomLink";
+import { parseCookies } from "helpers/parseCookie";
+import { useAuthToken } from "context/AuthToken";
 
-export default function Profile({ userDetail }) {
-  const [userActions, setUserActions] = useState([]);
+export default function Profile({ userDetail, UserId, actions }) {
+  const [userActions, setUserActions] = useState(actions);
   const [Loading, setLoading] = useState(true);
-  const [userId, setUserId] = useState("none");
-  useEffect(() => {
-    setUserId(Cookies.get("USER_ID"));
-  }, []);
+  const { USER_ID } = useAuthToken();
 
-  const getUserActions = async () => {
-    const getAllActions = await Api.post("/member/actions", {
-      USER_ID: userDetail._id,
-    });
-    const allArray = getAllActions.data.results;
-
-    allArray.sort(function (a, b) {
-      // Turn your strings into dates, and then subtract them
-      // to get a value that is either negative, positive, or zero.
-      return new Date(b.createdAt) - new Date(a.createdAt);
-    });
-    setUserActions(allArray);
-  };
-  useEffect(() => {
-    getUserActions();
-    setLoading(false);
-  }, []);
   return (
     <Layout>
       <div className="flex justify-center w-full xl:w-3/5 lg:w-3/5 mx-auto ">
@@ -42,11 +23,11 @@ export default function Profile({ userDetail }) {
             </div>
           </div>
           <div className="flex mb-4">
-            {userId === userDetail._id ? (
+            {USER_ID === userDetail._id ? (
               <div className="w-full shadow-sm py-2 text-center rounded-none xl:rounded-md lg:rounded-md md:rounded-md font-semibold bg-white ">
                 Profili düzenle
               </div>
-            ) : userId ? (
+            ) : UserId ? (
               <>
                 <div className="w-3/4 bg-white shadow-sm py-2 text-center rounded-none xl:rounded-md lg:rounded-md md:rounded-md mr-4 font-semibold">
                   Mesaj
@@ -66,11 +47,6 @@ export default function Profile({ userDetail }) {
               return <CreatedPostLink key={index} item={item} index={index} />;
             }
           })}
-          {Loading && (
-            <div className="py-6 text-center font-medium text-sm bg-gray-100 rounded-md">
-              Kullanıcının son işlemleri yükleniyor
-            </div>
-          )}
         </div>
       </div>
     </Layout>
@@ -81,7 +57,20 @@ Profile.getInitialProps = async (appContext) => {
   const response = await Api.post("/member/user", {
     username: appContext.query.username,
   });
+
+  const getAllActions = await Api.post("/member/actions", {
+    USER_ID: response.data.results._id,
+  });
+
+  const allArray = getAllActions.data.results;
+
+  allArray.sort(function (a, b) {
+    // Turn your strings into dates, and then subtract them
+    // to get a value that is either negative, positive, or zero.
+    return new Date(b.createdAt) - new Date(a.createdAt);
+  });
   return {
     userDetail: response.data.results,
+    actions: allArray,
   };
 };

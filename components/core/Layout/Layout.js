@@ -3,12 +3,7 @@ import Flex from "@components/ui/flex";
 import Navbar from "../Navbar";
 import Title from "../Title";
 
-export default function Layout({
-  children,
-  title,
-  disable,
-  size,
-}) {
+export default function Layout({ children, title, disable, size }) {
   return (
     <>
       <Title>{title}</Title>

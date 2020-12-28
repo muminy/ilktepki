@@ -5,9 +5,9 @@ import Searchbar from "@components/ui/Searchbar";
 import Usernav from "@components/ui/Usernav";
 import Container from "@components/ui/Container";
 
-const Navbar = () => {
+export default function Navbar() {
   return (
-    <div className="bg-white shadow-sm mb-6 pt-4 xl:pb-4 lg:pb-4 md:pb-0 sm:pb-0 px-4 xl:px-0 lg:px-0 md:px-2 sm:px-2 customNavBar ">
+    <div className="bg-white shadow-sm mb-4 xl:mb-8 lg:mb-8 md:mb-8 pt-4 xl:pb-4 lg:pb-4 md:pb-0 sm:pb-0 px-4 xl:px-0 lg:px-0 md:px-2 sm:px-2 customNavBar ">
       <Container>
         <div className="flex justify-between align-center pb-4 w-full lg:pb-0 xl:pb-0 flex-row relative">
           <div className="flex flex-1 items-center">
@@ -32,6 +32,4 @@ const Navbar = () => {
       </Container>
     </div>
   );
-};
-
-export default Navbar;
+}
