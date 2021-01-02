@@ -6,6 +6,7 @@ import slugify from "slugify";
 import Cookies from "js-cookie";
 import { useEffect, useState } from "react";
 import { Api } from "lib/api";
+import { useAuthToken } from "context/AuthToken";
 
 export default function Subject({ item }) {
   const titleSlug = slugify(item.baslik, {
@@ -16,7 +17,7 @@ export default function Subject({ item }) {
     .replace("(", "")
     .replace(")", "");
 
-  const USER_ID = Cookies.get("USER_ID");
+  const { USER_ID } = useAuthToken();
 
   const [upVote, setUpVote] = useState(false);
   const [DownVote, setDownVote] = useState(false);

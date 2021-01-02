@@ -8,7 +8,6 @@ import { useAuthToken } from "context/AuthToken";
 
 export default function Profile({ userDetail, UserId, actions }) {
   const [userActions, setUserActions] = useState(actions);
-  const [Loading, setLoading] = useState(true);
   const { USER_ID } = useAuthToken();
 
   return (

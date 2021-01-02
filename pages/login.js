@@ -12,7 +12,7 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("none_error");
 
-  const { JWT_TOKEN } = useAuthToken();
+  const { JWT_TOKEN, setJsonWebToken, setUserId } = useAuthToken();
 
   const _login = async () => {
     setLoading(true);
@@ -24,6 +24,8 @@ export default function Login() {
     if (isLogin.data.code === 200) {
       Cookies.set("JWT_TOKEN", isLogin.data.token);
       Cookies.set("USER_ID", isLogin.data.userId);
+      setJsonWebToken(isLogin.data.token);
+      setUserId(isLogin.data.userId);
       router.push("/");
     } else {
       setErrorMessage(isLogin.data.error);

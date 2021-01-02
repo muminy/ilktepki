@@ -23,6 +23,7 @@ MyApp.getInitialProps = async (appContext) => {
   // calls page's `getInitialProps` and fills `appProps.pageProps`
   const appProps = await App.getInitialProps(appContext);
   const cookies = parseCookies(appContext.ctx.req);
+  console.log(cookies);
   return { ...appProps, JWT_TOKEN: cookies?.JWT_TOKEN, USER_ID: cookies?.USER_ID };
 };
 
