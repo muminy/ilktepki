@@ -14,8 +14,8 @@ export default function Profile({ userDetail, UserId, actions }) {
     <Layout>
       <div className="flex justify-center w-full xl:w-3/5 lg:w-3/5 mx-auto ">
         <div className="w-full">
-          <div className="flex bg-white shadow-sm mb-4 items-center p-4">
-            <Avatar rf="10px" size={60} />
+          <div className="flex bg-white shadow-sm rounded-md items-center p-4">
+            <Avatar size={60} />
             <div className="ml-4">
               <div className="font-bold text-2xl">{userDetail.name}</div>
               <div className="text-sm">@{userDetail.username}</div>
@@ -23,7 +23,7 @@ export default function Profile({ userDetail, UserId, actions }) {
           </div>
           <div className="flex mb-4">
             {USER_ID === userDetail._id ? (
-              <div className="w-full shadow-sm py-2 text-center rounded-none xl:rounded-md lg:rounded-md md:rounded-md font-semibold bg-white ">
+              <div className="w-full shadow-sm py-2 text-center rounded-none xl:rounded-md lg:rounded-md md:rounded-md font-semibold bg-white mt-4">
                 Profili düzenle
               </div>
             ) : UserId ? (

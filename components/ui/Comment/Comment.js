@@ -28,8 +28,8 @@ export default function Comment({ item, votes, index }) {
     <div key={item._id} className={` ${index === 0 ? "" : "border-t-0"}`}>
       <div className="mb-4 justify-between">
         <div className="flex">
-          <Avatar size={31} />
-          <div className="ml-4 leading-tight pt-1">
+          <Avatar />
+          <div className="ml-4 leading-tight">
             <Link href="/member/[username]" as={`/member/${item.userItem.username}`}>
               <a className="text-sm font-bold text-black no-underline">{item.userItem.username}</a>
             </Link>

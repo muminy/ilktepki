@@ -65,113 +65,113 @@ export default function Slug({ post, id }) {
 
   const refContentEditable = React.createRef();
 
-  if (!JsonWebToken) return <Skeleton />;
-  else
-    return (
-      <Layout>
-        {post ? (
-          <div className="w-full xl:w-3/4 lg:w-3/4 pr-0 xl:pr-10 lg:pr-10 py-8 bg-white px-8 shadow-sm mr-0 md:mr-16">
-            <div className="flex items-center mb-2">
-              <Avatar />
-              <div className="font-semibold text-base ml-4">{post.author.name}</div>
+  return (
+    <Layout>
+      {post ? (
+        <div className="w-full xl:w-3/4 lg:w-3/4 py-4 px-4 xl:px-8 xl:py-8 lg:px-8 lg:py-4 md:py-4 md:px-4 bg-white shadow-sm mr-0 md:mr-16">
+          <div className="flex items-center mb-2">
+            <Avatar />
+            <div className="font-semibold text-base ml-4">{post.author.name}</div>
+          </div>
+          <div className="font-black text-4xl mb-1">{post.baslik}</div>
+          <div className="flex mb-4 items-center">
+            <div className="text-gray-400 font-medium text-xs mr-2 afterView flex items-center">
+              217.271 Views
             </div>
-            <div className="font-black text-4xl mb-1">{post.baslik}</div>
-            <div className="flex mb-4 items-center">
-              <div className="text-gray-400 font-medium text-xs mr-2 afterView flex items-center">
-                217.271 Views
-              </div>
-              <div className="text-gray-400 font-medium text-xs mr-2">
-                {GetTiming(post.createdAt)}
-              </div>
+            <div className="text-gray-400 font-medium text-xs mr-2">
+              {GetTiming(post.createdAt)}
             </div>
-            <div className="flex items-center mb-8">
-              <div className="flex items-center px-3 bg-gray-100 rounded-md py-1 mr-1">
-                <LikeIcon size={18} color="#9ca3af" />
-                <span className="ml-2 text-xs font-semibold text-gray-700">17</span>
-              </div>
-              <div className="flex items-center px-3 bg-gray-100 rounded-md py-1">
-                <CommentIcon size={18} color="#9ca3af" />
-                <span className="ml-2 text-xs font-semibold text-gray-700">{comments.length}</span>
-              </div>
+          </div>
+          <div className="flex items-center mb-8">
+            <div className="flex items-center px-3 bg-gray-100 rounded-md py-1 mr-1">
+              <LikeIcon size={18} color="#9ca3af" />
+              <span className="ml-2 text-xs font-semibold text-gray-700">17</span>
             </div>
-            <div className="mb-10 leading-1">
-              {post.icerik.split("\n").map((item, index) => (
-                <p className="mb-6 p" key={index}>
-                  {item}
-                </p>
-              ))}
+            <div className="flex items-center px-3 bg-gray-100 rounded-md py-1">
+              <CommentIcon size={18} color="#9ca3af" />
+              <span className="ml-2 text-xs font-semibold text-gray-700">{comments.length}</span>
             </div>
-
-            {JsonWebToken && (
-              <div className="flex h-auto mb-8">
-                <Avatar rf="100%" size={36} />
-                <div className="ml-4 w-full mr-0 md:mr-8 sm:mr-8">
-                  <ContentEditable
-                    className="textaread px-4 py-2 bg-gray-50  w-full focus:bg-white rounded-md resize-none appearance-none text-sm mb-4 mr-16"
-                    onChange={onChangeHandle}
-                    tagName="div"
-                    itemRef={refContentEditable}
-                    html={comment}
-                    disabled={false}
-                    placeholder="Ne düşünüyorsun?"
-                  />
-                  <button
-                    onClick={sendComment}
-                    className="buttonxxb px-6 py-2 font-medium focus:outline-none text-white rounded-md text-sm flex items-center"
-                  >
-                    {sendCommentLoading ? (
-                      <>
-                        <SpinIcon />
-                        Yorum Gönderiliyor
-                      </>
-                    ) : (
-                      "Yorum Gönder"
-                    )}
-                  </button>
-                </div>
-              </div>
-            )}
-
-            {commentsLoading ? null : (
-              <div className="text-sm font-bold mb-4">{comments.length} Yorum</div>
-            )}
-            {commentsLoading && (
-              <>
-                <CommentSkeleton />
-                <CommentSkeleton />
-              </>
-            )}
-            {comments.map((item, index) => (
-              <Comment key={index} votes={item.votes} item={item} index={index} />
+          </div>
+          <div className="mb-10 leading-1">
+            {post.icerik.split("\n").map((item, index) => (
+              <p className="mb-6 p" key={index}>
+                {item}
+              </p>
             ))}
           </div>
-        ) : (
-          <div className="">Loading</div>
-        )}
-        <Sidebar />
-        <style jsx>{`
-          .afterView::after {
-            content: "";
-            display: block;
-            width: 4px;
-            height: 4px;
-            border-radius: 100%;
-            background-color: #b8b8b8;
-            margin-left: 0.5rem;
-          }
-          .buttonxxb {
-            font-family: "Inter", sans-serif;
-            background-color: #5a44ff;
-          }
-          .p {
-            margin-bottom: 1.5rem;
-            line-height: 22px;
-            font-size: 15px;
-            font-weight: 500;
-          }
-        `}</style>
-      </Layout>
-    );
+
+          {JsonWebToken && (
+            <div className="flex h-auto mb-8">
+              <div>
+                <Avatar />
+              </div>
+              <div className="ml-4 w-full mr-0 md:mr-8 sm:mr-8">
+                <ContentEditable
+                  className="textaread px-4 py-2 bg-gray-50  w-full focus:bg-white rounded-md resize-none appearance-none text-sm mb-4 mr-16"
+                  onChange={onChangeHandle}
+                  tagName="div"
+                  itemRef={refContentEditable}
+                  html={comment}
+                  disabled={false}
+                  placeholder="Ne düşünüyorsun?"
+                />
+                <button
+                  onClick={sendComment}
+                  className="buttonxxb px-6 py-2 font-medium focus:outline-none text-white rounded-md text-sm flex items-center"
+                >
+                  {sendCommentLoading ? (
+                    <>
+                      <SpinIcon />
+                      Yorum Gönderiliyor
+                    </>
+                  ) : (
+                    "Yorum Gönder"
+                  )}
+                </button>
+              </div>
+            </div>
+          )}
+
+          {commentsLoading ? null : (
+            <div className="text-sm font-bold mb-4">{comments.length} Yorum</div>
+          )}
+          {commentsLoading && (
+            <>
+              <CommentSkeleton />
+              <CommentSkeleton />
+            </>
+          )}
+          {comments.map((item, index) => (
+            <Comment key={index} votes={item.votes} item={item} index={index} />
+          ))}
+        </div>
+      ) : (
+        <div className="">Loading</div>
+      )}
+      <Sidebar />
+      <style jsx>{`
+        .afterView::after {
+          content: "";
+          display: block;
+          width: 4px;
+          height: 4px;
+          border-radius: 100%;
+          background-color: #b8b8b8;
+          margin-left: 0.5rem;
+        }
+        .buttonxxb {
+          font-family: "Inter", sans-serif;
+          background-color: #5a44ff;
+        }
+        .p {
+          margin-bottom: 1.5rem;
+          line-height: 22px;
+          font-size: 15px;
+          font-weight: 500;
+        }
+      `}</style>
+    </Layout>
+  );
 }
 
 export async function getStaticPaths() {

@@ -30,7 +30,7 @@ export default function Skeleton() {
 }
 
 export const CommentSkeleton = () => (
-  <div className="w-full flex mb-4">
+  <div className="w-full flex mb-4 pr-6">
     <div>
       <Avatar />
     </div>

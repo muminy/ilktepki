@@ -66,7 +66,7 @@ export default function Subject({ item }) {
   };
 
   return (
-    <div className="flex w-full relative overflow-hidden  mb-2 p-2 pl-0 pt-0 pb-0 subject shadow-sm bg-white rounded-none xl:rounded-md lg:rounded-md md:rounded-sm items-center">
+    <div className="flex w-full relative overflow-hidden  mb-2 pl-0 pt-0 pb-0 subject shadow-sm bg-white rounded-none xl:rounded-md lg:rounded-md md:rounded-sm">
       <div className="text-center flex flex-col mr-4 justify-between">
         <div className={`w-full hover:bg-gray-100 ${upVote ? "bg-gray-50" : ""}`}>
           <button onClick={UpVoteSubject} className={`rounded-md w-full  py-2 px-2 `}>
@@ -80,7 +80,7 @@ export default function Subject({ item }) {
           </button>
         </div>
       </div>
-      <div className="w-full">
+      <div className="w-full py-3">
         <div className="flex items-center">
           <Link href="/member/[username]" as={`/member/${item.author.username}`}>
             <a
