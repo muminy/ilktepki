@@ -11,13 +11,13 @@ import { CommentIcon, LikeIcon, SpinIcon } from "@constants/icons";
 import ContentEditable from "react-contenteditable";
 import Comment from "@components/ui/Comment";
 import { useAuthToken } from "context/AuthToken";
+import Skeleton, { CommentSkeleton } from "@components/core/Skeleton/Skeleton";
 
 export default function Slug({ post, id }) {
   const router = useRouter();
 
   const threadId = router.query.id;
-  const { JWT_TOKEN } = useAuthToken();
-
+  const [JsonWebToken, setJsonWebToken] = useState(null);
   const [sendCommentLoading, setSendCommentLoading] = useState(false);
   const [comment, setComment] = useState("");
   const [commentArray, setCommentArray] = useState([]);
@@ -58,7 +58,14 @@ export default function Slug({ post, id }) {
     setComment(event.target.value);
     setCommentArray(allComments);
   };
+
+  useEffect(() => {
+    setJsonWebToken(Cookies.get("JWT_TOKEN"));
+  }, []);
+
   const refContentEditable = React.createRef();
+
+  if (!JsonWebToken) return <Skeleton />;
   return (
     <Layout>
       {post ? (
@@ -94,7 +101,7 @@ export default function Slug({ post, id }) {
             ))}
           </div>
 
-          {JWT_TOKEN && (
+          {JsonWebToken && (
             <div className="flex h-auto mb-8">
               <Avatar rf="100%" size={36} />
               <div className="ml-4 w-full mr-0 md:mr-8 sm:mr-8">
@@ -127,7 +134,12 @@ export default function Slug({ post, id }) {
           {commentsLoading ? null : (
             <div className="text-sm font-bold mb-4">{comments.length} Yorum</div>
           )}
-          {commentsLoading && <CommentsLoadingCard />}
+          {commentsLoading && (
+            <>
+              <CommentSkeleton />
+              <CommentSkeleton />
+            </>
+          )}
           {comments.map((item, index) => (
             <Comment key={index} votes={item.votes} item={item} index={index} />
           ))}
@@ -161,15 +173,6 @@ export default function Slug({ post, id }) {
   );
 }
 
-const CommentsLoadingCard = () => (
-  <div className="items-center text-center bg-gray-100 py-10 rounded-md">
-    <div className="mx-auto w-5 mb-4">
-      <SpinIcon color="#000000" />
-    </div>
-    <div className="font-semibold text-sm">Yorumlar yükleniyor... Lütfen bekleyiniz.</div>
-  </div>
-);
-
 export async function getStaticPaths() {
   const postAll = await fetch(urls + "/posts/get", {
     method: "POST",
@@ -190,10 +193,11 @@ export async function getStaticPaths() {
   };
 }
 
-export async function getStaticProps({ params: { id } }) {
+export async function getStaticProps(context) {
+  const { id } = context.params;
+
   const allPosts = await Api.post("/posts/get");
   const posts = allPosts.data.results.filter((item) => item._id === id);
-
   // paylaşımın yorumları alınıyor
   const comments = await Api.post("/comment/get", {
     _id: id,

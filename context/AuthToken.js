@@ -2,7 +2,6 @@ import { createContext, useContext } from "react";
 
 export const AuthTokenContext = createContext();
 export const AuthTokenProvider = ({ InitialState, children }) => {
-  console.log(InitialState);
   return <AuthTokenContext.Provider value={InitialState}>{children}</AuthTokenContext.Provider>;
 };
 
