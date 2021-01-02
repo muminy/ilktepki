@@ -1,3 +1,4 @@
+import { SpinIcon } from "@constants/icons";
 import Avatar from "../Avatar";
 import Layout from "../Layout";
 import Sidebar from "../Sidebar";
@@ -43,4 +44,10 @@ export const CommentSkeleton = () => (
       <div className="w-20 h-2 bg-gray-100 rounded-md mb-4"></div>
     </div>
   </div>
+);
+
+export const NavbarSkeleton = () => (
+  <ul className="list-none p-0 m-0 flex">
+    <SpinIcon color="red" />
+  </ul>
 );
