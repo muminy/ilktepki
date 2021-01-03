@@ -59,7 +59,7 @@ export default function Singup() {
             src="https://cdn.dribbble.com/users/3281732/screenshots/8616916/media/a7e39b15640f8883212421d134013e38.jpg?compress=1&resize=1000x750"
           />
         </div>
-        <div className="w-full min-h-screen flex flex-col justify-center items-center xl:w-3/5 lg:w-3/5 md:w-3/5 bg-white py-4 h-auto xl:h-screen lg:h-screen md:h-full overflow-y-auto">
+        <div className="w-full min-h-screen flex flex-col justify-start xl:justify-center lg:justify-center md:justify-center items-center xl:w-3/5 lg:w-3/5 md:w-3/5 bg-white py-4 h-auto xl:h-screen lg:h-screen md:h-full overflow-y-auto">
           <div className="w-full xl:w-2/4 lg:w-3/4 px-6 xl:px-0 lg:px-0 md:px-6">
             <div className="mb-6">
               <div className="text-xl font-bold">Kayıt Ol</div>
@@ -76,11 +76,11 @@ export default function Singup() {
                 {responseCode}
               </div>
             ) : null}
-            <div className="flex mb-6">
-              <div className="w-2/4 mr-4 bg-gray-100 text-center py-2 rounded-md hover:bg-gray-200 font-semibold text-sm">
+            <div className="block xl:flex lg:flex md:flex mb-6">
+              <div className="w-full xl:w-2/4 lg:w-2/4 md:w-2/4 mr-0 xl:mr-4 lg:mr-4 md:mr-4 mb-4 xl:mb-0 lg:mb-0 md:mb-0 bg-gray-100 text-center py-2 rounded-md hover:bg-gray-200 font-semibold text-sm">
                 Google İle Giriş Yap
               </div>
-              <div className="w-2/4 ml-4 bg-gray-100 text-center py-2 rounded-md hover:bg-gray-200 font-semibold text-sm">
+              <div className="w-full xl:w-2/4 lg:w-2/4 md:w-2/4 ml-0 xl:ml-4 lg:ml-4 md:ml-4 bg-gray-100 text-center py-2 rounded-md hover:bg-gray-200 font-semibold text-sm">
                 Facebook İle Giriş Yap
               </div>
             </div>
@@ -179,17 +179,6 @@ export default function Singup() {
         <style jsx>{`
           .bgOr {
             background-color: #f9d86d;
-          }
-          .bgOr::after {
-            content: "";
-            display: block;
-            width: 100%;
-            height: 100%;
-            position: absolute;
-            top: 0;
-            left: 0;
-            background-color: #746b124f;
-            z-index: 0;
           }
           .welcome {
             font-size: 50px;

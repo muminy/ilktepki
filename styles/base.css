@@ -190,16 +190,6 @@ a {
   min-height: 200px;
 }
 
-.markdown_content > h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  font-size: 18px;
-  font-weight: 600;
-}
-
 .textaread {
   display: block;
   width: 100%;

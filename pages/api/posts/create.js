@@ -25,7 +25,7 @@ export default async function (request, response) {
             name: decodeUser.name,
           };
 
-          await db.collection("posts").insertOne({
+          const allItem = await db.collection("posts").insertOne({
             baslik,
             icerik,
             author: userPayload,
@@ -39,6 +39,7 @@ export default async function (request, response) {
           response.json({
             code: 200,
             message: "Kayıt Başarılı",
+            results: allItem,
           });
         };
 

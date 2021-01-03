@@ -73,23 +73,12 @@ export default function Slug({ post, id }) {
             <Avatar />
             <div className="font-semibold text-base ml-4">{post.author.name}</div>
           </div>
-          <div className="font-black text-4xl mb-1">{post.baslik}</div>
+          <div className="font-black text-2xl xl:text-4xl lg:text-4xl md:text-4xl mb-1">
+            {post.baslik}
+          </div>
           <div className="flex mb-4 items-center">
-            <div className="text-gray-400 font-medium text-xs mr-2 afterView flex items-center">
-              217.271 Views
-            </div>
             <div className="text-gray-400 font-medium text-xs mr-2">
               {GetTiming(post.createdAt)}
-            </div>
-          </div>
-          <div className="flex items-center mb-8">
-            <div className="flex items-center px-3 bg-gray-100 rounded-md py-1 mr-1">
-              <LikeIcon size={18} color="#9ca3af" />
-              <span className="ml-2 text-xs font-semibold text-gray-700">17</span>
-            </div>
-            <div className="flex items-center px-3 bg-gray-100 rounded-md py-1">
-              <CommentIcon size={18} color="#9ca3af" />
-              <span className="ml-2 text-xs font-semibold text-gray-700">{comments.length}</span>
             </div>
           </div>
           <div className="mb-10 leading-1">

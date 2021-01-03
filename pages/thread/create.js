@@ -1,165 +1,197 @@
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Categories } from "@constants/Categories";
-import { urls } from "lib/api";
 import Link from "next/link";
 import { useAuthToken } from "context/AuthToken";
+import TextEditor from "@components/ui/TextEditor";
+import { useForm } from "react-hook-form";
+import { Api } from "lib/api";
+import slugify from "slugify";
+import { SpinIcon } from "@constants/icons";
 
 export default function Create() {
   const router = useRouter();
   const { JWT_TOKEN } = useAuthToken();
-  const [code, setCode] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [baslik, setBaslik] = useState("");
-  const [icerik, setIcerik] = useState("");
+  const { register, handleSubmit, watch, errors } = useForm();
+
+  const [value, setValue] = useState({ text: "", html: "" });
+  const [responseCode, setResponseCode] = useState("none_error_code");
+  const [creatingPost, setCreatingPost] = useState(false);
 
   const categoryItem = Categories[parseInt(router.query.d)];
 
-  const createPost = async () => {
-    setLoading(true);
-    if (baslik.length > 4 && icerik.length > 10) {
-      const createData = await fetch(urls + "/posts/create", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          baslik,
-          icerik,
-          categoryItem,
-        }),
-      });
-      const responseData = await createData.json();
-      if (responseData.code === 200) {
-        setCode(200);
-        setBaslik("");
-        setIcerik("");
-      } else if (responseData.code === 201) {
-        setCode(201);
-      }
-    } else {
-      setCode("err_code");
+  const onSubmit = async (formData) => {
+    if (value.text.length < 6) {
+      return setResponseCode("İçerik Çok Kısa");
     }
-    setTimeout(() => setCode(null), 2000);
-    setLoading(false);
-  };
-  return (
-    <div className="createArea">
-      <div className="mx-auto w-full lg:w-2/5 xl:w-2/5 md:w-4/5 py-4 flex lg:px-0 xl:px-0 mb-10">
-        <Link href="/">
-          <a className="text-blue-500 font-bold text-sm uppercase ">Geri Dön</a>
-        </Link>
-      </div>
-      <style jsx global>{`
-        html,
-        body {
-          background-color: #ffffff !important;
-        }
-        .customNavBar {
-          box-shadow: unset !important;
-        }
-        .createArea {
-          min-height: 100vh;
-        }
-      `}</style>
-      {JWT_TOKEN ? (
-        <div className="flex w-full mb-auto">
-          <div className="w-full lg:w-2/5 xl:w-2/5 md:w-4/5 mx-auto p-6 lg:p-0 xl:p-0">
-            {code === 200 ? (
-              <div className="mb-4 xl:w-full lg:w-full md:w-full w-full bg-green-100 text-center text-green-500 font-semibold text-sm mx-auto py-2 rounded-md">
-                Konu başarılı bir şekilde açıldı
-              </div>
-            ) : code === "err_code" ? (
-              <div className="mb-4 xl:w-full lg:w-full md:w-full w-full bg-red-100 text-center text-red-500 font-semibold text-sm mx-auto py-2 rounded-md">
-                Lütfen tüm alanları eksiksiz bir şekilde doldurunuz
-              </div>
-            ) : code !== null ? (
-              <div className="mb-4 xl:w-full lg:w-full md:w-full w-full bg-red-100 text-red-500 font-semibold text-sm mx-auto py-2 rounded-md">
-                Beklenmedik bir hata
-              </div>
-            ) : null}
-            <div className="w-full mb-6">
-              <div className="mb-10">
-                <div className="text-base text-gray-700 uppercase font-bold">Konu başlık</div>
-                <div className="mb-4 text-xs">
-                  Lütfen argo ve adul kelimeler kullanmaktan kaçınınız
-                </div>
-                <input
-                  className="bg-gray-100 hover:bg-gray-200 delay-50 duration-300 ease-in-out w-full inter text-sm py-2 px-4 rounded-sm outline-none"
-                  placeholder="Başlık"
-                  value={baslik}
-                  onChange={(text) => setBaslik(text.target.value)}
-                />
-              </div>
-              <div className="mb-10">
-                <div className="text-base text-gray-700 uppercase font-bold">Konu içeriğiniz</div>
-                <div className="mb-4 text-xs">
-                  Lütfen argo ve adul kelimeler kullanmaktan kaçınınız
-                </div>
-                <textarea
-                  className="bg-gray-100 hover:bg-gray-200 delay-50 duration-300 ease-in-out w-full inter text-sm py-2 px-4 rounded-sm outline-none"
-                  value={icerik}
-                  placeholder="İçerik"
-                  onChange={(text) => setIcerik(text.target.value)}
-                />
-              </div>
-            </div>
-            {categoryItem && (
-              <div className="mb-10">
-                <div className="text-xl text-gray-700 uppercase font-black tracking-wider mb-2">
-                  Kategori
-                </div>
-                <div className="border-green-300 border text-black text-sm font-semibold rounded-md inline-flex px-4 py-2">
-                  {categoryItem.text}
-                </div>
-              </div>
-            )}
 
-            <div className="w-full text-center">
-              <button
-                onClick={createPost}
-                className="text-gray-900 font-semibold hover:bg-gray-300 delay-50 duration-300 ease-in-out rounded-md bg-gray-100 text-sm uppercase px-20 py-2 mx-auto leading-6"
-              >
-                {loading ? (
-                  <>
-                    <svg
-                      className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                    >
-                      <circle
-                        className="opacity-25"
-                        cx="12"
-                        cy="12"
-                        r="10"
-                        stroke="currentColor"
-                        strokeWidth="4"
-                      ></circle>
-                      <path
-                        className="opacity-75"
-                        fill="currentColor"
-                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                      ></path>
-                    </svg>
-                    Konu açılıyor
-                  </>
-                ) : (
-                  "Konu aç"
-                )}
-              </button>
-            </div>
+    setCreatingPost(true);
+    const { baslik } = formData;
+
+    const baslikSlug = slugify(baslik, {
+      replacement: "-",
+      remove: true,
+      lower: true,
+    });
+
+    const payloadItem = {
+      baslik,
+      icerik: value.text,
+      categoryItem,
+    };
+
+    const createPost = await Api.post("/posts/create", payloadItem);
+    const responseCodePost = createPost.data.code;
+    const responseCodeMessage = createPost.data.message;
+
+    if (responseCodePost === 200) {
+      setResponseCode("success");
+      const URL_LOCATION = `/thread/${createPost.data.results.insertedId}/${baslikSlug}`;
+      router.push(URL_LOCATION);
+    } else {
+      setResponseCode(responseCodeMessage);
+    }
+    setCreatingPost(false);
+  };
+
+  useEffect(() => {
+    if (!JWT_TOKEN) {
+      router.push("/login");
+    }
+  }, [JWT_TOKEN]);
+
+  if (!JWT_TOKEN) {
+    return (
+      <div className="h-screen bg-white  w-full flex justify-center items-center">
+        <SpinIcon color="#000" />
+      </div>
+    );
+  } else
+    return (
+      <div className="createArea ">
+        <div className="w-full bg-gray-900">
+          <div className="w-full xl:w-2/5 lg:w-3/5 md:w-4/5 mx-auto py-4 px-6 flex">
+            <Link href="/">
+              <a className="bg-white shadow-sm px-8 text-sm py-1 rounded-sm font-semibold">Geri</a>
+            </Link>
           </div>
         </div>
-      ) : (
-        <div className="w-full p-10 bg-gray-100 flex items-center justify-center">
-          Lütfen{" "}
-          <Link href="/login">
-            <a className="text-black font-semibold mx-2">giriş</a>
-          </Link>{" "}
-          yapınız
+        <div className="w-full xl:w-2/5 lg:w-3/5 md:w-4/5 mx-auto py-4 px-6 ">
+          {responseCode === "success" ? (
+            <div className="w-full py-2 bg-green-200 text-green-600 text-center font-semibold text-sm mb-6 rounded-md">
+              Giriş Başarılı, yönlendiriliyorsunuz...
+            </div>
+          ) : responseCode !== "none_error_code" ? (
+            <div className="w-full py-2 bg-red-200 text-red-600 text-center font-semibold text-sm mb-6 rounded-md">
+              {responseCode}
+            </div>
+          ) : null}
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <div className="mb-10 border-b border-gray-100 pb-4">
+              <div className="font-semibold text-lg">Başlık</div>
+              <p className="mb-4">
+                Kısa ve özlük belki içerikte değil ama başlıkta belirlemeniz gereken bir motto
+                olmalı.
+              </p>
+              <input
+                name="baslik"
+                ref={register({ required: true, minLength: 10 })}
+                className="focus:outline-none outline-none py-2 px-6 bg-gray-100 w-full rounded-md placeholder-gray-400"
+                placeholder="Lütfen bir başlık giriniz "
+              />
+            </div>
+            <div className="mb-10 border-b border-gray-100 pb-4">
+              <div className="font-semibold text-lg">İçerik</div>
+              <p className="mb-4">
+                İçeriğinizi detaylı bir şekilde açıklayabilirsiniz. Unutmayın! Markdown text
+                editörünü kullanıyorsunuz.
+              </p>
+              <TextEditor value={value} setValue={setValue} />
+            </div>
+            <div className="mb-10 border-b border-gray-100 pb-4">
+              <div className="font-semibold text-lg">Kategori</div>
+              <p className="mb-4">
+                Doğru kategoride konu açtığınıza emin olunuz, aksi halde bunu değiştiremezsiniz.
+              </p>
+              {categoryItem ? (
+                <div className="bg-gray-100 text-black inline-flex rounded-md px-6 py-2 font-semibold text-sm">
+                  {categoryItem.text}
+                </div>
+              ) : null}
+            </div>
+            <button
+              type="submit"
+              className="w-full outline-none focus:outline-none flex justify-center bg-blue-600 text-white text-sm font-semibold py-2 rounded-md hover:bg-blue-700"
+            >
+              {creatingPost ? (
+                <>
+                  <SpinIcon color="#ffffff" />
+                  <div className="ml-2">Konu Açılıyor</div>
+                </>
+              ) : (
+                "Konu Aç"
+              )}
+            </button>
+          </form>
         </div>
-      )}
-    </div>
-  );
+        <style jsx global>{`
+          html,
+          body {
+            background-color: #ffffff !important;
+          }
+          .customNavBar {
+            box-shadow: unset !important;
+          }
+          .createArea {
+            min-height: 100vh;
+          }
+          .contentMarkdown > h1,
+          h2,
+          h3,
+          h4,
+          h5,
+          h6 {
+            font-size: 20px !important;
+            font-weight: 600 !important;
+            margin-bottom: 10px;
+          }
+          .contentMarkdown > p {
+            margin-bottom: 10px;
+            font-weight: 500;
+            font-size: 15px;
+          }
+          .contentMarkdown > ul {
+            list-style: disc;
+            padding-left: 20px;
+            margin-bottom: 10px;
+            font-weight: 500;
+            font-size: 14px;
+          }
+          .contentMarkdown a {
+            color: blue;
+          }
+          .contentMarkdown > p code,
+          li code {
+            color: #1d1309;
+            font-weight: 500;
+            padding: 1px 4px;
+            background-color: rgba(85, 197, 132, 0.47);
+          }
+          .mhe {
+            min-height: 120px;
+          }
+          .contentMarkdown blockquote {
+            border-left: 5px solid #c9c9c9;
+            margin-bottom: 10px;
+            color: #5f5f5f;
+            background-color: #f7f7f7;
+            padding: 10px 10px;
+            border-radius: 4px;
+          }
+          .contentMarkdown hr {
+            margin-bottom: 10px;
+          }
+        `}</style>
+      </div>
+    );
 }

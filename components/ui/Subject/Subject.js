@@ -79,19 +79,19 @@ export default function Subject({ item }) {
   return (
     <div className="flex w-full relative overflow-hidden  mb-2 pl-0 pt-0 pb-0 subject shadow-sm bg-white rounded-none xl:rounded-md lg:rounded-md md:rounded-sm">
       <div className="text-center flex flex-col justify-between">
-        <div className={`w-full hover:bg-gray-200 bg-gray-100 `}>
-          <button onClick={UpVoteSubject} className={`rounded-md w-full  py-2 px-2 `}>
+        <div className={`w-full bg-gray-50 `}>
+          <button onClick={UpVoteSubject} className={`rounded-md w-full`}>
             <UpIcon color={upVote ? "#5cdb87" : "#111"} size={24} />
           </button>
         </div>
-        <div className="font-semibold text-xs my-2">{DiffVotes}</div>
-        <div className={`w-full hover:bg-gray-200 bg-gray-100`}>
-          <button onClick={DownVoteSubject} className={`rounded-md w-full py-2 px-2 `}>
+        <div className="font-semibold text-xs my-1">{DiffVotes}</div>
+        <div className={`w-full hover:bg-gray-100 bg-gray-50`}>
+          <button onClick={DownVoteSubject} className={`rounded-md w-full flex items-center`}>
             <DownIcon color={DownVote ? "red" : "#111"} size={24} />
           </button>
         </div>
       </div>
-      <div className="w-full ml-4 py-3 xl:py-0 lg:py-0 md:py-0 flex flex-col justify-center">
+      <div className="w-full ml-4 py-3 flex flex-col justify-center">
         <div className="flex items-center">
           <Link href="/member/[username]" as={`/member/${item.author.username}`}>
             <a
