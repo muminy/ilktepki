@@ -1,7 +1,7 @@
 import { connect } from "util/mongodb";
 import { ObjectID } from "mongodb";
 import JWT from "jsonwebtoken";
-import Cookie from "js-cookie";
+import Coki from "js-cookie";
 
 export default async function (request, response) {
   const { method } = request;

@@ -3,12 +3,25 @@ import Layout from "@components/core/Layout";
 import { Api } from "lib/api";
 import { useEffect, useState } from "react";
 import { CommentLink, CreatedPostLink } from "components/ui/CustomLink";
-import { parseCookies } from "helpers/parseCookie";
 import { useAuthToken } from "context/AuthToken";
+import { UserActionSkeleton } from "@components/core/Skeleton/Skeleton";
 
-export default function Profile({ userDetail, UserId, actions }) {
-  const [userActions, setUserActions] = useState(actions);
+export default function Profile({ userDetail, UserId }) {
+  const [userActions, setUserActions] = useState([]);
   const { USER_ID } = useAuthToken();
+
+  const GetUserActions = async () => {
+    const getAllActions = await Api.post("/member/actions", {
+      USER_ID: userDetail._id,
+    });
+
+    const allArray = getAllActions.data.results;
+    setUserActions(allArray);
+  };
+
+  useEffect(() => {
+    GetUserActions();
+  }, []);
 
   return (
     <Layout>
@@ -39,6 +52,13 @@ export default function Profile({ userDetail, UserId, actions }) {
               ""
             )}
           </div>
+          {!userActions.length && (
+            <>
+              <UserActionSkeleton size={2} />
+              <UserActionSkeleton size={3} />
+              <UserActionSkeleton size={1} />
+            </>
+          )}
           {userActions.map((item, index) => {
             if (item.type === "comment") {
               return <CommentLink key={index} item={item} index={index} />;

@@ -4,9 +4,7 @@ export default async function (request, response) {
   try {
     const { db } = await connect();
     const { username, password, email, name } = request.body;
-    const findUser = await db
-      .collection("users")
-      .findOne({ username });
+    const findUser = await db.collection("users").findOne({ username });
     if (findUser) {
       response.json({
         code: 1,
@@ -18,14 +16,14 @@ export default async function (request, response) {
         password,
         email,
         name,
-        createdAt: new Date(),
+        createdAt: new Date().toISOString(),
         active: true,
       });
       response.json({ code: 200, message: "Kayıt Başarılı" });
     } else {
       response.json({
         code: 2,
-        message: "bad_request",
+        message: "Kötü İstek",
       });
     }
   } catch (e) {

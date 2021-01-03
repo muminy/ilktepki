@@ -1,39 +1,41 @@
+import { SpinIcon } from "@constants/icons";
 import { useAuthToken } from "context/AuthToken";
-import { validateEmail } from "lib/valid";
+import { Api } from "lib/api";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
 
 export default function Singup() {
   const router = useRouter();
-
   const { JWT_TOKEN } = useAuthToken();
+  const { register, handleSubmit, watch, errors } = useForm();
 
-  const [code, setCode] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
+  const [responseCode, setResponseCode] = useState("none_error_code");
+  const [loadingSingup, setLoadingSingup] = useState(false);
 
-  const _Singup = async () => {
-    setLoading(true);
-    const isValidEmail = validateEmail(email);
-    if (isValidEmail && username.length >= 3 && password.length > 5) {
-      const isSingup = await ActionSingup(name, email, username, password);
-      if (isSingup.code === 200) {
-        setCode(true);
-        window.location.href = "/login";
-      } else {
-        setCode(false);
-      }
+  const onSubmit = async (formData) => {
+    setLoadingSingup(true);
+
+    const { name, email, password, username } = formData;
+    const GoSingup = await Api.post("/auth/singup", { name, email, password, username });
+    const currentCode = GoSingup.data.code;
+    const currentMessage = GoSingup.data.message;
+
+    if (currentCode === 200) {
+      router.push("/login");
     } else {
-      setCode("error_code");
+      setResponseCode(currentMessage);
     }
 
-    setTimeout(() => setCode(null), 2000);
-    setLoading(false);
+    setLoadingSingup(false);
   };
+
+  useEffect(() => {
+    if (responseCode !== "none_error_code") {
+      setTimeout(() => setResponseCode("none_error_code"), 3000);
+    }
+  }, [responseCode]);
 
   useEffect(() => {
     if (JWT_TOKEN) {
@@ -45,118 +47,154 @@ export default function Singup() {
     return <div></div>;
   } else {
     return (
-      <div className="xl:w-2/5 lg:w-3/5 flex mx-auto items-center xl:h-screen px-6 xl:px-0 lg:px-0 py-10 xl:py-0 lg:py-0 md:py-0">
-        <div className="w-full text-center">
-          <div className="font-black text-5xl mb-4">Sing up</div>
-          {code === "error_code" ? (
-            <div className="mb-4 xl:w-2/4 lg:w-2/4 md:w-2/4 w-full bg-red-100 text-red-500 font-semibold text-xs mx-auto py-2 rounded-md">
-              Lütfen tüm alanları eksiksiz bir şekilde doldurun
+      <div className="w-full h-auto flex flex-col xl:flex-row lg:flex-row md:flex-row bg-white ">
+        <div className="w-full xl:w-2/5 relative lg:w-2/5 md:w-2/5 bgOr flex flex-col items-center">
+          <Link href="/">
+            <a className="shadow-sm mr-auto ml-6 mt-6 mb-6 xl:mb-0 lg:mb-0 md:mb-0 rounded-md bg-white z-10 px-8 font-semibold uppercase py-2">
+              Geri
+            </a>
+          </Link>
+          <img
+            className="hidden xl:block lg:block md:block mt-auto"
+            src="https://cdn.dribbble.com/users/3281732/screenshots/8616916/media/a7e39b15640f8883212421d134013e38.jpg?compress=1&resize=1000x750"
+          />
+        </div>
+        <div className="w-full min-h-screen flex flex-col justify-center items-center xl:w-3/5 lg:w-3/5 md:w-3/5 bg-white py-4 h-auto xl:h-screen lg:h-screen md:h-full overflow-y-auto">
+          <div className="w-full xl:w-2/4 lg:w-3/4 px-6 xl:px-0 lg:px-0 md:px-6">
+            <div className="mb-6">
+              <div className="text-xl font-bold">Kayıt Ol</div>
+              <p>
+                Kayıt olarak
+                <Link href="/">
+                  <a className="underline text-blue-600 mx-2">gizlilik politikamızı</a>
+                </Link>
+                otomatikman kabul etmiş sayılırsınız.
+              </p>
             </div>
-          ) : code ? (
-            <div className="mb-4 xl:w-2/4 lg:w-2/4 md:w-2/4 w-full bg-green-100 text-green-500 font-semibold text-sm mx-auto py-2 rounded-md">
-              Kayıt başarılı
+            {responseCode !== "none_error_code" ? (
+              <div className="w-full py-2 bg-red-200 text-red-600 text-center font-semibold text-sm mb-6 rounded-md">
+                {responseCode}
+              </div>
+            ) : null}
+            <div className="flex mb-6">
+              <div className="w-2/4 mr-4 bg-gray-100 text-center py-2 rounded-md hover:bg-gray-200 font-semibold text-sm">
+                Google İle Giriş Yap
+              </div>
+              <div className="w-2/4 ml-4 bg-gray-100 text-center py-2 rounded-md hover:bg-gray-200 font-semibold text-sm">
+                Facebook İle Giriş Yap
+              </div>
             </div>
-          ) : code !== null ? (
-            <div className="mb-4 xl:w-2/4 lg:w-2/4 md:w-2/4 w-full bg-red-100 text-red-500 font-semibold text-xs mx-auto py-2 rounded-md">
-              Kullanıcı adı Email adresi ile başka bir Kullanıcı mevcut
+            <div className="w-full items-center flex h-1 bg-gray-100 mb-6">
+              <div className="text-center mx-auto px-6 bg-white font-black text-gray-200">OR</div>
             </div>
-          ) : null}
-          <div className="xl:w-2/4 lg:w-2/4 md:w-2/4 w-full mx-auto mb-4">
-            <input
-              className="outline-none border border-gray-200 w-full px-3 py-2 rounded-sm inter text-sm focus:border-gray-300 hover:bg-gray-100 mb-2"
-              placeholder="Ad soyad"
-              type="text"
-              defaultValue={name}
-              onChange={(text) => setName(text.target.value)}
-            />
-            <div className="w-full text-xs text-left">
-              Adınızın <span className="text-red-600">Argo</span>,{" "}
-              <span className="text-red-600">Irkçı</span> ve{" "}
-              <span className="text-red-600">Adult</span> kelimeler içermedğinden emin olun
-            </div>
-          </div>
-          <div className="xl:w-2/4 lg:w-2/4 md:w-2/4 w-full mx-auto mb-4">
-            <input
-              className="outline-none border border-gray-200 w-full px-3 py-2 rounded-sm inter text-sm focus:border-gray-300 hover:bg-gray-100 mb-2"
-              placeholder="Email"
-              type="text"
-              defaultValue={email}
-              onChange={(text) => setEmail(text.target.value)}
-            />
-            <div className="w-full text-xs text-left">
-              E-mail adresinizi benzersiz bir mail olduğuna emin olunuz, bir E-mail adresi ile
-              sadece bir key kayıt olabilirsiniz.
-            </div>
-          </div>
-          <div className="xl:w-2/4 lg:w-2/4 md:w-2/4 w-full mx-auto mb-4">
-            <input
-              className="outline-none border border-gray-200 w-full px-3 py-2 rounded-sm inter text-sm focus:border-gray-300 hover:bg-gray-100 mb-2"
-              placeholder="Kullanıcı adı"
-              type="text"
-              defaultValue={username}
-              onChange={(text) => setUsername(text.target.value)}
-            />
-            <div className="w-full text-xs text-left">
-              Kullanıcı adınızın benzersiz olduğuna emin olunuz.
-            </div>
-          </div>
-          <div className="xl:w-2/4 lg:w-2/4 md:w-2/4 w-full mx-auto mb-4">
-            <input
-              className="outline-none border border-gray-200 w-full px-3 py-2 rounded-sm inter text-sm focus:border-gray-300 hover:bg-gray-100 mb-2"
-              placeholder="Şifre"
-              type="password"
-              defaultValue={password}
-              onChange={(text) => setPassword(text.target.value)}
-            />
-            <div className="w-full text-xs text-left">
-              Şifreniz <span className="text-red-600">6 Karakterden büyük</span> olduğuna emin
-              olunuz
-            </div>
-          </div>
-          <button
-            onClick={_Singup}
-            className="px-10 flex mx-auto justify-center py-2 xl:w-2/4 lg:w-2/4 md:w-2/4 w-full bg-green-400 inter text-sm font-semibold rounded-md hover:bg-green-500 mr-auto mb-4"
-          >
-            {loading ? (
-              <>
-                <svg
-                  className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
+
+            <form onSubmit={handleSubmit(onSubmit)}>
+              <div className="mb-4">
+                <div className="mb-2 font-medium text-sm">Ad Soyad</div>
+                {errors.name && (
+                  <div className="-mt-2 mb-2 text-red-400 text-sm font-semibold">
+                    Lütfen bu alanı boş bırakmayınız
+                  </div>
+                )}
+                <input
+                  name="name"
+                  ref={register({ required: true, minLength: 4 })}
+                  className="bg-gray-100 w-full py-2 rounded-md px-4 hover:bg-gray-200 focus:bg-gray-200 outline-none"
+                />
+              </div>
+              <div className="mb-4">
+                <div className="mb-2 font-medium text-sm">E-mail</div>
+                {errors.email && (
+                  <div className="-mt-2 mb-2 text-red-400 text-sm font-semibold">
+                    Lütfen geçerli bir Mail adresi giriniz
+                  </div>
+                )}
+                <input
+                  name="email"
+                  ref={register({
+                    required: true,
+                    pattern: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                  })}
+                  className="bg-gray-100 w-full py-2 rounded-md px-4 hover:bg-gray-200 focus:bg-gray-200 outline-none"
+                />
+              </div>
+              <div className="flex">
+                <div className="mb-4 w-2/4 mr-4 flex flex-col justify-between">
+                  <div>
+                    <div className="mb-2 font-medium text-sm">Kullanıcı Adı</div>
+                    {errors.username && (
+                      <div className="-mt-2 text-red-400 text-sm font-semibold mb-2">
+                        Lütfen geçerli bir kullanıcı adı belirleyin
+                      </div>
+                    )}
+                  </div>
+                  <input
+                    name="username"
+                    ref={register({ required: true, minLength: 3 })}
+                    className="bg-gray-100 w-full py-2 rounded-md px-4 hover:bg-gray-200 focus:bg-gray-200 outline-none"
+                  />
+                </div>
+                <div className="mb-4 w-2/4 ml-4 flex flex-col justify-between">
+                  <div>
+                    <div className="mb-2 font-medium text-sm">Şifre</div>
+                    {errors.password && (
+                      <div className="-mt-2 text-red-400 text-sm font-semibold mb-2">
+                        Lütfen bir şifre belirleyiniz.
+                      </div>
+                    )}
+                  </div>
+                  <input
+                    name="password"
+                    ref={register({ required: true, minLength: 6 })}
+                    className="bg-gray-100 w-full py-2 rounded-md px-4 hover:bg-gray-200 focus:bg-gray-200 outline-none"
+                  />
+                </div>
+              </div>
+              <div className="mb-6">
+                <button
+                  type="submit"
+                  className="bg-blue-600 flex outline-none justify-center w-full hover:shadow-sm hover:bg-blue-700 text-sm rounded-md py-2 px-10 font-semibold text-white"
                 >
-                  <circle
-                    className="opacity-25"
-                    cx="12"
-                    cy="12"
-                    r="10"
-                    stroke="currentColor"
-                    strokeWidth="4"
-                  ></circle>
-                  <path
-                    className="opacity-75"
-                    fill="currentColor"
-                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                  ></path>
-                </svg>
-                Kayıt yapılıyor
-              </>
-            ) : (
-              "Kayıt Ol"
-            )}
-          </button>
-          <div className="text-sm mb-1">
-            Hesabın var mı?{" "}
-            <Link href="/login">
-              <a className="no-underline font-semibold">Giriş yap</a>
-            </Link>
-          </div>
-          <div className="text-sm -mt-1">
-            <Link href="/">
-              <a className="no-underline font-medium text-gray-400 hover:text-gray-600">Geri dön</a>
-            </Link>
+                  {loadingSingup ? (
+                    <>
+                      <SpinIcon color="#ffffff" />
+                      Kayıt Olunuyor
+                    </>
+                  ) : (
+                    "Kayıt Ol"
+                  )}
+                </button>
+              </div>
+            </form>
+            <div className="mb-4">
+              <div className="font-medium">
+                Hesabın var mı?
+                <Link href="/login">
+                  <a className="underline text-blue-600 mx-2">Giriş Yap</a>
+                </Link>
+              </div>
+            </div>
           </div>
         </div>
+        <style jsx>{`
+          .bgOr {
+            background-color: #f9d86d;
+          }
+          .bgOr::after {
+            content: "";
+            display: block;
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            background-color: #746b124f;
+            z-index: 0;
+          }
+          .welcome {
+            font-size: 50px;
+          }
+        `}</style>
       </div>
     );
   }

@@ -51,3 +51,10 @@ export const NavbarSkeleton = () => (
     <SpinIcon color="red" />
   </ul>
 );
+
+export const UserActionSkeleton = ({ size }) => (
+  <div className="w-full bg-white shadow-sm rounded-sm p-2 mb-2 flex justify-between">
+    <div className={`w-${size}/4 bg-gray-100 rounded-md h-4`}></div>
+    <div className="w-28 bg-gray-100 rounded-md h-4"></div>
+  </div>
+);

@@ -6,6 +6,7 @@ export default async function (request, response) {
   const { db } = await connect();
   const { method } = request;
   const { JWT_KEY } = process.env;
+
   try {
     switch (method) {
       case "POST":
@@ -18,9 +19,7 @@ export default async function (request, response) {
           });
         }
 
-        const result = await db
-          .collection("users")
-          .findOne({ username, password });
+        const result = await db.collection("users").findOne({ username, password });
 
         const userId = result._id;
         const userName = result.username;
@@ -39,7 +38,6 @@ export default async function (request, response) {
 
         const JWT_CALLBACK = (err, token) => {
           if (err) throw err;
-          Cookies.set("JWT_TOKEN", token);
           response.json({
             code: 200,
             token,

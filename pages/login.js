@@ -1,42 +1,38 @@
-import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { Api } from "lib/api";
 import Cookies from "js-cookie";
 import { useAuthToken } from "context/AuthToken";
+import Link from "next/link";
+import { useForm } from "react-hook-form";
+import { SpinIcon } from "@constants/icons";
 
 export default function Login() {
   const router = useRouter();
-  const [loading, setLoading] = useState(false);
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [errorMessage, setErrorMessage] = useState("none_error");
 
+  const { register, handleSubmit, watch, errors } = useForm();
   const { JWT_TOKEN } = useAuthToken();
 
-  const _login = async () => {
-    setLoading(true);
+  const [responseCode, setResponseCode] = useState("none_error_code");
+  const [loadingLogin, setLoadingLogin] = useState(false);
 
-    const isLogin = await Api.post("/auth/login", {
-      username: username,
-      password: password,
-    });
-    if (isLogin.data.code === 200) {
-      Cookies.set("JWT_TOKEN", isLogin.data.token);
-      Cookies.set("USER_ID", isLogin.data.userId);
+  const onSubmit = async (formData) => {
+    setLoadingLogin(true);
+
+    const { password, username } = formData;
+    const GoLogin = await Api.post("/auth/login", { password, username });
+    const currentCode = GoLogin.data.code;
+
+    if (currentCode === 200) {
+      Cookies.set("JWT_TOKEN", GoLogin.data.token);
+      Cookies.set("USER_ID", GoLogin.data.userId);
       router.push("/");
     } else {
-      setErrorMessage(isLogin.data.error);
+      setResponseCode(currentMessage);
     }
 
-    setLoading(false);
+    setLoadingLogin(false);
   };
-
-  useEffect(() => {
-    if (errorMessage !== "none_error") {
-      setTimeout(() => setErrorMessage("none_error"), 3000);
-    }
-  }, [errorMessage]);
 
   useEffect(() => {
     if (JWT_TOKEN) {
@@ -48,76 +44,104 @@ export default function Login() {
     return <div></div>;
   } else {
     return (
-      <div className="xl:w-2/5 flex mx-auto items-center xl:h-screen lg:h-screen md:h-screen px-10 xl:px-0 lg:px-0">
-        <div className="w-full text-center">
-          {errorMessage !== "none_error" ? (
-            <div className="mb-4 xl:w-2/4 lg:w-2/4 md:w-2/4 w-full bg-green-100 text-green-500 font-semibold text-sm mx-auto py-2 rounded-md">
-              {errorMessage}
+      <div className="w-full h-auto flex flex-col xl:flex-row lg:flex-row md:flex-row bg-white ">
+        <div className="w-full xl:w-2/5 relative lg:w-2/5 md:w-2/5 bgOr flex flex-col items-center">
+          <Link href="/">
+            <a className="shadow-sm mr-auto ml-6 mt-6 mb-6 xl:mb-0 lg:mb-0 md:mb-0 rounded-md bg-white z-10 px-8 font-semibold uppercase py-2">
+              Geri
+            </a>
+          </Link>
+          <img
+            className="hidden xl:block lg:block md:block mt-auto"
+            src="https://cdn.dribbble.com/users/3281732/screenshots/8616916/media/a7e39b15640f8883212421d134013e38.jpg?compress=1&resize=1000x750"
+          />
+        </div>
+        <div className="w-full min-h-screen flex flex-col justify-center items-center xl:w-3/5 lg:w-3/5 md:w-3/5 bg-white py-4 h-auto xl:h-screen lg:h-screen md:h-full overflow-y-auto">
+          <div className="w-full xl:w-2/4 lg:w-3/4 px-6 xl:px-0 lg:px-0 md:px-6">
+            <div className="mb-6">
+              <div className="text-2xl font-bold">Giriş Yap</div>
+              <p>
+                Giriş yaparak
+                <Link href="/">
+                  <a className="underline text-blue-600 mx-2">gizlilik politikamızı</a>
+                </Link>
+                otomatikman kabul etmiş sayılırsınız.
+              </p>
             </div>
-          ) : null}
-          <div className="font-black text-5xl mb-4">Hoş geldin</div>
-          <div>
-            <input
-              className="outline-none border border-gray-200 xl:w-2/4 lg:w-2/4 md:w-2/4 w-full px-3 py-2 rounded-sm inter text-sm focus:border-gray-300 hover:bg-gray-100 mb-4"
-              placeholder="Kullanıcı adı"
-              type="text"
-              defaultValue={username}
-              onChange={(text) => setUsername(text.target.value)}
-            />
-          </div>
-          <div>
-            <input
-              className="outline-none border border-gray-200 xl:w-2/4 lg:w-2/4 md:w-2/4 w-full px-3 py-2 rounded-sm inter text-sm focus:border-gray-300 hover:bg-gray-100 mb-4"
-              placeholder="Şifre"
-              defaultValue={password}
-              onChange={(text) => setPassword(text.target.value)}
-              type="password"
-            />
-          </div>
-          <button
-            onClick={_login}
-            className="px-10 flex mx-auto justify-center py-2 xl:w-2/4 lg:w-2/4 md:w-2/4 w-full bg-green-400 inter text-sm font-semibold rounded-md hover:bg-green-500 mr-auto mb-4"
-          >
-            {loading ? (
-              <>
-                <svg
-                  className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
+            <div className="flex mb-6">
+              <div className="w-2/4 mr-4 bg-gray-100 text-center py-2 rounded-md hover:bg-gray-200 font-semibold text-sm">
+                Google İle Giriş Yap
+              </div>
+              <div className="w-2/4 ml-4 bg-gray-100 text-center py-2 rounded-md hover:bg-gray-200 font-semibold text-sm">
+                Facebook İle Giriş Yap
+              </div>
+            </div>
+            <div className="w-full items-center flex h-1 bg-gray-100 mb-6">
+              <div className="text-center mx-auto px-6 bg-white font-black text-gray-200">OR</div>
+            </div>
+            <form onSubmit={handleSubmit(onSubmit)}>
+              <div className="mb-4">
+                <div className="mb-2 font-medium text-sm">Kullanıcı adı yada E-mail</div>
+                <input
+                  name="username"
+                  ref={register({ required: true })}
+                  className="bg-gray-100 w-full py-2 rounded-md px-4 hover:bg-gray-200 focus:bg-gray-200 outline-none"
+                />
+              </div>
+              <div className="mb-4">
+                <div className="mb-2 font-medium text-sm">Şifre</div>
+                <input
+                  name="password"
+                  type="password"
+                  ref={register({ required: true })}
+                  className="bg-gray-100 w-full py-2 rounded-md px-4 hover:bg-gray-200 focus:bg-gray-200 outline-none"
+                />
+              </div>
+              <div className="mb-6">
+                <button
+                  type="submit"
+                  className="bg-blue-600 flex outline-none justify-center w-full hover:shadow-sm hover:bg-blue-700 text-sm rounded-md py-2 px-10 font-semibold text-white"
                 >
-                  <circle
-                    className="opacity-25"
-                    cx="12"
-                    cy="12"
-                    r="10"
-                    stroke="currentColor"
-                    strokeWidth="4"
-                  ></circle>
-                  <path
-                    className="opacity-75"
-                    fill="currentColor"
-                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                  ></path>
-                </svg>
-                Giriş yapılıyor
-              </>
-            ) : (
-              "Giriş yap"
-            )}
-          </button>
-          <div className="text-sm mb-1">
-            Hesabın yok mu?{" "}
-            <Link href="/singup">
-              <a className="no-underline font-semibold">Kayıt Ol</a>
-            </Link>
-          </div>
-          <div className="text-sm -mt-1">
-            <Link href="/">
-              <a className="no-underline font-medium text-gray-400 hover:text-gray-600">Geri dön</a>
-            </Link>
+                  {loadingLogin ? (
+                    <>
+                      <SpinIcon color="#ffffff" />
+                      Giriş Yapılıyor
+                    </>
+                  ) : (
+                    "Giriş Yap"
+                  )}
+                </button>
+              </div>
+            </form>
+            <div className="mb-4">
+              <div className="font-medium">
+                Hesabın yok mu?
+                <Link href="/singup">
+                  <a className="underline text-blue-600 mx-2">Kayıt ol</a>
+                </Link>
+              </div>
+            </div>
           </div>
         </div>
+        <style jsx>{`
+          .bgOr {
+            background-color: #f9d86d;
+          }
+          .bgOr::after {
+            content: "";
+            display: block;
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            background-color: #746b124f;
+            z-index: 0;
+          }
+          .welcome {
+            font-size: 50px;
+          }
+        `}</style>
       </div>
     );
   }
