@@ -4,6 +4,8 @@ import Link from "next/link";
 import Cookies from "js-cookie";
 import { useEffect, useState } from "react";
 import GetTiming from "helpers/getTime";
+import ReactMarkdown from "react-markdown";
+import { Renderers } from "helpers/Renderers";
 
 export default function Comment({ item, votes, index }) {
   const [allVotes, setAllVotes] = useState(votes);
@@ -28,23 +30,17 @@ export default function Comment({ item, votes, index }) {
     <div key={item._id} className={` ${index === 0 ? "" : "border-t-0"}`}>
       <div className="mb-4 justify-between">
         <div className="flex">
-          <Avatar />
-          <div className="ml-4 leading-tight">
+          <Avatar size={40} />
+          <div className="ml-4 w-full leading-tight ">
             <Link href="/member/[username]" as={`/member/${item.userItem.username}`}>
               <a className="text-sm font-bold text-black no-underline">{item.userItem.username}</a>
             </Link>
-            {item.comment.map((items, index) =>
-              index === 0 ? (
-                <p key={index} className=" mb-3">
-                  <span className={`text-sm font-base text-black `}>{items}</span>
-                </p>
-              ) : (
-                <p key={index} className={`text-sm font-base text-black mb-3`}>
-                  {items}
-                </p>
-              ),
-            )}
-
+            <ReactMarkdown
+              className="contentMarkdown w-full"
+              renderers={Renderers}
+              allowDangerousHtml
+              children={item.comment}
+            />
             <div className="flex  items-center mt-2">
               <div className="text-xs font-medium text-gray-500 afterView flex items-center">
                 {GetTiming(item.createdAt)}

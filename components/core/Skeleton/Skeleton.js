@@ -58,3 +58,13 @@ export const UserActionSkeleton = ({ size }) => (
     <div className="w-28 bg-gray-100 rounded-md h-4"></div>
   </div>
 );
+
+export const SubjectSkeleton = () => (
+  <div className="w-full rounded-md bg-white shadow-sm p-3 mb-4">
+    <div className="w-3/4 h-4 bg-gray-100 rounded-md mb-2"></div>
+    <div className="flex">
+      <div className="w-20 h-2 bg-gray-100 rounded-md"></div>
+      <div className="w-40 h-2 bg-gray-100 rounded-md ml-6"></div>
+    </div>
+  </div>
+);

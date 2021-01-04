@@ -1,29 +1,32 @@
 import Layout from "@components/core/Layout";
 import Thread from "@components/core/Thread";
 import Sidebar from "@components/core/Sidebar";
-import { urls } from "lib/api";
+import { Api } from "lib/api";
+import { useEffect, useState } from "react";
 
-export default function Categories({ posts }) {
+export default function Categories({ query }) {
+  const [AllPosts, setAllPosts] = useState([]);
+  const [loaded, setLoaded] = useState(true);
+
+  const GetPosts = async () => {
+    const response = await Api.post("/posts/get");
+    setLoaded(false);
+    setAllPosts(
+      response.data.results.filter((item) => item.categoryItem?.key === parseInt(query.id)),
+    );
+  };
+
+  useEffect(() => {
+    GetPosts();
+  }, []);
   return (
     <Layout>
-      <Thread size="3/4" posts={posts} />
+      <Thread size="3/4" loaded={loaded} posts={AllPosts} />
       <Sidebar />
     </Layout>
   );
 }
 
-Categories.getInitialProps = async ({ query }) => {
-  const res = await fetch(urls + "/posts/get", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/javascript;charset=utf-8",
-    },
-  });
-  const allPosts = await res.json();
-  const posts = await allPosts.results.filter(
-    (item) => item.categoryItem?.key === parseInt(query.id),
-  );
-  return {
-    posts: posts,
-  };
+Categories.getInitialProps = ({ query }) => {
+  return { query };
 };

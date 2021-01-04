@@ -104,12 +104,12 @@ export default function Login() {
               <div className="mb-6">
                 <button
                   type="submit"
-                  className="bg-blue-600 flex outline-none justify-center w-full hover:shadow-sm hover:bg-blue-700 text-sm rounded-md py-2 px-10 font-semibold text-white"
+                  className="bg-blue-600 flex outline-none focus:outline-none justify-center w-full hover:shadow-sm hover:bg-blue-700 text-sm rounded-md py-2 px-10 font-semibold text-white"
                 >
                   {loadingLogin ? (
                     <>
                       <SpinIcon color="#ffffff" />
-                      Giriş Yapılıyor
+                      Giriş Yapılıyor...
                     </>
                   ) : (
                     "Giriş Yap"

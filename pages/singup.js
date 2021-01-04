@@ -145,6 +145,7 @@ export default function Singup() {
                   </div>
                   <input
                     name="password"
+                    type="password"
                     ref={register({ required: true, minLength: 6 })}
                     className="bg-gray-100 w-full py-2 rounded-md px-4 hover:bg-gray-200 focus:bg-gray-200 outline-none"
                   />
@@ -153,12 +154,12 @@ export default function Singup() {
               <div className="mb-6">
                 <button
                   type="submit"
-                  className="bg-blue-600 flex outline-none justify-center w-full hover:shadow-sm hover:bg-blue-700 text-sm rounded-md py-2 px-10 font-semibold text-white"
+                  className="bg-blue-600 flex outline-none outline-none justify-center w-full hover:shadow-sm hover:bg-blue-700 text-sm rounded-md py-2 px-10 font-semibold text-white"
                 >
                   {loadingSingup ? (
                     <>
                       <SpinIcon color="#ffffff" />
-                      Kayıt Olunuyor
+                      Kayıt Olunuyor...
                     </>
                   ) : (
                     "Kayıt Ol"

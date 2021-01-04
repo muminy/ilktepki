@@ -145,52 +145,6 @@ export default function Create() {
           .createArea {
             min-height: 100vh;
           }
-          .contentMarkdown > h1,
-          h2,
-          h3,
-          h4,
-          h5,
-          h6 {
-            font-size: 20px !important;
-            font-weight: 600 !important;
-            margin-bottom: 10px;
-          }
-          .contentMarkdown > p {
-            margin-bottom: 10px;
-            font-weight: 500;
-            font-size: 15px;
-          }
-          .contentMarkdown > ul {
-            list-style: disc;
-            padding-left: 20px;
-            margin-bottom: 10px;
-            font-weight: 500;
-            font-size: 14px;
-          }
-          .contentMarkdown a {
-            color: blue;
-          }
-          .contentMarkdown > p code,
-          li code {
-            color: #1d1309;
-            font-weight: 500;
-            padding: 1px 4px;
-            background-color: rgba(85, 197, 132, 0.47);
-          }
-          .mhe {
-            min-height: 120px;
-          }
-          .contentMarkdown blockquote {
-            border-left: 5px solid #c9c9c9;
-            margin-bottom: 10px;
-            color: #5f5f5f;
-            background-color: #f7f7f7;
-            padding: 10px 10px;
-            border-radius: 4px;
-          }
-          .contentMarkdown hr {
-            margin-bottom: 10px;
-          }
         `}</style>
       </div>
     );

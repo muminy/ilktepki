@@ -21,7 +21,7 @@ export const Renderers = {
   tableHead: SimpleRenderer.bind(null, "thead"),
   tableBody: SimpleRenderer.bind(null, "tbody"),
   tableRow: SimpleRenderer.bind(null, "tr"),
-
+  tableCell: TableCell,
   root: Root,
   text: TextRenderer,
   list: List,
@@ -40,6 +40,16 @@ function TextRenderer(props) {
   const children = props.children || "";
   /* istanbul ignore next - `span` is a fallback for old React. */
   return supportsStringRender ? children : createElement("span", null, children);
+}
+
+function TableCell(props) {
+  const style = props.align ? { textAlign: props.align } : undefined;
+  const coreProps = getCoreProps(props);
+  return createElement(
+    props.isHeader ? "th" : "td",
+    style ? xtend({ style }, coreProps) : coreProps,
+    props.children,
+  );
 }
 
 function Root(props) {

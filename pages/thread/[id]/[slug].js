@@ -1,17 +1,16 @@
-import Avatar from "@components/core/Avatar";
 import Layout from "@components/core/Layout";
 import Sidebar from "@components/core/Sidebar";
 import slugify from "slugify";
-import { Api, urls } from "lib/api";
+import { Api } from "lib/api";
 import Cookies from "js-cookie";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import GetTiming from "helpers/getTime";
-import { CommentIcon, LikeIcon, SpinIcon } from "@constants/icons";
-import ContentEditable from "react-contenteditable";
+import { SpinIcon } from "@constants/icons";
 import Comment from "@components/ui/Comment";
-import { useAuthToken } from "context/AuthToken";
-import Skeleton, { CommentSkeleton } from "@components/core/Skeleton/Skeleton";
+import { CommentSkeleton } from "@components/core/Skeleton/Skeleton";
+import ReactMarkdown from "react-markdown";
+import TextEditor from "@components/ui/TextEditor";
+import { Renderers } from "helpers/Renderers";
 
 export default function Slug({ post, id }) {
   const router = useRouter();
@@ -19,10 +18,10 @@ export default function Slug({ post, id }) {
   const threadId = router.query.id;
   const [JsonWebToken, setJsonWebToken] = useState(null);
   const [sendCommentLoading, setSendCommentLoading] = useState(false);
-  const [comment, setComment] = useState("");
-  const [commentArray, setCommentArray] = useState([]);
   const [comments, setComments] = useState([]);
+  const [responseCode, setResponseCode] = useState("none_error");
   const [commentsLoading, setCommentLoading] = useState(true);
+  const [commentContent, setCommentContent] = useState({ text: "", html: "" });
 
   const getComments = async () => {
     setCommentLoading(true);
@@ -38,72 +37,50 @@ export default function Slug({ post, id }) {
   }, []);
 
   const sendComment = async () => {
+    if (!commentContent.text.length) {
+      return setResponseCode("Bu şekilde yorum yapamazsın, lütfen birşeyler yaz.");
+    }
     setSendCommentLoading(true);
     const response = await Api.post("/comment/create", {
-      comment: commentArray,
+      comment: commentContent.text,
       threadId,
       baslik: post.baslik,
     });
 
     if (response.data.code === 200) {
       getComments();
-      setComment("");
+      setCommentContent({ html: "", text: "" });
     }
 
     setSendCommentLoading(false);
-  };
-
-  const onChangeHandle = (event) => {
-    let allComments = event.currentTarget.innerText.split("\n");
-    setComment(event.target.value);
-    setCommentArray(allComments);
   };
 
   useEffect(() => {
     setJsonWebToken(Cookies.get("JWT_TOKEN"));
   }, []);
 
-  const refContentEditable = React.createRef();
-
   return (
     <Layout>
       {post ? (
         <div className="w-full xl:w-3/4 lg:w-3/4 py-4 px-4 xl:px-8 xl:py-8 lg:px-8 lg:py-4 md:py-4 md:px-4 bg-white shadow-sm mr-0 md:mr-16">
-          <div className="flex items-center mb-2">
-            <Avatar />
-            <div className="font-semibold text-base ml-4">{post.author.name}</div>
+          <div className="flex items-center">
+            <div className="font-semibold text-base">{post.author.name}</div>
           </div>
-          <div className="font-black text-2xl xl:text-4xl lg:text-4xl md:text-4xl mb-1">
+          <div className="font-black text-2xl xl:text-4xl lg:text-4xl md:text-4xl mb-6">
             {post.baslik}
           </div>
-          <div className="flex mb-4 items-center">
-            <div className="text-gray-400 font-medium text-xs mr-2">
-              {GetTiming(post.createdAt)}
+          <div className="mb-6 contentMarkdown leading-1">
+            <ReactMarkdown renderers={Renderers} allowDangerousHtml children={post.icerik} />
+          </div>
+          {responseCode !== "none_error" ? (
+            <div className="py-2 w-full mb-4 bg-gray-50 text-blue-500 text-center rounded-md font-medium">
+              {responseCode}
             </div>
-          </div>
-          <div className="mb-10 leading-1">
-            {post.icerik.split("\n").map((item, index) => (
-              <p className="mb-6 p" key={index}>
-                {item}
-              </p>
-            ))}
-          </div>
-
+          ) : null}
           {JsonWebToken && (
             <div className="flex h-auto mb-8">
-              <div>
-                <Avatar />
-              </div>
-              <div className="ml-4 w-full mr-0 md:mr-8 sm:mr-8">
-                <ContentEditable
-                  className="textaread px-4 py-2 bg-gray-50  w-full focus:bg-white rounded-md resize-none appearance-none text-sm mb-4 mr-16"
-                  onChange={onChangeHandle}
-                  tagName="div"
-                  itemRef={refContentEditable}
-                  html={comment}
-                  disabled={false}
-                  placeholder="Ne düşünüyorsun?"
-                />
+              <div className="w-full ">
+                <TextEditor className="mb-4" value={commentContent} setValue={setCommentContent} />
                 <button
                   onClick={sendComment}
                   className="buttonxxb px-6 py-2 font-medium focus:outline-none text-white rounded-md text-sm flex items-center"
@@ -164,13 +141,8 @@ export default function Slug({ post, id }) {
 }
 
 export async function getStaticPaths() {
-  const postAll = await fetch(urls + "/posts/get", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/javascript;charset=utf-8",
-    },
-  });
-  const posts = await postAll.json();
+  const postAll = await Api.post("/posts/get");
+  const posts = postAll.data;
   return {
     paths: posts.results.map(
       (item) =>

@@ -53,22 +53,22 @@ export default function Profile({ userDetail }) {
           <div className="flex mb-4">
             {USER_ID === userDetail._id ? (
               <>
-                <div className="w-3/4 mr-4 shadow-sm py-2 text-center rounded-none xl:rounded-md lg:rounded-md md:rounded-md font-semibold bg-white mt-4">
+                <div className="w-3/5 mr-4 shadow-sm outline-none focus:outline-none py-2 text-center rounded-none xl:rounded-md lg:rounded-md md:rounded-md font-semibold bg-white mt-4">
                   Profili düzenle
                 </div>
                 <button
                   onClick={LogOut}
-                  className="w-1/4 ml-4 outline-none px-2 rounded-md shadow-sm mt-4 bg-white font-semibold text-red-500"
+                  className="w-2/5 ml-4 outline-none focus:outline-none px-2 rounded-none xl:rounded-md lg:rounded-md md:rounded-md shadow-sm mt-4 bg-white font-semibold text-red-500"
                 >
                   Çıkış Yap
                 </button>
               </>
             ) : USER_ID ? (
               <>
-                <div className="w-3/4 mt-4 bg-white shadow-sm py-2 text-center rounded-none xl:rounded-md lg:rounded-md md:rounded-md mr-4 font-semibold">
+                <div className="w-3/5 mt-4 bg-white shadow-sm py-2 text-center rounded-none xl:rounded-md lg:rounded-md md:rounded-md mr-4 font-semibold">
                   Mesaj
                 </div>
-                <div className="w-1/4 mt-4 bg-white shadow-sm text-red-500 py-2 text-center rounded-none xl:rounded-md lg:rounded-md md:rounded-md text-white font-semibold">
+                <div className="w-2/5 mt-4   bg-white shadow-sm text-red-500 py-2 text-center rounded-none xl:rounded-md lg:rounded-md md:rounded-md text-white font-semibold">
                   Bildir
                 </div>
               </>
@@ -115,20 +115,7 @@ Profile.getInitialProps = async (appContext) => {
   const response = await Api.post("/member/user", {
     username: appContext.query.username,
   });
-
-  const getAllActions = await Api.post("/member/actions", {
-    USER_ID: response.data.results._id,
-  });
-
-  const allArray = getAllActions.data.results;
-
-  allArray.sort(function (a, b) {
-    // Turn your strings into dates, and then subtract them
-    // to get a value that is either negative, positive, or zero.
-    return new Date(b.createdAt) - new Date(a.createdAt);
-  });
   return {
     userDetail: response.data.results,
-    actions: allArray,
   };
 };

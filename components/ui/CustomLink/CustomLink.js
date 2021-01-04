@@ -16,13 +16,10 @@ export const CommentLink = ({ item, index }) => {
       className="text-sm flex items-center px-4 bg-white shadow-sm py-2 mb-1 font-medium"
     >
       <div className="w-3/4 mr-auto">
-        Konuya
         <Link href="/thread/[id]/[slug]" as={`/thread/${item.threadId}/${slug}`}>
-          <a className="text-blue-500 font-semibold mx-1">
-            "{item.comment.join(" ").substring(0, 120)}"
-          </a>
+          <a className="text-blue-500 font-semibold mx-1">Konuya</a>
         </Link>
-        yazdı
+        Yorum yaptı.
       </div>
       <div className="text-xs text-right w-1/4 text-gray-400 ">{GetTiming(item.createdAt)}</div>
     </div>

@@ -7,6 +7,8 @@ import { useEffect, useState } from "react";
 import { Api } from "lib/api";
 import { useAuthToken } from "context/AuthToken";
 import { useRouter } from "next/router";
+import ReactMarkdown from "react-markdown";
+import { Renderers } from "helpers/Renderers";
 
 export default function Subject({ item }) {
   const router = useRouter();
@@ -78,32 +80,7 @@ export default function Subject({ item }) {
 
   return (
     <div className="flex w-full relative overflow-hidden  mb-2 pl-0 pt-0 pb-0 subject shadow-sm bg-white rounded-none xl:rounded-md lg:rounded-md md:rounded-sm">
-      <div className="text-center flex flex-col justify-between">
-        <div className={`w-full bg-gray-50 `}>
-          <button onClick={UpVoteSubject} className={`rounded-md w-full`}>
-            <UpIcon color={upVote ? "#5cdb87" : "#111"} size={24} />
-          </button>
-        </div>
-        <div className="font-semibold text-xs my-1">{DiffVotes}</div>
-        <div className={`w-full hover:bg-gray-100 bg-gray-50`}>
-          <button onClick={DownVoteSubject} className={`rounded-md w-full flex items-center`}>
-            <DownIcon color={DownVote ? "red" : "#111"} size={24} />
-          </button>
-        </div>
-      </div>
       <div className="w-full ml-4 py-3 flex flex-col justify-center">
-        <div className="flex items-center">
-          <Link href="/member/[username]" as={`/member/${item.author.username}`}>
-            <a
-              className={`lowercase font-medium mr-2 no-underline hover:underline text-gray-600 cursor-pointer size-xxs`}
-            >
-              {item.author.username}
-            </a>
-          </Link>
-          <div className={`text-gray-400 font-medium mr-2 size-xxs`}>
-            {GetTiming(item.createdAt)}
-          </div>
-        </div>
         <Link href="/thread/[id]/[slug]" as={`/thread/${item._id}/${titleSlug}`}>
           <a
             className={`font-semibold hover:underline cursor-pointer text-black text-base hover:text-black no-underline`}
@@ -111,7 +88,18 @@ export default function Subject({ item }) {
             {item.baslik.substr(0, 100)}
           </a>
         </Link>
-        <div className="p text-gray-500 mt-1">{item.icerik.substr(0, 140)}...</div>
+        <div className="flex items-center">
+          <Link href="/member/[username]" as={`/member/${item.author.username}`}>
+            <a
+              className={`lowercase font-semibold mr-2 no-underline hover:underline leading-0 text-gray-600 cursor-pointer size-xsxs`}
+            >
+              {item.author.username}
+            </a>
+          </Link>
+          <div className={`text-gray-400 font-semibold mr-2 size-xsxsd`}>
+            {GetTiming(item.createdAt)}
+          </div>
+        </div>
       </div>
       <style jsx>
         {`
@@ -119,6 +107,12 @@ export default function Subject({ item }) {
             line-height: 18px;
             font-size: 13px;
             font-weight: 500;
+          }
+          .size-xsxs {
+            font-size: 13px;
+          }
+          .size-xsxsd {
+            font-size: 11px;
           }
         `}
       </style>

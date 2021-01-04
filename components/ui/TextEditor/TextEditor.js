@@ -3,7 +3,7 @@ import { createRef, useEffect, useState } from "react";
 import ContentEditable from "react-contenteditable";
 import ReactMarkdown from "react-markdown";
 
-export default function TextEditor({ value, setValue, rows }) {
+export default function TextEditor({ value, setValue, className }) {
   const [currentPage, setCurrentPage] = useState("markdown");
 
   const setPreview = () => setCurrentPage("preview");
@@ -22,7 +22,7 @@ export default function TextEditor({ value, setValue, rows }) {
   }, [currentPage]);
 
   return (
-    <div className="w-full rounded-sm pb-0">
+    <div className={"w-full rounded-sm pb-0 " + className}>
       <header className="bg-white ">
         <button
           onClick={setMarkdown}
